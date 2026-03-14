@@ -1,0 +1,12 @@
+dependencies {
+    implementation "net.neoforged:neoforge:${neo_version}"
+
+    jarJar(api("dev:registrate:1.5.0-beta"))
+    jarJar(api(project(":BreaLib")))
+
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.0'
+}
