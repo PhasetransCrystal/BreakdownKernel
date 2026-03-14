@@ -11,6 +11,8 @@ jobs:
       github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - uses: ./.github/actions/checkout-submodules
         with:
           token: ${{ secrets.SUBMODULE_PAT }}
