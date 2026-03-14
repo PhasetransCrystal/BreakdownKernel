@@ -1,7 +1,5 @@
 name: Build on Main Branch
 on:
-  push:
-    branches: [ main, master ]
   pull_request:
     types: [ closed ]
     branches: [ main, master ]

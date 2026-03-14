@@ -1,6 +1,8 @@
 name: Spotless Code Format Check
 on:
   pull_request:
+  push:
+    branches: [ main, master ]
 permissions:
   pull-requests: write
   issues: write
