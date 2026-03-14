@@ -1,6 +1,10 @@
 name: Spotless Code Format Check
 on:
   pull_request:
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
 jobs:
   spotless:
     runs-on: ubuntu-latest
