@@ -1,0 +1,16 @@
+name: 'Checkout with Private Submodules'
+description: 'Reusable checkout for org repos'
+inputs:
+  token:
+    description: 'GitHub token'
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        token: ${{ inputs.token }}
+    - run: git submodule status
+      shell: bash
