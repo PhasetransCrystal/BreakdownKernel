@@ -3,7 +3,7 @@ package net.phasetranscrystal.breacore.data.blocks;
 import net.phasetranscrystal.brealib.util.memoization.CacheMemoizer;
 
 import net.phasetranscrystal.breacore.api.block.debug.CheckMatBlock;
-import net.phasetranscrystal.breacore.api.block.debug.MuiTestBlock;
+import net.phasetranscrystal.breacore.api.block.debug.FluidFurnaceBlock;
 import net.phasetranscrystal.breacore.api.material.ItemMaterialData;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.stack.MaterialEntry;
@@ -38,7 +38,7 @@ public class BreaBlocks {
 
     public static BlockEntry<CheckMatBlock> MatCheckBlock;
 
-    public static BlockEntry<MuiTestBlock> TestMuiBlock;
+    public static BlockEntry<FluidFurnaceBlock> FluidFurnaceBlock;
     public static Table<StoneBlockType, StoneTypes, BlockEntry<Block>> STONE_BLOCKS;
 
     public static void init() {
