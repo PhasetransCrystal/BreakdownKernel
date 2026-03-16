@@ -11,7 +11,9 @@ public class IntegrationLang {
         initOwnershipLang(provider);
     }
 
-    /** JEI, REI, EMI */
+    /**
+     * JEI, REI, EMI
+     */
     private static void initRecipeViewerLang(RegistrateLangProvider provider) {}
 
     private static void initWailaLikeLang(RegistrateLangProvider provider) {}

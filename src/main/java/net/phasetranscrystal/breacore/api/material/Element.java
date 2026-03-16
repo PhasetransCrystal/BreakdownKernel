@@ -53,10 +53,6 @@ public class Element {
     @Setter
     private boolean isIsotope;
 
-    public long mass() {
-        return protons + neutrons;
-    }
-
     public Element(long protons, long neutrons, long halfLifeSeconds, String decayTo, String name, String symbol,
                    boolean isIsotope) {
         this.protons = protons;
@@ -66,5 +62,9 @@ public class Element {
         this.name = name;
         this.symbol = symbol;
         this.isIsotope = isIsotope;
+    }
+
+    public long mass() {
+        return protons + neutrons;
     }
 }

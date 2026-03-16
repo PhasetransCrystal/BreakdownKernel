@@ -27,7 +27,6 @@ public enum StoneTypes implements StringRepresentable {
     BLACKSTONE("blackstone", MapColor.COLOR_BLACK, true, () -> Blocks.BLACKSTONE::defaultBlockState, BreaMaterials.Blackstone, false),
     ;
 
-    private final String name;
     public final MapColor mapColor;
     @Getter
     public final boolean natural;
@@ -35,8 +34,8 @@ public enum StoneTypes implements StringRepresentable {
     public final Supplier<Supplier<BlockState>> state;
     @Getter
     public final Material material;
-
     public final boolean generateBlocks;
+    private final String name;
 
     StoneTypes(@NotNull String name, @NotNull MapColor mapColor, boolean natural, Supplier<Supplier<BlockState>> state,
                Material material) {
@@ -53,6 +52,8 @@ public enum StoneTypes implements StringRepresentable {
         this.generateBlocks = generateBlocks;
     }
 
+    public static void init() {}
+
     @NotNull
     @Override
     public String getSerializedName() {
@@ -62,6 +63,4 @@ public enum StoneTypes implements StringRepresentable {
     public TagPrefix getTagPrefix() {
         return BreaTagPrefixes.block;
     }
-
-    public static void init() {}
 }

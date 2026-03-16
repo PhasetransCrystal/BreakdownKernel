@@ -21,7 +21,7 @@ import java.util.Map;
  * 图标集类型
  * 待重构
  * 待美工
- * 
+ *
  * @param name
  */
 public record MaterialIconType(String name) {

@@ -74,6 +74,23 @@ public class Material implements Comparable<Material> {
      */
     private String chemicalFormula;
 
+    public Material(@NotNull MaterialInfo materialInfo, @NotNull MaterialProperties properties,
+                    @NotNull MaterialFlags flags) {
+        this.materialInfo = materialInfo;
+        this.properties = properties;
+        this.flags = flags;
+        this.properties.setMaterial(this);
+        verifyMaterial();
+    }
+
+    // thou shall not call
+    protected Material(Identifier Identifier) {
+        materialInfo = new MaterialInfo(Identifier);
+        materialInfo.iconSet = MaterialIconSet.DULL;
+        properties = new MaterialProperties();
+        flags = new MaterialFlags();
+    }
+
     private String calculateChemicalFormula() {
         if (chemicalFormula != null) return this.chemicalFormula;
         if (materialInfo.element != null) {
@@ -115,23 +132,6 @@ public class Material implements Comparable<Material> {
         this.materialInfo.setComponents(components);
         this.chemicalFormula = this.calculateChemicalFormula();
         return this;
-    }
-
-    public Material(@NotNull MaterialInfo materialInfo, @NotNull MaterialProperties properties,
-                    @NotNull MaterialFlags flags) {
-        this.materialInfo = materialInfo;
-        this.properties = properties;
-        this.flags = flags;
-        this.properties.setMaterial(this);
-        verifyMaterial();
-    }
-
-    // thou shall not call
-    protected Material(Identifier Identifier) {
-        materialInfo = new MaterialInfo(Identifier);
-        materialInfo.iconSet = MaterialIconSet.DULL;
-        properties = new MaterialProperties();
-        flags = new MaterialFlags();
     }
 
     public void registerMaterial() {
@@ -291,14 +291,6 @@ public class Material implements Comparable<Material> {
         return harvestLevel > 0 ? harvestLevel - 1 : harvestLevel;
     }
 
-    public void setMaterialARGB(int materialRGB) {
-        materialInfo.colors.set(0, materialRGB);
-    }
-
-    public void setMaterialSecondaryARGB(int materialRGB) {
-        materialInfo.colors.set(1, materialRGB);
-    }
-
     public int getLayerARGB(int layerIndex) {
         // get 2nd digit as positive if emissive layer
         if (layerIndex < -100) {
@@ -314,8 +306,16 @@ public class Material implements Comparable<Material> {
         return materialInfo.colors.getInt(0) | 0xff000000;
     }
 
+    public void setMaterialARGB(int materialRGB) {
+        materialInfo.colors.set(0, materialRGB);
+    }
+
     public int getMaterialSecondaryARGB() {
         return materialInfo.colors.getInt(1) | 0xff000000;
+    }
+
+    public void setMaterialSecondaryARGB(int materialRGB) {
+        materialInfo.colors.set(1, materialRGB);
     }
 
     /**
@@ -355,12 +355,12 @@ public class Material implements Comparable<Material> {
         return materialInfo.hasFluidColor;
     }
 
-    public void setMaterialIconSet(MaterialIconSet materialIconSet) {
-        materialInfo.iconSet = materialIconSet;
-    }
-
     public MaterialIconSet getMaterialIconSet() {
         return materialInfo.iconSet;
+    }
+
+    public void setMaterialIconSet(MaterialIconSet materialIconSet) {
+        materialInfo.iconSet = materialIconSet;
     }
 
     public boolean isRadioactive() {

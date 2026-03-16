@@ -26,37 +26,6 @@ import java.util.function.Supplier;
 
 public class SoundEntryBuilder {
 
-    public static class SoundEntryProvider implements DataProvider {
-
-        private final PackOutput output;
-        private final String modId;
-
-        public SoundEntryProvider(PackOutput output, String modId) {
-            this.output = output;
-            this.modId = modId;
-        }
-
-        @Override
-        public CompletableFuture<?> run(CachedOutput cache) {
-            return generate(output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(modId), cache);
-        }
-
-        @Override
-        public String getName() {
-            return modId + "'s Custom Sounds";
-        }
-
-        public CompletableFuture<?> generate(Path path, CachedOutput cache) {
-            JsonObject json = new JsonObject();
-            try {
-                for (SoundEntry sound : BreaRegistries.SOUNDS) {
-                    if (sound.getId().getNamespace().equals(modId)) sound.write(json);
-                }
-            } catch (Exception ignored) {}
-            return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
-        }
-    }
-
     protected Identifier id;
     @Nullable
     protected String subtitle = "unregistered";
@@ -119,5 +88,36 @@ public class SoundEntryBuilder {
                 new WrappedSoundEntry(id, subtitle, wrappedEvents, category, attenuationDistance);
         BreaRegistries.SOUNDS.register(entry.getId(), entry);
         return entry;
+    }
+
+    public static class SoundEntryProvider implements DataProvider {
+
+        private final PackOutput output;
+        private final String modId;
+
+        public SoundEntryProvider(PackOutput output, String modId) {
+            this.output = output;
+            this.modId = modId;
+        }
+
+        @Override
+        public CompletableFuture<?> run(CachedOutput cache) {
+            return generate(output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(modId), cache);
+        }
+
+        @Override
+        public String getName() {
+            return modId + "'s Custom Sounds";
+        }
+
+        public CompletableFuture<?> generate(Path path, CachedOutput cache) {
+            JsonObject json = new JsonObject();
+            try {
+                for (SoundEntry sound : BreaRegistries.SOUNDS) {
+                    if (sound.getId().getNamespace().equals(modId)) sound.write(json);
+                }
+            } catch (Exception ignored) {}
+            return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
+        }
     }
 }

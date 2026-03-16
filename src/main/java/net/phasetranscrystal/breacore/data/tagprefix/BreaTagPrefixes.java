@@ -22,12 +22,7 @@ import static net.phasetranscrystal.breacore.api.tag.TagPrefix.Conditions.*;
 
 public class BreaTagPrefixes {
 
-    public static void init() {
-        AddonFinder.getAddonList().forEach(IBreaAddon::registerTagPrefixes);
-    }
-
     public static final TagPrefix NULL_PREFIX = TagPrefix.NULL_PREFIX;
-
     /// 非变种矿石
     public static final TagPrefix ore = oreTagPrefix("stone", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("%s Ore")
@@ -35,7 +30,6 @@ public class BreaTagPrefixes {
                     Blocks.STONE::defaultBlockState, () -> BreaMaterials.Stone, BlockBehaviour.Properties.of()
                             .mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F),
                     Identifier.withDefaultNamespace("block/stone"), false, false, true);
-
     /// 花岗岩矿石
     public static final TagPrefix oreGranite = oreTagPrefix("granite", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Granite %s Ore")
@@ -43,7 +37,6 @@ public class BreaTagPrefixes {
                     Blocks.GRANITE::defaultBlockState, () -> BreaMaterials.Granite, BlockBehaviour.Properties.of()
                             .mapColor(MapColor.DIRT).requiresCorrectToolForDrops().strength(3.0F, 3.0F),
                     Identifier.withDefaultNamespace("block/granite"));
-
     /// 闪长岩矿石
     public static final TagPrefix oreDiorite = oreTagPrefix("diorite", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Diorite %s Ore")
@@ -51,7 +44,6 @@ public class BreaTagPrefixes {
                     Blocks.DIORITE::defaultBlockState, () -> BreaMaterials.Diorite, BlockBehaviour.Properties.of()
                             .mapColor(MapColor.QUARTZ).requiresCorrectToolForDrops().strength(3.0F, 3.0F),
                     Identifier.withDefaultNamespace("block/diorite"));
-
     /// 安山岩矿石
     public static final TagPrefix oreAndesite = oreTagPrefix("andesite", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Andesite %s Ore")
@@ -67,7 +59,6 @@ public class BreaTagPrefixes {
                             .mapColor(MapColor.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F)
                             .sound(SoundType.DEEPSLATE),
                     Identifier.withDefaultNamespace("block/deepslate"), false, false, true);
-
     /// 凝灰岩矿石
     public static final TagPrefix oreTuff = oreTagPrefix("tuff", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Tuff %s Ore")
@@ -76,7 +67,6 @@ public class BreaTagPrefixes {
                             .mapColor(MapColor.TERRACOTTA_GRAY).requiresCorrectToolForDrops().strength(3.0F, 3.0F)
                             .sound(SoundType.TUFF),
                     Identifier.withDefaultNamespace("block/tuff"));
-
     /// 沙子矿石
     public static final TagPrefix oreSand = oreTagPrefix("sand", BlockTags.MINEABLE_WITH_SHOVEL)
             .langValue("Sand %s Ore")
@@ -84,7 +74,6 @@ public class BreaTagPrefixes {
                     BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.SNARE)
                             .strength(0.5F).sound(SoundType.SAND),
                     Identifier.withDefaultNamespace("block/sand"), false, true, false);
-
     /// 红沙矿石
     public static final TagPrefix oreRedSand = oreTagPrefix("redSand", BlockTags.MINEABLE_WITH_SHOVEL)
             .langValue("Red Sand %s Ore")
@@ -92,7 +81,6 @@ public class BreaTagPrefixes {
                     BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instrument(NoteBlockInstrument.SNARE)
                             .strength(0.5F).sound(SoundType.SAND),
                     Identifier.withDefaultNamespace("block/red_sand"), false, true, false);
-
     /// 沙砾矿石
     public static final TagPrefix oreGravel = oreTagPrefix("gravel", BlockTags.MINEABLE_WITH_SHOVEL)
             .langValue("Gravel %s Ore")
@@ -100,7 +88,6 @@ public class BreaTagPrefixes {
                     BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.SNARE)
                             .strength(0.6F).sound(SoundType.GRAVEL),
                     Identifier.withDefaultNamespace("block/gravel"), false, true, false);
-
     /// 玄武岩矿石
     public static final TagPrefix oreBasalt = oreTagPrefix("basalt", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Basalt %s Ore")
@@ -109,7 +96,6 @@ public class BreaTagPrefixes {
                             .instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.5F, 4.2F)
                             .sound(SoundType.BASALT),
                     Identifier.withDefaultNamespace("block/basalt"), true);
-
     /// 下界岩矿石
     public static final TagPrefix oreNetherrack = oreTagPrefix("netherrack", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Nether %s Ore")
@@ -117,7 +103,6 @@ public class BreaTagPrefixes {
                     BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM)
                             .requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.NETHER_ORE),
                     Identifier.withDefaultNamespace("block/netherrack"), true, false, true);
-
     /// 黑石矿石
     public static final TagPrefix oreBlackstone = oreTagPrefix("blackstone", BlockTags.MINEABLE_WITH_PICKAXE)
             .langValue("Blackstone %s Ore")
@@ -154,7 +139,6 @@ public class BreaTagPrefixes {
             .unificationEnabled(true)
             .generateBlock(true)
             .generationCondition(hasOreProperty);
-
     /// 锭
     public static final TagPrefix ingot = new TagPrefix("ingot")
             .defaultTagPath("ingots/%s")
@@ -165,7 +149,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(hasIngotProperty);
-
     /// 宝石
     public static final TagPrefix gem = new TagPrefix("gem")
             .defaultTagPath("gems/%s")
@@ -177,7 +160,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(hasGemProperty);
-
     /// 粉末
     public static final TagPrefix dust = new TagPrefix("dust")
             .defaultTagPath("dusts/%s")
@@ -188,7 +170,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(hasDustProperty);
-
     /// 粒
     public static final TagPrefix nugget = new TagPrefix("nugget")
             .defaultTagPath("nuggets/%s")
@@ -199,7 +180,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(hasIngotProperty);
-
     /// 板
     public static final TagPrefix plate = new TagPrefix("plate")
             .defaultTagPath("plates/%s")
@@ -210,7 +190,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(mat -> mat.hasFlag(MaterialFlags.GENERATE_PLATE));
-
     public static final TagPrefix lens = new TagPrefix("lens")
             .defaultTagPath("lenses/%s")
             .unformattedTagPath("lenses")
@@ -232,7 +211,6 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(mat -> mat.hasFlag(MaterialFlags.GENERATE_LONG_ROD));
-
     /// 杆
     public static final TagPrefix rod = new TagPrefix("rod")
             .defaultTagPath("rods/%s")
@@ -244,13 +222,11 @@ public class BreaTagPrefixes {
             .enableRecycling()
             .generateItem(true)
             .generationCondition(mat -> mat.hasFlag(MaterialFlags.GENERATE_ROD));
-
     /// 颜料
     public static final TagPrefix dye = new TagPrefix("dye")
             .defaultTagPath("dyes/%s")
             .unformattedTagPath("dyes")
             .materialAmount(-1);
-
     /// 块
     public static final TagPrefix block = new TagPrefix("block")
             .defaultTagPath("storage_blocks/%s")
@@ -264,7 +240,6 @@ public class BreaTagPrefixes {
                     material.hasProperty(PropertyKey.GEM) || material.hasFlag(MaterialFlags.FORCE_GENERATE_BLOCK))
             .unificationEnabled(true)
             .enableRecycling();
-
     /// 原木
     public static final TagPrefix log = new TagPrefix("log")
             .unformattedTagPath("logs", true);
@@ -286,7 +261,6 @@ public class BreaTagPrefixes {
     /// 门
     public static final TagPrefix door = new TagPrefix("door")
             .unformattedTagPath("doors", true);
-
     /// 岩石
     public static final TagPrefix rock = new TagPrefix("rock")
             .defaultTagPath("%s")
@@ -295,4 +269,8 @@ public class BreaTagPrefixes {
             .unificationEnabled(false)
             .generateBlock(true) // generate a block but not really, for TagPrefix#setIgnoredBlock
             .generationCondition((material) -> false);
+
+    public static void init() {
+        AddonFinder.getAddonList().forEach(IBreaAddon::registerTagPrefixes);
+    }
 }

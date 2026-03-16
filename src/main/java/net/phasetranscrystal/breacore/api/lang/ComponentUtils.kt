@@ -27,6 +27,7 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
         val result = list.map { it.get() }
         return result
     }
+
     fun getSupplier(): Supplier<List<Component>> = this
     fun getArray(): Array<Component> = get().toTypedArray()
 
@@ -35,9 +36,11 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
         list.add(styledComponent)
         line += 1
     }
+
     fun add(other: ComponentListSupplier) {
         list.addAll(other.list)
     }
+
     fun add(other: ComponentListSupplier, style: ComponentSupplier.() -> ComponentSupplier = { this }) {
         for (supplier in other.list) {
             add(supplier, style)
@@ -55,6 +58,7 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
         this.translationPrefix = prefix
     }
 }
+
 fun ComponentListSupplier(op: ComponentListSupplier.() -> Unit): ComponentListSupplier {
     val supplier = ComponentListSupplier()
     supplier.op()
@@ -74,6 +78,7 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         supplier.delayed.forEach { it(result) }
         return result
     }
+
     fun apply(tooltips: MutableList<Component>) {
         tooltips.add(get())
     }
@@ -93,6 +98,7 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         }
         return newSupplier
     }
+
     private fun transformComponent(trans: (ComponentSupplier) -> ComponentSupplier): ComponentSupplier {
         val newSupplier = ComponentSupplier(component, delayed.toMutableList(), transform.toMutableList())
         newSupplier.transform.add(trans)
@@ -153,27 +159,33 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         operatorComponent { withStyle(ChatFormatting.ITALIC) }
         return this
     }
+
     fun bold(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.BOLD) }
         return this
     }
+
     fun underline(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.UNDERLINE) }
         return this
     }
+
     fun strikethrough(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.STRIKETHROUGH) }
         return this
     }
+
     fun obfuscated(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.OBFUSCATED) }
         return this
     }
+
     fun reset(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.RESET) }
         return this
     }
 }
+
 fun Component.toComponentSupplier() = ComponentSupplier(this.copy())
 fun <T> T.toLiteralSupplier() = (Component.literal(this.toString())).toComponentSupplier()
 infix fun String.translatedTo(other: String): ComponentSupplier {

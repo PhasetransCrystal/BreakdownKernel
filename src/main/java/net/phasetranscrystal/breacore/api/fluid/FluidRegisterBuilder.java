@@ -50,16 +50,13 @@ public class FluidRegisterBuilder {
     private static final int INFER_DENSITY = -1;
     private static final int INFER_LUMINOSITY = -1;
     private static final int INFER_VISCOSITY = -1;
-
+    private final Collection<FluidAttribute> attributes = new ArrayList<>();
     @Setter
     @Nullable
     private String name = null;
     @Setter
     @Nullable
     private String translation = null;
-
-    private final Collection<FluidAttribute> attributes = new ArrayList<>();
-
     @Setter
     private FluidState state = FluidState.LIQUID;
     private int temperature = INFER_TEMPERATURE;
@@ -89,6 +86,32 @@ public class FluidRegisterBuilder {
     private boolean hasBucket = true;
 
     public FluidRegisterBuilder() {}
+
+    /**
+     * Converts a density value in g/cm^3 to an MC fluid density by comparison to air's density.
+     *
+     * @param density the density to convert
+     * @return the MC integer density
+     */
+    private static int convertToMCDensity(double density) {
+        // conversion formula from GT6
+        if (density > 0.001225) {
+            return (int) (1000 * density);
+        } else if (density < 0.001225) {
+            return (int) (-0.1 / density);
+        }
+        return 0;
+    }
+
+    /**
+     * Converts viscosity in Poise to MC viscosity
+     *
+     * @param viscosity the viscosity to convert
+     * @return the converted value
+     */
+    private static int convertViscosity(double viscosity) {
+        return (int) (viscosity * 10000);
+    }
 
     /**
      * @param temperature the temperature of the fluid in Kelvin
@@ -135,22 +158,6 @@ public class FluidRegisterBuilder {
     }
 
     /**
-     * Converts a density value in g/cm^3 to an MC fluid density by comparison to air's density.
-     *
-     * @param density the density to convert
-     * @return the MC integer density
-     */
-    private static int convertToMCDensity(double density) {
-        // conversion formula from GT6
-        if (density > 0.001225) {
-            return (int) (1000 * density);
-        } else if (density < 0.001225) {
-            return (int) (-0.1 / density);
-        }
-        return 0;
-    }
-
-    /**
      * @param luminosity of the fluid from [0, 16)
      * @return this
      */
@@ -176,16 +183,6 @@ public class FluidRegisterBuilder {
      */
     public @NotNull FluidRegisterBuilder viscosity(double viscosity) {
         return viscosity(convertViscosity(viscosity));
-    }
-
-    /**
-     * Converts viscosity in Poise to MC viscosity
-     *
-     * @param viscosity the viscosity to convert
-     * @return the converted value
-     */
-    private static int convertViscosity(double viscosity) {
-        return (int) (viscosity * 10000);
     }
 
     /**

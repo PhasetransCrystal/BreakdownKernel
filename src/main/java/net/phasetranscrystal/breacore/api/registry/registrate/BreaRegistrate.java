@@ -40,8 +40,10 @@ import java.util.function.Supplier;
 public class BreaRegistrate extends AbstractRegistrate<BreaRegistrate> {
 
     private static final Map<String, BreaRegistrate> EXISTING_REGISTRATES = new Object2ObjectOpenHashMap<>();
-
+    private static final Map<RegistryEntry<?, ?>, @Nullable RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> TAB_LOOKUP = new IdentityHashMap<>();
     private final AtomicBoolean registered = new AtomicBoolean(false);
+    @Nullable
+    private RegistryEntry<CreativeModeTab, ? extends CreativeModeTab> currentTab;
 
     protected BreaRegistrate(String modId) {
         super(modId);
@@ -125,10 +127,6 @@ public class BreaRegistrate extends AbstractRegistrate<BreaRegistrate> {
         return super.item(name, factory).lang(FormattingUtil.toEnglishName(name.replaceAll("\\.", "_")));
     }
 
-    @Nullable
-    private RegistryEntry<CreativeModeTab, ? extends CreativeModeTab> currentTab;
-    private static final Map<RegistryEntry<?, ?>, @Nullable RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> TAB_LOOKUP = new IdentityHashMap<>();
-
     public void creativeModeTab(Supplier<RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> currentTab) {
         this.currentTab = currentTab.get();
     }
@@ -172,7 +170,7 @@ public class BreaRegistrate extends AbstractRegistrate<BreaRegistrate> {
      * return new MachineBuilder<>(this, name, definitionFactory, metaMachine, blockFactory, itemFactory,
      * blockEntityFactory);
      * }
-     * 
+     *
      * public MachineBuilder<MachineDefinition> machine(String name,
      * Function<IMachineBlockEntity, MetaMachine> metaMachine) {
      * return new MachineBuilder<>(this, name, MachineDefinition::createDefinition, metaMachine,

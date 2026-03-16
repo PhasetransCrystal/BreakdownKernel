@@ -54,50 +54,25 @@ public class TagPrefix {
             str -> Optional.ofNullable(get(str)).map(DataResult::success)
                     .orElseGet(() -> DataResult.error(() -> "invalid TagPrefix: " + str)),
             prefix -> DataResult.success(prefix.name));
-
-    public static TagPrefix get(String name) {
-        return PREFIXES.get(name);
-    }
-
-    public boolean isEmpty() {
-        return this == NULL_PREFIX;
-    }
-
     public static final TagPrefix NULL_PREFIX = new TagPrefix("null");
-
-    public static class Conditions {
-
-        public static final Predicate<Material> hasToolProperty = mat -> mat.hasProperty(PropertyKey.TOOL);
-        // public static final Predicate<Material> hasNoCraftingToolProperty = hasToolProperty.and(mat ->
-        // !mat.getProperty(PropertyKey.TOOL).isIgnoreCraftingTools());
-        public static final Predicate<Material> hasOreProperty = mat -> mat.hasProperty(PropertyKey.ORE);
-        public static final Predicate<Material> hasGemProperty = mat -> mat.hasProperty(PropertyKey.GEM);
-        public static final Predicate<Material> hasDustProperty = mat -> mat.hasProperty(PropertyKey.DUST);
-        public static final Predicate<Material> hasIngotProperty = mat -> mat.hasProperty(PropertyKey.INGOT);
-        public static final Predicate<Material> hasBlastProperty = mat -> mat.hasProperty(PropertyKey.BLAST);
-    }
-
-    public record OreType(Supplier<BlockState> stoneType, Supplier<Material> material,
-                          Supplier<BlockBehaviour.Properties> template, Identifier baseModelLocation,
-                          boolean isDoubleDrops, boolean isSand, boolean shouldDropAsItem) {}
-
-    public record BlockProperties(UnaryOperator<BlockBehaviour.Properties> properties) {}
-
     @Getter
     public final String name;
-    @Getter
-    @Setter
-    private String idPattern;
-
     protected final List<TagType> tags = new ArrayList<>();
+    @Getter
+    protected final Set<TagKey<Block>> miningToolTag = new HashSet<>();
+    private final Map<Material, Supplier<? extends ItemLike>[]> ignoredMaterials = new HashMap<>();
+    private final Object2FloatMap<Material> materialAmounts = new Object2FloatOpenHashMap<>();
+    @Getter
+    private final List<MaterialStack> secondaryMaterials = new ArrayList<>();
     @Setter
     @Getter
     public String langValue;
-
+    @Getter
+    @Setter
+    private String idPattern;
     @Getter
     @Setter
     private long materialAmount = -1;
-
     @Setter
     @Getter
     private boolean unificationEnabled;
@@ -110,36 +85,22 @@ public class TagPrefix {
     private boolean generateBlock;
     @Getter
     private BlockProperties blockProperties = new BlockProperties(UnaryOperator.identity());
-
     @Getter
     @Setter
     private @Nullable Predicate<Material> generationCondition;
-
     @Nullable
     @Getter
     @Setter
     private MaterialIconType materialIconType;
-
     @Setter
     private Supplier<Table<TagPrefix, Material, ? extends Supplier<? extends ItemLike>>> itemTable;
-
     @Nullable
     @Getter
     @Setter
     private BiConsumer<Material, Consumer<Component>> tooltip;
-
-    private final Map<Material, Supplier<? extends ItemLike>[]> ignoredMaterials = new HashMap<>();
-    private final Object2FloatMap<Material> materialAmounts = new Object2FloatOpenHashMap<>();
-
     @Getter
     @Setter
     private int maxStackSize = 64;
-
-    @Getter
-    private final List<MaterialStack> secondaryMaterials = new ArrayList<>();
-
-    @Getter
-    protected final Set<TagKey<Block>> miningToolTag = new HashSet<>();
 
     public TagPrefix(String name) {
         this.name = name;
@@ -147,6 +108,10 @@ public class TagPrefix {
         this.idPattern = "%s_" + lowerCaseUnder;
         this.langValue = "%s " + FormattingUtil.toEnglishName(lowerCaseUnder);
         PREFIXES.put(name, this);
+    }
+
+    public static TagPrefix get(String name) {
+        return PREFIXES.get(name);
     }
 
     public static TagPrefix oreTagPrefix(String name, TagKey<Block> miningToolTag) {
@@ -158,6 +123,22 @@ public class TagPrefix {
                 .miningToolTag(miningToolTag)
                 .unificationEnabled(true)
                 .generationCondition(hasOreProperty);
+    }
+
+    public static TagPrefix getPrefix(String prefixName) {
+        return getPrefix(prefixName, null);
+    }
+
+    public static TagPrefix getPrefix(String prefixName, @Nullable TagPrefix replacement) {
+        return PREFIXES.getOrDefault(prefixName, replacement);
+    }
+
+    public static Collection<TagPrefix> values() {
+        return PREFIXES.values();
+    }
+
+    public boolean isEmpty() {
+        return this == NULL_PREFIX;
     }
 
     public void addSecondaryMaterial(MaterialStack secondaryMaterial) {
@@ -254,14 +235,6 @@ public class TagPrefix {
             return this.materialAmount;
         }
         return (long) (BreaApi.M * materialAmounts.getFloat(material));
-    }
-
-    public static TagPrefix getPrefix(String prefixName) {
-        return getPrefix(prefixName, null);
-    }
-
-    public static TagPrefix getPrefix(String prefixName, @Nullable TagPrefix replacement) {
-        return PREFIXES.getOrDefault(prefixName, replacement);
     }
 
     @Unmodifiable
@@ -391,17 +364,17 @@ public class TagPrefix {
                 .toArray(Supplier[]::new));
     }
 
-    @SuppressWarnings("unchecked")
-    public void setIgnored(Material material) {
-        this.ignoredMaterials.put(material, new Supplier[0]);
-    }
-
     public void removeIgnored(Material material) {
         ignoredMaterials.remove(material);
     }
 
     public Map<Material, Supplier<? extends ItemLike>[]> getIgnored() {
         return new HashMap<>(ignoredMaterials);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setIgnored(Material material) {
+        this.ignoredMaterials.put(material, new Supplier[0]);
     }
 
     public boolean isAmountModified(Material material) {
@@ -425,12 +398,26 @@ public class TagPrefix {
         return name.hashCode();
     }
 
-    public static Collection<TagPrefix> values() {
-        return PREFIXES.values();
-    }
-
     @Override
     public String toString() {
         return name;
     }
+
+    public static class Conditions {
+
+        public static final Predicate<Material> hasToolProperty = mat -> mat.hasProperty(PropertyKey.TOOL);
+        // public static final Predicate<Material> hasNoCraftingToolProperty = hasToolProperty.and(mat ->
+        // !mat.getProperty(PropertyKey.TOOL).isIgnoreCraftingTools());
+        public static final Predicate<Material> hasOreProperty = mat -> mat.hasProperty(PropertyKey.ORE);
+        public static final Predicate<Material> hasGemProperty = mat -> mat.hasProperty(PropertyKey.GEM);
+        public static final Predicate<Material> hasDustProperty = mat -> mat.hasProperty(PropertyKey.DUST);
+        public static final Predicate<Material> hasIngotProperty = mat -> mat.hasProperty(PropertyKey.INGOT);
+        public static final Predicate<Material> hasBlastProperty = mat -> mat.hasProperty(PropertyKey.BLAST);
+    }
+
+    public record OreType(Supplier<BlockState> stoneType, Supplier<Material> material,
+                          Supplier<BlockBehaviour.Properties> template, Identifier baseModelLocation,
+                          boolean isDoubleDrops, boolean isSand, boolean shouldDropAsItem) {}
+
+    public record BlockProperties(UnaryOperator<BlockBehaviour.Properties> properties) {}
 }

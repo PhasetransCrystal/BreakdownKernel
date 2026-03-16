@@ -25,20 +25,18 @@ import static net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs.*;
 
 public class MaterialItems {
 
+    // Reference Maps
+    public static final Map<MaterialEntry, Supplier<? extends ItemLike>> toUnify = new HashMap<>();
+    public static final Map<TagPrefix, TagPrefix> purifyMap = new HashMap<>();
+    // Reference Tables
+    public static Table<TagPrefix, Material, ItemEntry<TagPrefixItem>> MATERIAL_ITEMS;
     // Reference Table Builders
     static ImmutableTable.Builder<TagPrefix, Material, ItemEntry<TagPrefixItem>> MATERIAL_ITEMS_BUILDER = ImmutableTable
             .builder();
 
-    // Reference Maps
-    public static final Map<MaterialEntry, Supplier<? extends ItemLike>> toUnify = new HashMap<>();
-    public static final Map<TagPrefix, TagPrefix> purifyMap = new HashMap<>();
-
     static {
 
     }
-
-    // Reference Tables
-    public static Table<TagPrefix, Material, ItemEntry<TagPrefixItem>> MATERIAL_ITEMS;
 
     public static void init() {
         REGISTRATE.creativeModeTab(() -> MATERIAL_ITEM);

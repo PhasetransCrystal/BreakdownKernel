@@ -33,12 +33,6 @@ public class PotionFluid extends BaseFlowingFluid {
         registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
     }
 
-    @Override
-    protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
-        super.createFluidStateDefinition(builder);
-        builder.add(LEVEL);
-    }
-
     public static FluidStack of(int amount, Holder<Potion> potion) {
         FluidStack fluidStack = new FluidStack(BreaFluids.POTION.get().getSource(), amount);
         addPotionToFluidStack(fluidStack, potion);
@@ -74,9 +68,15 @@ public class PotionFluid extends BaseFlowingFluid {
                 return descriptionId + s;
             }
         }
-        String s1 = (String) potion.flatMap(Holder::unwrapKey)
+        String s1 = potion.flatMap(Holder::unwrapKey)
                 .map((key) -> key.identifier().getPath()).orElse("empty");
         return descriptionId + s1;
+    }
+
+    @Override
+    protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+        super.createFluidStateDefinition(builder);
+        builder.add(LEVEL);
     }
 
     @Override

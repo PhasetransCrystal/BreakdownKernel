@@ -35,7 +35,7 @@ public class LangHandler {
      * <pre>
      * <code>getSubKey("terminal.fluid_prospector.tier", 0)</code>
      * </pre>
-     *
+     * <p>
      * returns the <code>String</code>:
      *
      * <pre>
@@ -61,13 +61,13 @@ public class LangHandler {
      * provider.add("terminal.fluid_prospector.tier.1", "radius size 2");
      * provider.add("terminal.fluid_prospector.tier.2", "radius size 3");</code>
      * </pre>
-     *
+     * <p>
      * Instead, <code>multiLang</code> can be used for the same result:
      *
      * <pre>
      * <code>multiLang(provider, "terminal.fluid_prospector.tier", "radius size 1", "radius size 2", "radius size 3");</code>
      * </pre>
-     *
+     * <p>
      * In situations requiring a large number of generated translations, the
      * following could be used instead, which
      * generates translations for 100 tiers:
@@ -100,7 +100,7 @@ public class LangHandler {
      * <pre>
      * <code>multiLang(provider, "terminal.fluid_prospector.tier", "radius size 1", "radius size 2", "radius size 3");</code>
      * </pre>
-     *
+     * <p>
      * The following code can be used to print out the translations:
      *
      * <pre>
@@ -108,7 +108,7 @@ public class LangHandler {
      *     System.out.println(component.getString());
      * }</code>
      * </pre>
-     *
+     * <p>
      * Result:
      *
      * <pre>
@@ -140,7 +140,7 @@ public class LangHandler {
      * <pre>
      * <code>multiLang(provider, "terminal.fluid_prospector.tier", "radius size 1", "radius size 2", "radius size 3");</code>
      * </pre>
-     *
+     * <p>
      * The following code can be used to print out the translations:
      *
      * <pre>
@@ -148,7 +148,7 @@ public class LangHandler {
      *     System.out.println(component.getString());
      * }</code>
      * </pre>
-     *
+     * <p>
      * Result:
      *
      * <pre>
@@ -222,7 +222,7 @@ public class LangHandler {
      * <pre>
      * <code>multilineLang(provider, "gtceu.gui.overclock.enabled", "Overclocking Enabled.\nClick to Disable");</code>
      * </pre>
-     *
+     * <p>
      * This results in the following translations:<br/>
      *
      * <pre>

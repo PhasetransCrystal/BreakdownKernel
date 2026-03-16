@@ -8,16 +8,16 @@ import com.google.common.collect.HashBiMap;
 
 public class MarkerMaterials {
 
+    /**
+     * 无分类的标记材料
+     */
+    public static final MarkerMaterial Empty = new MarkerMaterial(BreaLib.id("empty"));
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void register() {
         Color.Colorless.toString();
         Empty.toString();
     }
-
-    /**
-     * 无分类的标记材料
-     */
-    public static final MarkerMaterial Empty = new MarkerMaterial(BreaLib.id("empty"));
 
     /**
      * 颜色材料
@@ -54,6 +54,16 @@ public class MarkerMaterials {
                 White, Orange, Magenta, LightBlue, Yellow, Lime, Pink, Gray, LightGray, Cyan, Purple, Blue, Brown,
                 Green, Red, Black
         };
+        /**
+         * 包含 MC DyeColor 与颜色标记材料之间的关联映射
+         */
+        public static final HashBiMap<DyeColor, MarkerMaterial> COLORS = HashBiMap.create();
+
+        static {
+            for (var color : DyeColor.values()) {
+                COLORS.put(color, Color.valueOf(color.getName()));
+            }
+        }
 
         /**
          * 通过颜色名称获取颜色材料
@@ -66,17 +76,6 @@ public class MarkerMaterials {
                 }
             }
             return null;
-        }
-
-        /**
-         * 包含 MC DyeColor 与颜色标记材料之间的关联映射
-         */
-        public static final HashBiMap<DyeColor, MarkerMaterial> COLORS = HashBiMap.create();
-
-        static {
-            for (var color : DyeColor.values()) {
-                COLORS.put(color, Color.valueOf(color.getName()));
-            }
         }
     }
 }

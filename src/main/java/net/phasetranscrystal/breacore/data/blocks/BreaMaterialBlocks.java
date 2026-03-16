@@ -25,11 +25,11 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 
 public class BreaMaterialBlocks {
 
+    // Reference Tables
+    public static Table<TagPrefix, Material, BlockEntry<? extends MaterialBlock>> MATERIAL_BLOCKS;
     // Reference Table Builders
     static ImmutableTable.Builder<TagPrefix, Material, BlockEntry<? extends MaterialBlock>> MATERIAL_BLOCKS_BUILDER = ImmutableTable
             .builder();
-    // Reference Tables
-    public static Table<TagPrefix, Material, BlockEntry<? extends MaterialBlock>> MATERIAL_BLOCKS;
 
     // Material Blocks
     public static void generateMaterialBlocks() {

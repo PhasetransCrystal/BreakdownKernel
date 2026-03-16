@@ -18,12 +18,6 @@ public class MaterialProperties {
             PropertyKey.INGOT,
             PropertyKey.GEM,
             PropertyKey.EMPTY));
-
-    @SuppressWarnings("unused")
-    public static void addBaseType(PropertyKey<?> baseTypeKey) {
-        baseTypes.add(baseTypeKey);
-    }
-
     private final Map<PropertyKey<? extends IMaterialProperty>, IMaterialProperty> propertyMap;
     @Getter
     @Setter
@@ -31,6 +25,11 @@ public class MaterialProperties {
 
     public MaterialProperties() {
         propertyMap = new HashMap<>();
+    }
+
+    @SuppressWarnings("unused")
+    public static void addBaseType(PropertyKey<?> baseTypeKey) {
+        baseTypes.add(baseTypeKey);
     }
 
     public boolean isEmpty() {

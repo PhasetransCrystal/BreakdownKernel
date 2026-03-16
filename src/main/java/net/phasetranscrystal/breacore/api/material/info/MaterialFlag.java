@@ -59,6 +59,19 @@ public class MaterialFlag {
     }
 
     /**
+     * 通过名称从注册表中检索标志。
+     * <p>
+     * 搜索不区分大小写。
+     * </p>
+     *
+     * @param name 要查找的标志名称
+     * @return 找到的标志，如果不存在该名称的标志则返回 {@code null}
+     */
+    public static MaterialFlag getByName(String name) {
+        return FLAG_REGISTRY.stream().filter(f -> f.toString().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    /**
      * 验证材料是否满足此标志的所有要求。
      * <p>
      * 检查所需属性，并递归验证所有依赖标志。
@@ -93,19 +106,6 @@ public class MaterialFlag {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    /**
-     * 通过名称从注册表中检索标志。
-     * <p>
-     * 搜索不区分大小写。
-     * </p>
-     *
-     * @param name 要查找的标志名称
-     * @return 找到的标志，如果不存在该名称的标志则返回 {@code null}
-     */
-    public static MaterialFlag getByName(String name) {
-        return FLAG_REGISTRY.stream().filter(f -> f.toString().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**

@@ -1,6 +1,5 @@
 package net.phasetranscrystal.breacore.data.blocks;
 
-import net.phasetranscrystal.brealib.mixins.BlockPropertiesAccessor;
 import net.phasetranscrystal.brealib.util.memoization.CacheMemoizer;
 
 import net.phasetranscrystal.breacore.api.block.debug.CheckMatBlock;
@@ -13,6 +12,7 @@ import net.phasetranscrystal.breacore.common.block.StoneBlockType;
 import net.phasetranscrystal.breacore.common.block.StoneTypes;
 import net.phasetranscrystal.breacore.data.items.MaterialItems;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
+import net.phasetranscrystal.breacore.mixins.BlockPropertiesAccessor;
 
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -39,6 +39,7 @@ public class BreaBlocks {
     public static BlockEntry<CheckMatBlock> MatCheckBlock;
 
     public static BlockEntry<MuiTestBlock> TestMuiBlock;
+    public static Table<StoneBlockType, StoneTypes, BlockEntry<Block>> STONE_BLOCKS;
 
     public static void init() {
         DebugBlocks.init();
@@ -53,8 +54,6 @@ public class BreaBlocks {
 
         BreaMaterialBlocks.MATERIAL_BLOCKS_BUILDER = null;
     }
-
-    public static Table<StoneBlockType, StoneTypes, BlockEntry<Block>> STONE_BLOCKS;
 
     public static <P, T extends Block,
             S2 extends BlockBuilder<T, P>> NonNullFunction<S2, S2> unificationBlock(@NotNull TagPrefix tagPrefix,

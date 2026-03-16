@@ -27,7 +27,15 @@ public class OreProperty implements IMaterialProperty {
      */
     @Getter
     private final List<Material> oreByProducts = new ArrayList<>();
-
+    /**
+     * 在电磁分离过程中，此矿物将被分离为此材料和此字段指定的材料。
+     * 限制为2种材料。
+     * <p>
+     * 材料必须具有粉尘属性。
+     * 默认值：无。
+     */
+    @Getter
+    private final List<Material> separatedInto = new ArrayList<>();
     /**
      * 破碎过程中破碎矿石产出量的倍数。
      * <p>
@@ -36,7 +44,6 @@ public class OreProperty implements IMaterialProperty {
     @Getter
     @Setter
     private int oreMultiplier;
-
     /**
      * 破碎过程中副产品产出量的倍数。
      * <p>
@@ -45,7 +52,6 @@ public class OreProperty implements IMaterialProperty {
     @Getter
     @Setter
     private int byProductMultiplier;
-
     /**
      * 矿物方块是否使用发光纹理。
      * <p>
@@ -54,7 +60,6 @@ public class OreProperty implements IMaterialProperty {
     @Getter
     @Setter
     private boolean emissive;
-
     /**
      * 此矿物直接冶炼得到的结果材料。
      * <p>
@@ -65,7 +70,6 @@ public class OreProperty implements IMaterialProperty {
     @Setter
     @NotNull
     private Material directSmeltResult = BreaMaterials.NULL;
-
     /**
      * 此矿物应在此材料中进行洗涤以获得额外产出。
      * <p>
@@ -75,23 +79,12 @@ public class OreProperty implements IMaterialProperty {
     @Setter
     @NotNull
     private Material washedIn = BreaMaterials.NULL;
-
     /**
      * 在化学浴中洗涤此矿物所需的材料量。
      * <p>
      * 默认值：100 mb
      */
     private int washedAmount = 100;
-
-    /**
-     * 在电磁分离过程中，此矿物将被分离为此材料和此字段指定的材料。
-     * 限制为2种材料。
-     * <p>
-     * 材料必须具有粉尘属性。
-     * 默认值：无。
-     */
-    @Getter
-    private final List<Material> separatedInto = new ArrayList<>();
 
     /**
      * 构造方法

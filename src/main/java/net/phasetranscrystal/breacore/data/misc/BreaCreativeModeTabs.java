@@ -79,15 +79,9 @@ public class BreaCreativeModeTabs {
 
     public static void init() {}
 
-    public static class RegistrateDisplayItemsGenerator implements CreativeModeTab.DisplayItemsGenerator {
-
-        public final String name;
-        public final BreaRegistrate registrate;
-
-        public RegistrateDisplayItemsGenerator(String name, BreaRegistrate registrate) {
-            this.name = name;
-            this.registrate = registrate;
-        }
+    public record RegistrateDisplayItemsGenerator(String name,
+                                                  BreaRegistrate registrate)
+            implements CreativeModeTab.DisplayItemsGenerator {
 
         @Override
         public void accept(@NotNull CreativeModeTab.ItemDisplayParameters itemDisplayParameters,

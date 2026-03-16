@@ -41,7 +41,7 @@ public interface IMaterialRegistry extends Iterable<Material> {
      * <li>{@code "registry_name"} - where modid is inferred to be
      * {@link net.phasetranscrystal.breacore.BreakdownCore#MOD_ID}</li>
      * </ul>
-     *
+     * <p>
      * Intended for use in reading/writing materials from/to NBT tags.
      *
      * @param name the name of the material in the above format
@@ -83,13 +83,21 @@ public interface IMaterialRegistry extends Iterable<Material> {
     }
 
     enum Phase {
-        /** Material Registration and Modification is not started */
+        /**
+         * Material Registration and Modification is not started
+         */
         PRE,
-        /** Material Registration and Modification is available */
+        /**
+         * Material Registration and Modification is available
+         */
         OPEN,
-        /** Material Registration is unavailable and only Modification is available */
+        /**
+         * Material Registration is unavailable and only Modification is available
+         */
         CLOSED,
-        /** Material Registration and Modification is unavailable */
+        /**
+         * Material Registration and Modification is unavailable
+         */
         FROZEN
     }
 }

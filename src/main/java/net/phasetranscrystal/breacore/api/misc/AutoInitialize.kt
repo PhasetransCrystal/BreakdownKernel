@@ -25,4 +25,5 @@ open class AutoInitialize<T> {
             }
     }
 }
+
 object AutoInitializeImpl : AutoInitialize<AutoInitializeImpl>()

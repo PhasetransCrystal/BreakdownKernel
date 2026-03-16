@@ -13,10 +13,6 @@ import static net.phasetranscrystal.breacore.api.registry.BreaRegistries.ELEMENT
 
 public class BreaElements {
 
-    static {
-        ELEMENTS.unfreeze(true);
-    }
-
     public static final Element H = createAndRegister(1, 0, -1, null, "Hydrogen", "H", false);
     public static final Element D = createAndRegister(1, 1, -1, "H", "Deuterium", "D", true);
     public static final Element T = createAndRegister(1, 2, -1, "D", "Tritium", "T", true);
@@ -142,6 +138,10 @@ public class BreaElements {
     public static final Element Lv = createAndRegister(116, 177, -1, null, "Livermorium", "Lv", false);
     public static final Element Ts = createAndRegister(117, 177, -1, null, "Tennessine", "Ts", false);
     public static final Element Og = createAndRegister(118, 176, -1, null, "Oganesson", "Og", false);
+
+    static {
+        ELEMENTS.unfreeze(true);
+    }
 
     public static Element createAndRegister(long protons, long neutrons, long halfLifeSeconds, String decayTo,
                                             String name, String symbol, boolean isIsotope) {

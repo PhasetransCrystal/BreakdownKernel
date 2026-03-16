@@ -1,9 +1,8 @@
 package net.phasetranscrystal.breacore.api;
 
-import net.phasetranscrystal.brealib.mixins.RegisterEventAccessor;
-
 import net.phasetranscrystal.breacore.api.material.registry.IMaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistry;
+import net.phasetranscrystal.breacore.mixins.RegisterEventAccessor;
 
 import net.minecraft.util.RandomSource;
 import net.neoforged.fml.ModLoader;
@@ -34,7 +33,7 @@ public class BreaApi {
     public static final int L = 144;
 
     public static final long CLIENT_TIME = 0;
-    public static final RandomSource RNG = RandomSource.createThreadSafe();
+    public static final RandomSource RNG = RandomSource.create();
 
     public static IMaterialRegistry materialManager;
 

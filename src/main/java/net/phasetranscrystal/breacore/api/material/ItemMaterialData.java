@@ -37,19 +37,31 @@ import java.util.function.Supplier;
 
 public class ItemMaterialData {
 
-    /** Used for custom material data for items that do not fall into the normal "prefix, material" pair */
+    /**
+     * Used for custom material data for items that do not fall into the normal "prefix, material" pair
+     */
     public static final Map<ItemLike, ItemMaterialInfo> ITEM_MATERIAL_INFO = new Object2ObjectOpenHashMap<>();
-    /** Mapping of an item to a "prefix, material" pair */
+    /**
+     * Mapping of an item to a "prefix, material" pair
+     */
     public static final List<Pair<Supplier<? extends ItemLike>, MaterialEntry>> ITEM_MATERIAL_ENTRY = new ArrayList<>();
     public static final Map<ItemLike, MaterialEntry> ITEM_MATERIAL_ENTRY_COLLECTED = new Object2ObjectOpenHashMap<>();
-    /** Mapping of a tag to a "prefix, material" pair */
+    /**
+     * Mapping of a tag to a "prefix, material" pair
+     */
     public static final Map<TagKey<Item>, MaterialEntry> TAG_MATERIAL_ENTRY = new Object2ObjectLinkedOpenHashMap<>();
-    /** Mapping of a fluid to a material */
+    /**
+     * Mapping of a fluid to a material
+     */
     public static final Map<Fluid, Material> FLUID_MATERIAL = new Object2ObjectOpenHashMap<>();
-    /** Mapping of all items that represent a "prefix, material" pair */
+    /**
+     * Mapping of all items that represent a "prefix, material" pair
+     */
     public static final Map<MaterialEntry, List<Supplier<? extends ItemLike>>> MATERIAL_ENTRY_ITEM_MAP = new Object2ObjectOpenHashMap<>();
     public static final Map<MaterialEntry, List<Supplier<? extends Block>>> MATERIAL_ENTRY_BLOCK_MAP = new Object2ObjectOpenHashMap<>();
-    /** Mapping of stone type blockState to "prefix, material" */
+    /**
+     * Mapping of stone type blockState to "prefix, material"
+     */
     public static final Map<Supplier<BlockState>, TagPrefix> ORES_INVERSE = new Object2ReferenceOpenHashMap<>();
 
     public static final Map<ItemStack, List<ItemStack>> UNRESOLVED_ITEM_MATERIAL_INFO = new Object2ObjectOpenCustomHashMap<>(

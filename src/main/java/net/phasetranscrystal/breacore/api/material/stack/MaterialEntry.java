@@ -13,33 +13,16 @@ import java.util.WeakHashMap;
 
 public record MaterialEntry(@NotNull TagPrefix tagPrefix, @NotNull Material material) {
 
+    public static final MaterialEntry NULL_ENTRY = new MaterialEntry(TagPrefix.NULL_PREFIX, BreaMaterials.NULL);
+    private static final Map<String, MaterialEntry> PARSE_CACHE = new WeakHashMap<>();
+
     public MaterialEntry {
         Preconditions.checkNotNull(tagPrefix, "MaterialEntry TagPrefix cannot be null!");
         Preconditions.checkNotNull(material, "MaterialEntry Material cannot be null!");
     }
 
-    public static final MaterialEntry NULL_ENTRY = new MaterialEntry(TagPrefix.NULL_PREFIX, BreaMaterials.NULL);
-
-    private static final Map<String, MaterialEntry> PARSE_CACHE = new WeakHashMap<>();
-
     public MaterialEntry(TagPrefix tagPrefix) {
         this(tagPrefix, BreaMaterials.NULL);
-    }
-
-    public boolean isEmpty() {
-        return this == NULL_ENTRY || material() == BreaMaterials.NULL || tagPrefix().isEmpty();
-    }
-
-    @Override
-    public String toString() {
-        if (tagPrefix.isEmpty()) {
-            return material.getIdentifier().toString();
-        }
-        var tags = tagPrefix.getItemTags(material);
-        if (tags.isEmpty()) {
-            return tagPrefix.name + "/" + material.getName();
-        }
-        return tags.getFirst().location().toString();
     }
 
     public static @Nullable MaterialEntry of(Object o) {
@@ -59,5 +42,21 @@ public record MaterialEntry(@NotNull TagPrefix tagPrefix, @NotNull Material mate
             }
         }
         return null;
+    }
+
+    public boolean isEmpty() {
+        return this == NULL_ENTRY || material() == BreaMaterials.NULL || tagPrefix().isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        if (tagPrefix.isEmpty()) {
+            return material.getIdentifier().toString();
+        }
+        var tags = tagPrefix.getItemTags(material);
+        if (tags.isEmpty()) {
+            return tagPrefix.name + "/" + material.getName();
+        }
+        return tags.getFirst().location().toString();
     }
 }

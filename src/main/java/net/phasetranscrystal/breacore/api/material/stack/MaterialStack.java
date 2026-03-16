@@ -47,20 +47,6 @@ public record MaterialStack(@NotNull Material material, long amount) {
     private static final Map<String, MaterialStack> PARSE_CACHE = new WeakHashMap<>();
 
     /**
-     * 创建此材料堆栈的副本。
-     * <p>
-     * 由于 {@code MaterialStack} 是不可变的，如果堆栈为空（由 {@link #isEmpty()} 定义），则此方法返回相同实例，
-     * 否则创建具有相同材料和数量的新实例。
-     * </p>
-     *
-     * @return 此材料堆栈的副本；如果为空，则可能是相同实例
-     */
-    public MaterialStack copy() {
-        if (isEmpty()) return EMPTY;
-        return new MaterialStack(material, amount);
-    }
-
-    /**
      * 将字符串表示解析为 {@code MaterialStack}。
      * <p>
      * 字符串格式可以是以下之一：
@@ -101,6 +87,20 @@ public record MaterialStack(@NotNull Material material, long amount) {
         cached = new MaterialStack(BreaMaterials.get(copy), count);
         PARSE_CACHE.put(trimmed, cached);
         return cached;
+    }
+
+    /**
+     * 创建此材料堆栈的副本。
+     * <p>
+     * 由于 {@code MaterialStack} 是不可变的，如果堆栈为空（由 {@link #isEmpty()} 定义），则此方法返回相同实例，
+     * 否则创建具有相同材料和数量的新实例。
+     * </p>
+     *
+     * @return 此材料堆栈的副本；如果为空，则可能是相同实例
+     */
+    public MaterialStack copy() {
+        if (isEmpty()) return EMPTY;
+        return new MaterialStack(material, amount);
     }
 
     /**

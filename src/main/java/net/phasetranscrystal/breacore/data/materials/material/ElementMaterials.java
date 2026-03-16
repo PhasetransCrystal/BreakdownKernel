@@ -788,7 +788,7 @@ public class ElementMaterials {
                 .buildAndRegister();
 
         Titanium = new MaterialBuilder(BreaLib.id("titanium")) // todo Ore? Look at EBF recipe here if we do Ti
-                                                               // ores
+                // ores
                 .ingot(3).fluid()
                 .color(0xed8eea).secondaryColor(0xff64bc).iconSet(DULL)
                 .appendFlags(EXT2_METAL, GENERATE_ROTOR, GENERATE_SMALL_GEAR, GENERATE_GEAR, GENERATE_FRAME)

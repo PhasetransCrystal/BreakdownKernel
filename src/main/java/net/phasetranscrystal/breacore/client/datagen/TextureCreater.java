@@ -24,13 +24,13 @@ import javax.imageio.ImageIO;
 
 public class TextureCreater {
 
+    private static ClassLoader loader;
+    private static DataGenerator dataGenerator;
+
     public static void init() {
         BreakdownCore.getModEventBus().addListener(EventPriority.HIGHEST, TextureCreater::onGatherData);
         loader = BreakdownCore.class.getClassLoader();
     }
-
-    private static ClassLoader loader;
-    private static DataGenerator dataGenerator;
 
     private static void onGatherData(GatherDataEvent.Client event) {
         dataGenerator = event.getGenerator();
@@ -79,9 +79,9 @@ public class TextureCreater {
                         int pixelBlue = pixel & 0xff;
 
                         // 混合颜色
-                        int blendedRed = (int) (pixelRed * tintRed) / 255;
-                        int blendedGreen = (int) (pixelGreen * tintGreen) / 255;
-                        int blendedBlue = (int) (pixelBlue * tintBlue) / 255;
+                        int blendedRed = (pixelRed * tintRed) / 255;
+                        int blendedGreen = (pixelGreen * tintGreen) / 255;
+                        int blendedBlue = (pixelBlue * tintBlue) / 255;
 
                         int blendedPixel = (pixelAlpha << 24) | (blendedRed << 16) | (blendedGreen << 8) | blendedBlue;
                         sourceData.setRGB(x, y, blendedPixel);

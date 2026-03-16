@@ -1,8 +1,9 @@
 package net.phasetranscrystal.breacore.api.registry;
 
 import net.phasetranscrystal.brealib.BreaLib;
-import net.phasetranscrystal.brealib.mixins.MappedRegistryAccess;
-import net.phasetranscrystal.brealib.mixins.ResourceKeyAccessor;
+
+import net.phasetranscrystal.breacore.mixins.MappedRegistryAccess;
+import net.phasetranscrystal.breacore.mixins.ResourceKeyAccessor;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
