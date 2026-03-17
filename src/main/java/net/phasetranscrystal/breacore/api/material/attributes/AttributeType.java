@@ -9,6 +9,8 @@ public class AttributeType<T extends MaterialAttribute> {
 
     public static final AttributeType<GeneralAttribute> GENERAL = new AttributeType<>("general", GeneralAttribute.class, GeneralAttribute::new);
     public static final AttributeType<FluidAttribute> FLUID = new AttributeType<>("fluid", FluidAttribute.class, FluidAttribute::new);
+    public static final AttributeType<IngotAttribute> INGOT = new AttributeType<>("ingot", IngotAttribute.class, IngotAttribute::new);
+    public static final AttributeType<GemAttribute> GEM = new AttributeType<>("gem", GemAttribute.class, GemAttribute::new);
     @SuppressWarnings("ClassEscapesDefinedScope")
     public static final AttributeType<PlaceholderAttribute> EMPTY = new AttributeType<>("empty", PlaceholderAttribute.class, PlaceholderAttribute::new);
     private final String key;
@@ -31,7 +33,7 @@ public class AttributeType<T extends MaterialAttribute> {
         return key;
     }
 
-    protected Optional<T> constructDefault() {
+    public Optional<T> constructDefault() {
         try {
             return Optional.ofNullable(defaultSupplier).map(Supplier::get);
         } catch (Exception e) {

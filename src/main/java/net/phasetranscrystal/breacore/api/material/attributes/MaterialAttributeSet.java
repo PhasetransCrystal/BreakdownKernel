@@ -44,9 +44,10 @@ public class MaterialAttributeSet {
             if (def.isEmpty())
                 def = value.createDependency(type);
             var dep = def.orElseThrow(() -> new IllegalArgumentException("Material Attribute " + key.toString() + " cannot be constructed!"));
-            attributeMap.put(key, dep);
+            attributeMap.put(type, dep);
             attributeMap.remove(AttributeType.EMPTY);
         }
+        attributeMap.put(key, value);
     }
 
     @Override

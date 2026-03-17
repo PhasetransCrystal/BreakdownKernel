@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.function.Function;
 
 public class Material implements Comparable<Material>, IMaterialExtension {
+
     @Getter
     @NotNull
     private final MaterialInfo materialInfo;
@@ -42,6 +43,7 @@ public class Material implements Comparable<Material>, IMaterialExtension {
     public Material(@NotNull MaterialInfo materialInfo, @NotNull MaterialAttributeSet attributeSet) {
         this.materialInfo = materialInfo;
         this.attributeSet = attributeSet;
+        verifyMaterial();
     }
 
     protected Material(Identifier identifier) {

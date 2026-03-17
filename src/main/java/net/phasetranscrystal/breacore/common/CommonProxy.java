@@ -17,6 +17,7 @@ import net.phasetranscrystal.breacore.data.items.BreaItems;
 import net.phasetranscrystal.breacore.data.machine.BreaMachines;
 import net.phasetranscrystal.breacore.data.materials.BreaElements;
 import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
+import net.phasetranscrystal.breacore.data.materials.MaterialVariants;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
 
 import net.neoforged.bus.api.SubscribeEvent;
@@ -43,6 +44,7 @@ public class CommonProxy {
     public static void init() {
         BreaElements.init();
         initMaterials();
+        MaterialVariants.init();
 
         BreaFluids.init();
         BreaCreativeModeTabs.init();
@@ -69,7 +71,7 @@ public class CommonProxy {
         managerInternal.unfreezeRegistries();
         BreakdownCore.LOGGER.info("Registering Materials");
         BreaMaterials.init();
-        managerInternal.setFallbackMaterial(BreakdownCore.MOD_ID, BreaMaterials.Aluminium);
+        managerInternal.setFallbackMaterial(BreakdownCore.MOD_ID, BreaMaterials.Actinium);
         BreakdownCore.LOGGER.info("Registering addon Materials");
         BreaApi.postRegisterEvent(BreaRegistries.MATERIALS);
         // Fire Post-Material event, intended for when Materials need to be iterated over in-full before freezing

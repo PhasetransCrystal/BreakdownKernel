@@ -8,8 +8,8 @@ import lombok.Getter;
 public enum MaterialIconLayer {
 
     BaseLayer("_base"),
-    OverlayLayer("_overlay"),
     SecondaryLayer("_secondary"),
+    OverlayLayer("_overlay"),
     MaskLayer("_mask"),
     DetailLayer("_detail"),
     FluidStillLayer("_fluid_still"),

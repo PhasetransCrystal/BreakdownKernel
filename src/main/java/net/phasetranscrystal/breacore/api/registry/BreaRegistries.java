@@ -27,7 +27,7 @@ public class BreaRegistries {
     public static final Identifier ROOT_REGISTRY_NAME = BreaLib.id("root");
     public static final BreaRegistry<BreaRegistry<?>> ROOT = new BreaRegistry<>(ROOT_REGISTRY_NAME);
     // TODO ResourceKey
-    public static final ResourceKey<Registry<Material>> MATERIAL_KEY = makeRegistryKey(BreaLib.id("oldmaterial"));
+    public static final ResourceKey<Registry<Material>> MATERIAL_KEY = makeRegistryKey(BreaLib.id("material"));
     public static final ResourceKey<Registry<Element>> ELEMENT_KEY = makeRegistryKey(BreaLib.id("element"));
     public static final BreaRegistry<Element> ELEMENTS = new BreaRegistry<>(ELEMENT_KEY);
     public static final MaterialRegistry MATERIALS = new MaterialRegistry(MATERIAL_KEY);
