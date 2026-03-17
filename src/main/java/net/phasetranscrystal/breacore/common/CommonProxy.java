@@ -11,18 +11,13 @@ import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
 import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
 import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
 import net.phasetranscrystal.breacore.data.datagen.BreaRegistrateDatagen;
-import net.phasetranscrystal.breacore.data.datagen.lang.MaterialLangGenerator;
 import net.phasetranscrystal.breacore.data.entity.BreaEntityTypes;
 import net.phasetranscrystal.breacore.data.fluids.BreaFluids;
 import net.phasetranscrystal.breacore.data.items.BreaItems;
 import net.phasetranscrystal.breacore.data.machine.BreaMachines;
 import net.phasetranscrystal.breacore.data.materials.BreaElements;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterialIconSet;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterialIconTypes;
 import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
-import net.phasetranscrystal.breacore.data.tagprefix.BreaTagPrefixes;
-import net.phasetranscrystal.breacore.mixins.AbstractRegistrateAccessor;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -33,14 +28,6 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-
-import com.google.common.collect.Multimaps;
-import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateLangProvider;
-import com.tterrag.registrate.providers.RegistrateProvider;
-import com.tterrag.registrate.util.nullness.NonNullConsumer;
-
-import java.util.List;
 
 public class CommonProxy {
 
@@ -55,10 +42,7 @@ public class CommonProxy {
 
     public static void init() {
         BreaElements.init();
-        BreaMaterialIconSet.init();
-        BreaMaterialIconTypes.init();
         initMaterials();
-        BreaTagPrefixes.init();
 
         BreaFluids.init();
         BreaCreativeModeTabs.init();
@@ -69,19 +53,13 @@ public class CommonProxy {
 
         BreaItems.init();
 
-        AddonFinder.getAddonList().forEach(IBreaAddon::breaInitComplete);
+        AddonFinder.getAddonList().forEach(IBreaAddon::initComplete);
 
         BreaRegistrateDatagen.init();
-        // Register all material manager registries, for materials with mod ids.
+        // Register all oldmaterial manager registries, for materials with mod ids.
         BreaApi.materialManager.getUsedNamespaces().forEach(namespace -> {
-            // Force the material lang generator to be at index 0, so that addons' lang generators can override it.
+            // Force the oldmaterial lang generator to be at index 0, so that addons' lang generators can override it.
             BreaRegistrate registrate = BreaRegistrate.createIgnoringListenerErrors(namespace);
-            AbstractRegistrateAccessor accessor = (AbstractRegistrateAccessor) registrate;
-            if (accessor.getDoDatagen().get()) {
-                List<NonNullConsumer<? extends RegistrateProvider>> providers = Multimaps.asMap(accessor.getDatagens()).get(ProviderType.LANG);
-                providers.addFirst((provider) -> MaterialLangGenerator.generate((RegistrateLangProvider) provider, namespace));
-            }
-
             ModList.get().getModContainerById(namespace).map(ModContainer::getEventBus).ifPresent(registrate::registerEventListeners);
         });
     }

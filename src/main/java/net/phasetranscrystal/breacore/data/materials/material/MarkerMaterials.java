@@ -1,6 +1,8 @@
-package net.phasetranscrystal.breacore.api.material;
+package net.phasetranscrystal.breacore.data.materials.material;
 
 import net.phasetranscrystal.brealib.BreaLib;
+
+import net.phasetranscrystal.breacore.api.material.MarkerMaterial;
 
 import net.minecraft.world.item.DyeColor;
 

@@ -9,5 +9,7 @@ public class BreaMachines {
         REGISTRATE.creativeModeTab(() -> MACHINE);
     }
 
-    public static void init() {}
+    public static void init() {
+        DebugMachines.init();
+    }
 }

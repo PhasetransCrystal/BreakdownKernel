@@ -1,11 +1,8 @@
-package net.phasetranscrystal.breacore.api.material.property;
+package net.phasetranscrystal.breacore.api.material.attributes;
 
 import lombok.Getter;
 
-/**
- * 材料的基本性质 如挖掘等级,燃烧时间
- */
-public class DustProperty implements IMaterialProperty {
+public class GeneralAttribute implements MaterialAttribute {
 
     /**
      * 采集此材料方块所需的工具等级。
@@ -14,7 +11,6 @@ public class DustProperty implements IMaterialProperty {
      */
     @Getter
     private int harvestLevel;
-
     /**
      * 此材料作为熔炉燃料时的燃烧时间。
      * 零或负值表示此材料不能用作燃料。
@@ -30,7 +26,7 @@ public class DustProperty implements IMaterialProperty {
      * @param harvestLevel 挖掘等级
      * @param burnTime     燃烧时间
      */
-    public DustProperty(int harvestLevel, int burnTime) {
+    public GeneralAttribute(int harvestLevel, int burnTime) {
         this.harvestLevel = harvestLevel;
         this.burnTime = burnTime;
     }
@@ -38,7 +34,7 @@ public class DustProperty implements IMaterialProperty {
     /**
      * 默认属性构造方法。
      */
-    public DustProperty() {
+    public GeneralAttribute() {
         this(2, 0);
     }
 
@@ -53,5 +49,7 @@ public class DustProperty implements IMaterialProperty {
     }
 
     @Override
-    public void verifyProperty(MaterialProperties properties) {}
+    public boolean canBeAddedTo(MaterialAttributeSet currentSet) {
+        return true;
+    }
 }
