@@ -54,6 +54,8 @@ public class MaterialVariant {
     private boolean generateItem;
     @Setter
     private boolean generateBlock;
+    @Setter
+    private boolean generateFluid;
     @Getter
     private BlockProperties blockProperties = new BlockProperties(UnaryOperator.identity());
     @Getter
@@ -128,6 +130,16 @@ public class MaterialVariant {
 
     public boolean doGenerateBlock(Material material) {
         return generateBlock && !isIgnored(material) &&
+                (generationCondition == null || generationCondition.test(material)) ||
+                hasItemTable() && this.itemTable.get() != null && getItemFromTable(material) != null;
+    }
+
+    public boolean doGenerateFluid() {
+        return generateFluid;
+    }
+
+    public boolean doGenerateFluid(Material material) {
+        return generateFluid && !isIgnored(material) &&
                 (generationCondition == null || generationCondition.test(material)) ||
                 hasItemTable() && this.itemTable.get() != null && getItemFromTable(material) != null;
     }

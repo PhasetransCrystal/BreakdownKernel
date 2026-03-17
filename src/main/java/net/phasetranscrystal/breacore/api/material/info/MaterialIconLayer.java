@@ -12,8 +12,8 @@ public enum MaterialIconLayer {
     OverlayLayer("_overlay"),
     MaskLayer("_mask"),
     DetailLayer("_detail"),
-    FluidStillLayer("_fluid_still"),
-    FluidFlowingLayer("_fluid_flowing");
+    FluidLayer("_fluid"),
+    ;
 
     @Getter
     private final String suffix;

@@ -18,6 +18,7 @@ public class MaterialVariants {
         hasGeneralAttribute(mat -> mat.hasAttribute(AttributeType.GENERAL)),
         hasIngotAttribute(mat -> mat.hasAttribute(AttributeType.INGOT)),
         hasGemAttribute(mat -> mat.hasAttribute(AttributeType.GEM)),
+        hasFluidAttribute(mat -> mat.hasAttribute(AttributeType.FLUID)),
         ;
 
         private final Predicate<Material> predicate;
@@ -59,6 +60,18 @@ public class MaterialVariants {
             .materialAmount(BreaApi.M * 9)
             .generateBlock(true)
             .generationCondition(material -> hasIngotAttribute.test(material) || hasGemAttribute.test(material));
+
+    public static final MaterialVariant liquid = new MaterialVariant("liquid")
+            .langValue("Liquid of %s")
+            .materialAmount(BreaApi.M)
+            .generateFluid(true)
+            .generationCondition(hasFluidAttribute);
+
+    public static final MaterialVariant melt = new MaterialVariant("melt")
+            .langValue("Melt of %s")
+            .materialAmount(BreaApi.M)
+            .generateFluid(true)
+            .generationCondition(hasFluidAttribute);
 
     public static void init() {
         AddonFinder.getAddonList().forEach(IBreaAddon::addMaterialVariant);

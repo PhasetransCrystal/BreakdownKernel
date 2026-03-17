@@ -22,7 +22,6 @@ import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
@@ -144,7 +143,7 @@ public class Material implements Comparable<Material>, IMaterialExtension {
     }
 
     public boolean hasFluidColor() {
-        return materialInfo.colors.containsKey(MaterialIconLayer.FluidStillLayer);
+        return materialInfo.colors.containsKey(MaterialIconLayer.FluidLayer);
     }
 
     public MaterialIconSet getMaterialIconSet() {
@@ -227,8 +226,6 @@ public class Material implements Comparable<Material>, IMaterialExtension {
 
     private MaterialResource defaultResource;
 
-    @Deprecated
-    @ApiStatus.Internal
     public MaterialResource computeDefaultResource(Function<Material, MaterialResource> resourceConstructor) {
         if (this.defaultResource == null) {
             this.defaultResource = (MaterialResource) resourceConstructor.apply(this);

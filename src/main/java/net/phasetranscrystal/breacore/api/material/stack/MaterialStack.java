@@ -262,8 +262,20 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         }
     }
 
+    public static boolean matches(MaterialStack a, @Nullable MaterialStackTemplate b) {
+        if (b == null) {
+            return a.isEmpty();
+        }
+
+        return a.amount() == b.amount() && isSameMaterialSameComponents(a, b);
+    }
+
     public static boolean isSameMaterial(MaterialStack first, MaterialStack second) {
         return first.is(second.getMaterial());
+    }
+
+    public static boolean isSameMaterial(MaterialStack a, MaterialStackTemplate b) {
+        return b == null ? a.isEmpty() : a.is(b.material());
     }
 
     /**
@@ -276,6 +288,14 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
             return false;
         } else {
             return first.isEmpty() && second.isEmpty() ? true : Objects.equals(first.components, second.components);
+        }
+    }
+
+    public static boolean isSameMaterialSameComponents(MaterialStack a, MaterialStackTemplate b) {
+        if (a.isEmpty() || b == null) {
+            return a.isEmpty() == (b == null);
+        } else {
+            return a.is(b.material()) && a.components.patchEquals(b.components());
         }
     }
 

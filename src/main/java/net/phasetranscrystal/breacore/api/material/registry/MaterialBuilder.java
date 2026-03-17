@@ -52,12 +52,14 @@ public class MaterialBuilder implements IMaterialBuilderExtension {
         return attributeSet.hasAttribute(key);
     }
 
-    public <T extends MaterialAttribute> void setAttribute(AttributeType<T> key, T value) {
+    public <T extends MaterialAttribute> MaterialBuilder setAttribute(AttributeType<T> key, T value) {
         attributeSet.setAttribute(key, value);
+        return this;
     }
 
-    public <T extends MaterialAttribute> void addAttribute(AttributeType<T> key) {
+    public <T extends MaterialAttribute> MaterialBuilder addAttribute(AttributeType<T> key) {
         attributeSet.setAttribute(key, key.constructDefault().orElseThrow(() -> new IllegalArgumentException("attribute \"" + key + "\" do not have default constructor!")));
+        return this;
     }
 
     public MaterialBuilder color(int color) {
