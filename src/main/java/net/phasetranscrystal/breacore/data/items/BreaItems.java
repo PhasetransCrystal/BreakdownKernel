@@ -4,6 +4,5 @@ public class BreaItems {
 
     public static void init() {
         DebugItems.init();
-        MaterialItems.init();
     }
 }

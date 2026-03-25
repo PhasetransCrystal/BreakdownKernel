@@ -1,38 +1,39 @@
 package net.phasetranscrystal.breacore.api.material.registry;
 
+import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.attributes.AttributeType;
 import net.phasetranscrystal.breacore.api.material.attributes.GeneralAttribute;
 
 public interface IMaterialBuilderExtension {
 
-    private MaterialBuilder self() {
-        return (MaterialBuilder) this;
+    private Material.Builder self() {
+        return (Material.Builder) this;
     }
 
-    default MaterialBuilder dust() {
+    default Material.Builder dust() {
         self().addAttribute(AttributeType.GENERAL);
         return self();
     }
 
-    default MaterialBuilder dust(int harvestLevel) {
+    default Material.Builder dust(int harvestLevel) {
         return dust(harvestLevel, 0);
     }
 
-    default MaterialBuilder dust(int harvestLevel, int burnTime) {
+    default Material.Builder dust(int harvestLevel, int burnTime) {
         self().setAttribute(AttributeType.GENERAL, new GeneralAttribute(harvestLevel, burnTime));
         return self();
     }
 
-    default MaterialBuilder ingot() {
+    default Material.Builder ingot() {
         self().addAttribute(AttributeType.INGOT);
         return self();
     }
 
-    default MaterialBuilder ingot(int harvestLevel) {
+    default Material.Builder ingot(int harvestLevel) {
         return ingot(harvestLevel, 0);
     }
 
-    default MaterialBuilder ingot(int harvestLevel, int burnTime) {
+    default Material.Builder ingot(int harvestLevel, int burnTime) {
         var general = self().getAttribute(AttributeType.GENERAL);
         if (general == null) dust(harvestLevel, burnTime);
         else {
@@ -43,16 +44,16 @@ public interface IMaterialBuilderExtension {
         return self();
     }
 
-    default MaterialBuilder gem() {
+    default Material.Builder gem() {
         self().addAttribute(AttributeType.GEM);
         return self();
     }
 
-    default MaterialBuilder gem(int harvestLevel) {
+    default Material.Builder gem(int harvestLevel) {
         return gem(harvestLevel, 0);
     }
 
-    default MaterialBuilder gem(int harvestLevel, int burnTime) {
+    default Material.Builder gem(int harvestLevel, int burnTime) {
         var general = self().getAttribute(AttributeType.GENERAL);
         if (general == null) dust(harvestLevel, burnTime);
         else {

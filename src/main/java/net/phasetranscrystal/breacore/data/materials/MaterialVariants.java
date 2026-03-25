@@ -3,75 +3,46 @@ package net.phasetranscrystal.breacore.data.materials;
 import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.addon.AddonFinder;
 import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
-import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.material.attributes.AttributeType;
-import net.phasetranscrystal.breacore.api.material.variants.MaterialVariant;
+import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 
-import java.util.function.Predicate;
-
-import static net.phasetranscrystal.breacore.data.materials.MaterialVariants.Conditions.*;
+import static net.phasetranscrystal.breacore.api.material.register.RegisterActions.GeneralItem;
+import static net.phasetranscrystal.breacore.api.material.register.RegisterConditions.*;
 
 public class MaterialVariants {
 
-    public enum Conditions implements Predicate<Material> {
-
-        hasGeneralAttribute(mat -> mat.hasAttribute(AttributeType.GENERAL)),
-        hasIngotAttribute(mat -> mat.hasAttribute(AttributeType.INGOT)),
-        hasGemAttribute(mat -> mat.hasAttribute(AttributeType.GEM)),
-        hasFluidAttribute(mat -> mat.hasAttribute(AttributeType.FLUID)),
-        ;
-
-        private final Predicate<Material> predicate;
-
-        Conditions(Predicate<Material> predicate) {
-            this.predicate = predicate;
-        }
-
-        @Override
-        public boolean test(Material material) {
-            return predicate.test(material);
-        }
-    }
-
     public static final MaterialVariant ingot = new MaterialVariant("ingot")
             .materialAmount(BreaApi.M)
-            .generateItem(true)
-            .generationCondition(hasIngotAttribute);
+            .addCondition(GenerateIngot)
+            .addAction(GeneralItem);
     public static final MaterialVariant gem = new MaterialVariant("gem")
             .langValue("%s")
             .materialAmount(BreaApi.M)
-            .generateItem(true)
-            .generationCondition(hasGemAttribute);
+            .addCondition(GenerateGem)
+            .addAction(GeneralItem);
     public static final MaterialVariant nugget = new MaterialVariant("nugget")
             .materialAmount(BreaApi.M / 9)
-            .generateItem(true)
-            .generationCondition(hasIngotAttribute);
+            .addCondition(GenerateIngot)
+            .addAction(GeneralItem);
 
     public static final MaterialVariant dust = new MaterialVariant("dust")
             .materialAmount(BreaApi.M)
-            .generateItem(true)
-            .generationCondition(hasGeneralAttribute);
+            .addCondition(GenerateDust)
+            .addAction(GeneralItem);
 
     public static final MaterialVariant dye = new MaterialVariant("dye")
             .materialAmount(-1);
 
     public static final MaterialVariant block = new MaterialVariant("block")
             .langValue("Block of %s")
-            .materialAmount(BreaApi.M * 9)
-            .generateBlock(true)
-            .generationCondition(material -> hasIngotAttribute.test(material) || hasGemAttribute.test(material));
+            .materialAmount(BreaApi.M * 9);
 
     public static final MaterialVariant liquid = new MaterialVariant("liquid")
             .langValue("Liquid of %s")
-            .materialAmount(BreaApi.M)
-            .generateFluid(true)
-            .generationCondition(hasFluidAttribute);
+            .materialAmount(BreaApi.M);
 
     public static final MaterialVariant melt = new MaterialVariant("melt")
             .langValue("Melt of %s")
-            .materialAmount(BreaApi.M)
-            .generateFluid(true)
-            .generationCondition(hasFluidAttribute);
+            .materialAmount(BreaApi.M);
 
     public static void init() {
         AddonFinder.getAddonList().forEach(IBreaAddon::addMaterialVariant);

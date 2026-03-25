@@ -13,6 +13,5 @@ public class BreaBlocks {
 
     public static void init() {
         DebugBlocks.init();
-        BreaMaterialBlocks.init();
     }
 }

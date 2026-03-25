@@ -2,9 +2,9 @@ package net.phasetranscrystal.breacore.data.materials.material;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.attributes.AttributeType;
 import net.phasetranscrystal.breacore.api.material.attributes.FluidAttribute;
-import net.phasetranscrystal.breacore.api.material.registry.MaterialBuilder;
 
 import static net.phasetranscrystal.breacore.api.material.info.MaterialIconSet.*;
 import static net.phasetranscrystal.breacore.data.materials.BreaElements.*;
@@ -13,10 +13,15 @@ import static net.phasetranscrystal.breacore.data.materials.BreaMaterials.*;
 public class ElementMaterials {
 
     public static void register() {
-        Actinium = new MaterialBuilder(BreaLib.id("actinium"))
+        Actinium = new Material.Builder(BreaLib.id("actinium"))
                 .color(0xC3D1FF).secondaryColor(0x397090).iconSet(DEFAULT)
                 .element(Ac)
                 .setAttribute(AttributeType.FLUID, new FluidAttribute(true, true))
+                .buildAndRegister();
+        Aluminium = new Material.Builder(BreaLib.id("aluminium"))
+                .ingot()
+                .color(0x7db9d8).secondaryColor(0x756ac9c)
+                .element(Al)
                 .buildAndRegister();
         /*
          * Aluminium = new MaterialBuilder(BreaLib.id("aluminium"))

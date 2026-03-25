@@ -1,7 +1,7 @@
 package net.phasetranscrystal.breacore.api.fluid;
 
 import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.material.variants.MaterialVariant;
+import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +9,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
 import lombok.Getter;
