@@ -1,14 +1,5 @@
 package net.phasetranscrystal.breacore.common;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.phasetranscrystal.breacore.BreakdownCore;
 import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.addon.AddonFinder;
@@ -28,6 +19,16 @@ import net.phasetranscrystal.breacore.data.materials.BreaElements;
 import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 import net.phasetranscrystal.breacore.data.materials.MaterialVariants;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
+
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 public class CommonProxy {
 

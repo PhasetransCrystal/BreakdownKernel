@@ -10,7 +10,7 @@ import java.util.Map;
 public class MaterialIconSet {
 
     public static final Map<String, MaterialIconSet> ICON_SETS = new HashMap<>();
-    public static final MaterialIconSet DEFAULT = new MaterialIconSet("default",null,true);
+    public static final MaterialIconSet DEFAULT = new MaterialIconSet("default", null, true);
     public static final MaterialIconSet FLUID = new MaterialIconSet("fluid", DEFAULT);
 
     private static int idCounter = 0;

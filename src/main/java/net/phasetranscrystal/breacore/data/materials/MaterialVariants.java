@@ -55,6 +55,5 @@ public class MaterialVariants {
 
     public static void init() {
         AddonFinder.getAddonList().forEach(IBreaAddon::addMaterialVariant);
-
     }
 }

@@ -1,5 +1,14 @@
 package net.phasetranscrystal.breacore.api.material.register;
 
+import net.phasetranscrystal.brealib.util.FormattingUtil;
+
+import net.phasetranscrystal.breacore.api.material.Material;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.CreativeModeTab;
+
 import com.lowdragmc.lowdraglib2.utils.LocalizationUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -7,12 +16,6 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.CreativeModeTab;
-import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
-import net.phasetranscrystal.brealib.util.FormattingUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
