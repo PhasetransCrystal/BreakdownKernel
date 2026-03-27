@@ -8,6 +8,8 @@ import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
+import net.phasetranscrystal.breacore.common.eventdispatch.EntityEventPublisher;
+import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
 import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
 import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
 import net.phasetranscrystal.breacore.data.datagen.BreaRegistrateDatagen;
@@ -54,6 +56,8 @@ public class CommonProxy {
     }
 
     public static void init() {
+        AttachmentTypeRegistry.bootstrap();
+
         BreaElements.init();
         BreaMaterialIconSet.init();
         BreaMaterialIconTypes.init();
@@ -84,6 +88,8 @@ public class CommonProxy {
 
             ModList.get().getModContainerById(namespace).map(ModContainer::getEventBus).ifPresent(registrate::registerEventListeners);
         });
+
+        EntityEventPublisher.bootstrap();
     }
 
     private static void initMaterials() {
