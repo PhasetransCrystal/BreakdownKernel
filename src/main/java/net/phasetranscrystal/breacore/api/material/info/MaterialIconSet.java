@@ -10,7 +10,7 @@ import java.util.Map;
 public class MaterialIconSet {
 
     public static final Map<String, MaterialIconSet> ICON_SETS = new HashMap<>();
-    public static final MaterialIconSet DEFAULT = new MaterialIconSet("default");
+    public static final MaterialIconSet DEFAULT = new MaterialIconSet("default",null,true);
     public static final MaterialIconSet FLUID = new MaterialIconSet("fluid", DEFAULT);
 
     private static int idCounter = 0;
@@ -28,17 +28,17 @@ public class MaterialIconSet {
         this(name, MaterialIconSet.DEFAULT);
     }
 
-    public MaterialIconSet(String name, MaterialIconSet parentIconset) {
-        this(name, parentIconset, false);
+    public MaterialIconSet(String name, MaterialIconSet parentIconSet) {
+        this(name, parentIconSet, false);
     }
 
-    private MaterialIconSet(String name, MaterialIconSet parentIconset, boolean isRootIconset) {
+    private MaterialIconSet(String name, MaterialIconSet parentIconSet, boolean isRootIconSet) {
         this.name = name.toLowerCase(Locale.ENGLISH);
         Preconditions.checkArgument(!ICON_SETS.containsKey(this.name),
                 "MaterialIconSet " + this.name + " 已注册！");
         this.id = idCounter++;
-        this.isRootIconset = isRootIconset;
-        this.parentIconset = parentIconset;
+        this.isRootIconset = isRootIconSet;
+        this.parentIconset = parentIconSet;
         ICON_SETS.put(name, this);
     }
 

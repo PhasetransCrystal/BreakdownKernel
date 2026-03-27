@@ -4,6 +4,5 @@ import net.phasetranscrystal.breacore.api.material.Material;
 
 @FunctionalInterface
 public interface RegisterCondition {
-
-    boolean doGenerator(Material material);
+    void validate(Material material) throws IllegalArgumentException;
 }

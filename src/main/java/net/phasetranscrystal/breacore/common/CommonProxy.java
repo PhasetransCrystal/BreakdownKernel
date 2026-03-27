@@ -1,11 +1,19 @@
 package net.phasetranscrystal.breacore.common;
 
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.phasetranscrystal.breacore.BreakdownCore;
 import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.addon.AddonFinder;
 import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
 import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
-import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
@@ -20,18 +28,6 @@ import net.phasetranscrystal.breacore.data.materials.BreaElements;
 import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 import net.phasetranscrystal.breacore.data.materials.MaterialVariants;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
-
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-
-import static net.phasetranscrystal.breacore.common.registry.BreaRegistration.REGISTRATE;
 
 public class CommonProxy {
 
@@ -85,12 +81,6 @@ public class CommonProxy {
         managerInternal.freezeRegistries();
         /* End Material Registration */
         MaterialVariants.init();
-        REGISTRATE.creativeModeTab(() -> BreaCreativeModeTabs.MATERIAL_ITEM);
-        for (var material : managerInternal) {
-            for (var variant : MaterialVariant.values()) {
-                variant.register(REGISTRATE, material);
-            }
-        }
     }
 
     @SubscribeEvent

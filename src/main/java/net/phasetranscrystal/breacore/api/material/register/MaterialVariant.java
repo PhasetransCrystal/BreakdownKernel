@@ -1,22 +1,22 @@
 package net.phasetranscrystal.breacore.api.material.register;
 
-import net.phasetranscrystal.brealib.util.FormattingUtil;
-
-import net.phasetranscrystal.breacore.api.material.Material;
-
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-
 import com.lowdragmc.lowdraglib2.utils.LocalizationUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.CreativeModeTab;
+import net.phasetranscrystal.breacore.api.material.Material;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
+import net.phasetranscrystal.brealib.util.FormattingUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 @Accessors(chain = true, fluent = true)
 public class MaterialVariant {
@@ -48,6 +48,9 @@ public class MaterialVariant {
     @Getter
     @Setter
     private int maxStackSize = 64;
+    @Getter
+    @Setter
+    private Supplier<RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> itemCreativeTab;
     private final List<RegisterAction> registerActionList = new ArrayList<>();
     private final List<RegisterCondition> registerConditionList = new ArrayList<>();
 
@@ -99,13 +102,13 @@ public class MaterialVariant {
         return this;
     }
 
-    public void register(AbstractRegistrate<?> registrate, Material material) {
+    public void register(BreaRegistrate registrate, Material material) throws IllegalArgumentException {
         if (!registerConditionList.isEmpty()) {
             for (RegisterCondition condition : registerConditionList) {
-                if (!condition.doGenerator(material))
-                    return;
+                condition.validate(material);
             }
         }
+        registrate.creativeModeTab(itemCreativeTab.get());
         for (RegisterAction action : registerActionList) {
             action.register(registrate, this, material);
         }
