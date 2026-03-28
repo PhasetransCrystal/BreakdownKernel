@@ -3,7 +3,13 @@
   "minVersion": "0.8",
   "package": "net.phasetranscrystal.breacore.mixins",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "net.phasetranscrystal.breacore.mixins.BreaMixinPlugin",
   "mixins": [
+    "AbstractRegistrateAccessor",
+    "BlockPropertiesAccessor",
+    "MappedRegistryAccess",
+    "RegisterEventAccessor",
+    "ResourceKeyAccessor"
   ],
   "client": [
   ],

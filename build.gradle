@@ -10,7 +10,7 @@ plugins {
 }
 
 allprojects {
-    group = 'com.phasetranscrystal'
+    group = 'net.phasetranscrystal'
 }
 
 version = mod_version

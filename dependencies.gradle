@@ -3,6 +3,7 @@ dependencies {
 
     jarJar(api("dev:registrate:1.5.0-beta"))
     jarJar(api(project(":BreaLib")))
+    implementation("dev:ldlib2-neoforge:26.1.0.0-alpha-26.0.0")
 
     // JUnit 5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
