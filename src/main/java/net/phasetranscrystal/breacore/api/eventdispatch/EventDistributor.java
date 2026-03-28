@@ -43,18 +43,18 @@ public class EventDistributor {
     public <T extends Event> boolean post(T event) {
         Class<? extends Event> eventType = event.getClass();
 
+        List<EventConsumer<?>> consumers = byType.get(eventType);
+
+        if (consumers == null || consumers.isEmpty()) {
+            return false;
+        }
+
         int hashCode = System.identityHashCode(event);
         Integer recent = recentHashcodes.get(eventType);
         if (recent != null && recent == hashCode) {
             return false;
         }
         recentHashcodes.put(eventType, hashCode);
-
-        List<EventConsumer<?>> consumers = byType.get(eventType);
-
-        if (consumers == null || consumers.isEmpty()) {
-            return false;
-        }
 
         consumers = List.copyOf(consumers);
 

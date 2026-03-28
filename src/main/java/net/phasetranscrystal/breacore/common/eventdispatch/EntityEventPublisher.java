@@ -187,49 +187,49 @@ public final class EntityEventPublisher {
     }
 
 
-    @TestOnly
-    @SubscribeEvent
-    public static void onGather(GatherEntityDistributeEvent event) {
-        Entity entity = event.getEntity();
-
-        if (entity instanceof Player player) {
-            // 注册右键物品监听
-            EventConsumer<PlayerInteractEvent.RightClickItem> useItem = EventConsumer.of(
-                    PlayerInteractEvent.RightClickItem.class,
-                    new Identifier[]{
-                            Identifier.fromNamespaceAndPath("mymod", "player_interact"),
-                            Identifier.fromNamespaceAndPath("mymod", "using")
-                    },
-                    false,
-                    (e, self) -> {
-                        player.sendSystemMessage(Component.literal("使用了物品"));
-                        self.removeFrom(player);
-                    }
-            );
-            EventDispatcher.attach(player, useItem);
-
-            EventDispatcher.attach(
-                    player,
-                    AttackEntityEvent.class,
-                    false,
-                    (e, self) -> {
-                        player.sendSystemMessage(Component.literal("造成伤害!"));
-                    },
-                    Identifier.fromNamespaceAndPath("mymod", "combat/damage"),
-                    Identifier.fromNamespaceAndPath("doing", "damage")
-            );
-
-            // 注册伤害监听（使用便捷方法）
-            EventDispatcher.attach(
-                    player,
-                    LivingDamageEvent.Post.class,
-                    false,
-                    (e, self) -> {
-                        player.sendSystemMessage(Component.literal("受到伤害: " + e.getNewDamage()));
-                        EventDispatcher.get(player).detachSubtree(Identifier.fromNamespaceAndPath("mymod", "combat/damage"));
-                    },
-                    Identifier.fromNamespaceAndPath("mymod", "combat/damage")
-            );
-        }
-    }
+//    @TestOnly
+//    @SubscribeEvent
+//    public static void onGather(GatherEntityDistributeEvent event) {
+//        Entity entity = event.getEntity();
+//
+//        if (entity instanceof Player player) {
+//            // 注册右键物品监听
+//            EventConsumer<PlayerInteractEvent.RightClickItem> useItem = EventConsumer.of(
+//                    PlayerInteractEvent.RightClickItem.class,
+//                    new Identifier[]{
+//                            Identifier.fromNamespaceAndPath("mymod", "player_interact"),
+//                            Identifier.fromNamespaceAndPath("mymod", "using")
+//                    },
+//                    false,
+//                    (e, self) -> {
+//                        player.sendSystemMessage(Component.literal("使用了物品"));
+//                        self.removeFrom(player);
+//                    }
+//            );
+//            EventDispatcher.attach(player, useItem);
+//
+//            EventDispatcher.attach(
+//                    player,
+//                    AttackEntityEvent.class,
+//                    false,
+//                    (e, self) -> {
+//                        player.sendSystemMessage(Component.literal("造成伤害!"));
+//                    },
+//                    Identifier.fromNamespaceAndPath("mymod", "combat/damage"),
+//                    Identifier.fromNamespaceAndPath("doing", "damage")
+//            );
+//
+//            // 注册伤害监听（使用便捷方法）
+//            EventDispatcher.attach(
+//                    player,
+//                    LivingDamageEvent.Post.class,
+//                    false,
+//                    (e, self) -> {
+//                        player.sendSystemMessage(Component.literal("受到伤害: " + e.getNewDamage()));
+//                        EventDispatcher.get(player).detachSubtree(Identifier.fromNamespaceAndPath("mymod", "combat/damage"));
+//                    },
+//                    Identifier.fromNamespaceAndPath("mymod", "combat/damage")
+//            );
+//        }
+//    }
 }
