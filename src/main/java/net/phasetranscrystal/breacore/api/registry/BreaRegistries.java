@@ -1,5 +1,6 @@
 package net.phasetranscrystal.breacore.api.registry;
 
+import net.phasetranscrystal.breacore.api.perk.Perk;
 import net.phasetranscrystal.brealib.BreaLib;
 
 import net.phasetranscrystal.breacore.api.material.Element;
@@ -34,6 +35,9 @@ public class BreaRegistries {
 
     public static final ResourceKey<Registry<SoundEntry>> SOUND_KEY = makeRegistryKey(BreaLib.id("sound"));
     public static final BreaRegistry<SoundEntry> SOUNDS = new BreaRegistry<>(SOUND_KEY);
+
+    public static final ResourceKey<Registry<Perk>> PERK_KEY = makeRegistryKey(BreaLib.id("perk"));
+    public static final BreaRegistry<Perk> PERKS = new BreaRegistry<>(PERK_KEY);
 
     public static <T> ResourceKey<Registry<T>> makeRegistryKey(Identifier registryId) {
         return ResourceKey.createRegistryKey(registryId);
