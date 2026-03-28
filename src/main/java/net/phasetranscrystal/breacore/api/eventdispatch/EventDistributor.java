@@ -10,13 +10,15 @@ import java.util.function.BiConsumer;
 /**
  * 实体事件分发器附件。
  *
- * <p>存储在实体上，管理该实体的所有事件消费器。
+ * <p>
+ * 存储在实体上，管理该实体的所有事件消费器。
  *
- * <p><b>数据结构：</b>
+ * <p>
+ * <b>数据结构：</b>
  * <ul>
- *   <li>树结构 ({@link EventTree})：用于路径批量操作</li>
- *   <li>类型索引 ({@link Map})：用于按事件类型快速查找</li>
- *   <li>去重缓存：防止同一事件实例被重复处理</li>
+ * <li>树结构 ({@link EventTree})：用于路径批量操作</li>
+ * <li>类型索引 ({@link Map})：用于按事件类型快速查找</li>
+ * <li>去重缓存：防止同一事件实例被重复处理</li>
  * </ul>
  *
  * @see EventConsumer 事件消费器
@@ -31,10 +33,12 @@ public class EventDistributor {
     /**
      * 分发事件给所有已注册的消费器。
      *
-     * <p>按附加顺序执行匹配事件类型的消费器。
+     * <p>
+     * 按附加顺序执行匹配事件类型的消费器。
      * 每个消费器执行后检查事件是否被取消，决定是否继续执行。
      *
-     * <p>同一事件实例（相同 hashcode）不会被重复处理。
+     * <p>
+     * 同一事件实例（相同 hashcode）不会被重复处理。
      *
      * @param event 事件实例
      * @return 是否有消费器被执行
@@ -80,7 +84,8 @@ public class EventDistributor {
     /**
      * 附加消费器到实体。
      *
-     * <p>同步更新树结构和类型索引。
+     * <p>
+     * 同步更新树结构和类型索引。
      *
      * @param consumer 消费器
      */
@@ -92,26 +97,27 @@ public class EventDistributor {
     /**
      * 附加消费器到实体的便捷方法。
      *
-     * <p>自动创建消费器实例并附加到实体。
+     * <p>
+     * 自动创建消费器实例并附加到实体。
      *
-     * @param eventType  事件类型
+     * @param eventType        事件类型
      * @param runWhenCancelled 事件取消时是否执行
-     * @param handler   处理逻辑
-     * @param path      路径数组
+     * @param handler          处理逻辑
+     * @param path             路径数组
      */
     public <T extends Event> void attachConsumer(
-            Class<T> eventType,
-            boolean runWhenCancelled,
-            BiConsumer<T, EventConsumer<T>> handler,
-            Identifier... path
-    ) {
+                                                 Class<T> eventType,
+                                                 boolean runWhenCancelled,
+                                                 BiConsumer<T, EventConsumer<T>> handler,
+                                                 Identifier... path) {
         attachConsumer(EventConsumer.of(eventType, path, runWhenCancelled, handler));
     }
 
     /**
      * 从实体身上移除指定消费器。
      *
-     * <p>同时从树结构和类型索引中移除。
+     * <p>
+     * 同时从树结构和类型索引中移除。
      *
      * @param consumer 要移除的消费器
      * @return 是否成功移除

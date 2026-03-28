@@ -1,25 +1,29 @@
 package net.phasetranscrystal.breacore.api.eventdispatch;
 
-import com.google.common.collect.Lists;
 import net.minecraft.resources.Identifier;
+
+import com.google.common.collect.Lists;
 
 import java.util.*;
 
 /**
  * 泛用树结构，用于按路径存储和检索元素。
  *
- * <p>使用非递归实现避免栈溢出问题。
+ * <p>
+ * 使用非递归实现避免栈溢出问题。
  *
  * @param <T> 存储的元素类型
  */
 public class EventTree<T> {
+
     private final Map<Identifier, EventTree<T>> children = new LinkedHashMap<>();
     private final List<T> values = new ArrayList<>();
 
     /**
      * 在指定路径插入值。
      *
-     * <p>路径为空时直接添加到根节点。
+     * <p>
+     * 路径为空时直接添加到根节点。
      *
      * @param path  路径数组
      * @param value 要插入的值
@@ -41,7 +45,8 @@ public class EventTree<T> {
     /**
      * 精确路径移除：移除指定路径叶子节点上的所有值。
      *
-     * <p>移除该路径下的全部元素，并清理空节点。
+     * <p>
+     * 移除该路径下的全部元素，并清理空节点。
      *
      * @param path 路径数组
      * @return 被删除的值列表

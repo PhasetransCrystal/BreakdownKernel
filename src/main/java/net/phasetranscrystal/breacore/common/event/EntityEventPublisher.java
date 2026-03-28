@@ -1,9 +1,13 @@
-package net.phasetranscrystal.breacore.common.eventdispatch;
+package net.phasetranscrystal.breacore.common.event;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.event.EntityAttackEvent;
+import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
+import net.phasetranscrystal.breacore.api.event.GatherEntityDistributeEvent;
+import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
+import net.phasetranscrystal.breacore.api.eventdispatch.IEntityAboutEvent;
+
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -15,14 +19,6 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.phasetranscrystal.breacore.BreakdownCore;
-import net.phasetranscrystal.breacore.api.event.EntityAttackEvent;
-import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
-import net.phasetranscrystal.breacore.api.event.GatherEntityDistributeEvent;
-import net.phasetranscrystal.breacore.api.eventdispatch.EventConsumer;
-import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
-import net.phasetranscrystal.breacore.api.eventdispatch.IEntityAboutEvent;
-import org.jetbrains.annotations.TestOnly;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,13 +27,15 @@ import java.util.function.Function;
 /**
  * 实体事件发布器。
  *
- * <p>负责监听全局事件总线并将其转发到相关实体的 {@link net.phasetranscrystal.breacore.api.eventdispatch.EventDistributor}。
+ * <p>
+ * 负责监听全局事件总线并将其转发到相关实体的 {@link net.phasetranscrystal.breacore.api.eventdispatch.EventDistributor}。
  *
- * <p><b>转发类型：</b>
+ * <p>
+ * <b>转发类型：</b>
  * <ul>
- *   <li>直接转发：事件直接关联到实体（如 {@link EntityJoinLevelEvent}）</li>
- *   <li>实体提取转发：需要从事件中提取相关实体（如 {@link UseItemOnBlockEvent}）</li>
- *   <li>自定义事件转发：创建适配事件并转发到多个实体（如攻击、击杀事件）</li>
+ * <li>直接转发：事件直接关联到实体（如 {@link EntityJoinLevelEvent}）</li>
+ * <li>实体提取转发：需要从事件中提取相关实体（如 {@link UseItemOnBlockEvent}）</li>
+ * <li>自定义事件转发：创建适配事件并转发到多个实体（如攻击、击杀事件）</li>
  * </ul>
  */
 @EventBusSubscriber(modid = BreakdownCore.MOD_ID)
@@ -48,7 +46,8 @@ public final class EntityEventPublisher {
     /**
      * 初始化事件发布器。
      *
-     * <p>应在 mod 初始化时调用。
+     * <p>
+     * 应在 mod 初始化时调用。
      */
     public static void bootstrap() {
         addEntityEventListener(EntityJoinLevelEvent.class);
@@ -75,7 +74,7 @@ public final class EntityEventPublisher {
         addEntityEventListener(MobEffectEvent.Expired.class);
         addEntityEventListener(MobEffectEvent.Remove.class);
 
-        addEntityExtractedListener(AttackEntityEvent.class, e -> List.of(e.getEntity(),e.getTarget()));
+        addEntityExtractedListener(AttackEntityEvent.class, e -> List.of(e.getEntity(), e.getTarget()));
         addEntityExtractedListener(ItemEntityPickupEvent.Pre.class, e -> List.of(e.getPlayer(), e.getItemEntity()));
         addEntityExtractedListener(ItemEntityPickupEvent.Post.class, e -> List.of(e.getPlayer(), e.getItemEntity()));
         addEntityExtractedListener(PlayerInteractEvent.EntityInteractSpecific.class, e -> List.of(e.getEntity(), e.getTarget()));
@@ -114,13 +113,11 @@ public final class EntityEventPublisher {
         boolean cancelFlag = false;
         if (event.getSource().getEntity() != null) {
             cancelFlag = NeoForge.EVENT_BUS.post(
-                    new EntityAttackEvent.Income(event.getSource().getEntity(), event, false)
-            ).isCanceled();
+                    new EntityAttackEvent.Income(event.getSource().getEntity(), event, false)).isCanceled();
         }
         if (!event.getSource().isDirect() && event.getSource().getDirectEntity() != null) {
             cancelFlag = NeoForge.EVENT_BUS.post(
-                    new EntityAttackEvent.Income(event.getSource().getDirectEntity(), event, true)
-            ).isCanceled() || cancelFlag;
+                    new EntityAttackEvent.Income(event.getSource().getDirectEntity(), event, true)).isCanceled() || cancelFlag;
         }
         event.setCanceled(cancelFlag);
     }
@@ -176,9 +173,8 @@ public final class EntityEventPublisher {
     }
 
     public static <T extends Event> void addEntityExtractedListener(
-            Class<T> eventType,
-            Function<T, java.util.List<Entity>> extractor
-    ) {
+                                                                    Class<T> eventType,
+                                                                    Function<T, java.util.List<Entity>> extractor) {
         NeoForge.EVENT_BUS.addListener(eventType, event -> {
             for (Entity entity : extractor.apply(event)) {
                 EventDispatcher.dispatch(entity, event);
@@ -186,50 +182,49 @@ public final class EntityEventPublisher {
         });
     }
 
-
-//    @TestOnly
-//    @SubscribeEvent
-//    public static void onGather(GatherEntityDistributeEvent event) {
-//        Entity entity = event.getEntity();
-//
-//        if (entity instanceof Player player) {
-//            // 注册右键物品监听
-//            EventConsumer<PlayerInteractEvent.RightClickItem> useItem = EventConsumer.of(
-//                    PlayerInteractEvent.RightClickItem.class,
-//                    new Identifier[]{
-//                            Identifier.fromNamespaceAndPath("mymod", "player_interact"),
-//                            Identifier.fromNamespaceAndPath("mymod", "using")
-//                    },
-//                    false,
-//                    (e, self) -> {
-//                        player.sendSystemMessage(Component.literal("使用了物品"));
-//                        self.removeFrom(player);
-//                    }
-//            );
-//            EventDispatcher.attach(player, useItem);
-//
-//            EventDispatcher.attach(
-//                    player,
-//                    AttackEntityEvent.class,
-//                    false,
-//                    (e, self) -> {
-//                        player.sendSystemMessage(Component.literal("造成伤害!"));
-//                    },
-//                    Identifier.fromNamespaceAndPath("mymod", "combat/damage"),
-//                    Identifier.fromNamespaceAndPath("doing", "damage")
-//            );
-//
-//            // 注册伤害监听（使用便捷方法）
-//            EventDispatcher.attach(
-//                    player,
-//                    LivingDamageEvent.Post.class,
-//                    false,
-//                    (e, self) -> {
-//                        player.sendSystemMessage(Component.literal("受到伤害: " + e.getNewDamage()));
-//                        EventDispatcher.get(player).detachSubtree(Identifier.fromNamespaceAndPath("mymod", "combat/damage"));
-//                    },
-//                    Identifier.fromNamespaceAndPath("mymod", "combat/damage")
-//            );
-//        }
-//    }
+    // @TestOnly
+    // @SubscribeEvent
+    // public static void onGather(GatherEntityDistributeEvent event) {
+    // Entity entity = event.getEntity();
+    //
+    // if (entity instanceof Player player) {
+    // // 注册右键物品监听
+    // EventConsumer<PlayerInteractEvent.RightClickItem> useItem = EventConsumer.of(
+    // PlayerInteractEvent.RightClickItem.class,
+    // new Identifier[]{
+    // Identifier.fromNamespaceAndPath("mymod", "player_interact"),
+    // Identifier.fromNamespaceAndPath("mymod", "using")
+    // },
+    // false,
+    // (e, self) -> {
+    // player.sendSystemMessage(Component.literal("使用了物品"));
+    // self.removeFrom(player);
+    // }
+    // );
+    // EventDispatcher.attach(player, useItem);
+    //
+    // EventDispatcher.attach(
+    // player,
+    // AttackEntityEvent.class,
+    // false,
+    // (e, self) -> {
+    // player.sendSystemMessage(Component.literal("造成伤害!"));
+    // },
+    // Identifier.fromNamespaceAndPath("mymod", "combat/damage"),
+    // Identifier.fromNamespaceAndPath("doing", "damage")
+    // );
+    //
+    // // 注册伤害监听（使用便捷方法）
+    // EventDispatcher.attach(
+    // player,
+    // LivingDamageEvent.Post.class,
+    // false,
+    // (e, self) -> {
+    // player.sendSystemMessage(Component.literal("受到伤害: " + e.getNewDamage()));
+    // EventDispatcher.get(player).detachSubtree(Identifier.fromNamespaceAndPath("mymod", "combat/damage"));
+    // },
+    // Identifier.fromNamespaceAndPath("mymod", "combat/damage")
+    // );
+    // }
+    // }
 }

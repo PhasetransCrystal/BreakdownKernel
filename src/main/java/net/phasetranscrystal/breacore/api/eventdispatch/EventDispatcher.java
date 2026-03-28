@@ -1,11 +1,12 @@
 package net.phasetranscrystal.breacore.api.eventdispatch;
 
+import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
+
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.event.entity.EntityEvent;
-import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,7 +15,8 @@ import java.util.function.BiConsumer;
 /**
  * 事件分发器静态工具类。
  *
- * <p>封装对 {@link EventDistributor} 的常见操作，提供简洁的 API。
+ * <p>
+ * 封装对 {@link EventDistributor} 的常见操作，提供简洁的 API。
  *
  * @see EventDistributor 实体事件分发器
  * @see EventConsumer 事件消费器
@@ -39,7 +41,8 @@ public final class EventDispatcher {
     /**
      * 获取实体的 {@link EventDistributor}。
      *
-     * <p>如果实体没有此附件，则创建并附加。
+     * <p>
+     * 如果实体没有此附件，则创建并附加。
      *
      * @param entity 实体
      * @return EventDistributor
@@ -55,7 +58,8 @@ public final class EventDispatcher {
     /**
      * 附加消费器到实体。
      *
-     * <p>便捷方法，自动获取或创建 EventDistributor。
+     * <p>
+     * 便捷方法，自动获取或创建 EventDistributor。
      *
      * @param entity   实体
      * @param consumer 消费器
@@ -67,21 +71,21 @@ public final class EventDispatcher {
     /**
      * 附加消费器到实体的便捷方法。
      *
-     * <p>自动创建消费器实例并附加到实体。
+     * <p>
+     * 自动创建消费器实例并附加到实体。
      *
      * @param entity           实体
-     * @param eventType       事件类型
+     * @param eventType        事件类型
      * @param runWhenCancelled 事件取消时是否执行
-     * @param handler         处理逻辑
-     * @param path           路径数组
+     * @param handler          处理逻辑
+     * @param path             路径数组
      */
     public static <T extends Event> void attach(
-            Entity entity,
-            Class<T> eventType,
-            boolean runWhenCancelled,
-            BiConsumer<T, EventConsumer<T>> handler,
-            Identifier... path
-    ) {
+                                                Entity entity,
+                                                Class<T> eventType,
+                                                boolean runWhenCancelled,
+                                                BiConsumer<T, EventConsumer<T>> handler,
+                                                Identifier... path) {
         get(entity).attachConsumer(eventType, runWhenCancelled, handler, path);
     }
 
@@ -104,7 +108,7 @@ public final class EventDispatcher {
      * @param path   路径数组
      * @return 被移除的消费器列表
      */
-    public static  List<EventConsumer<?>> detachPath(Entity entity, Identifier... path) {
+    public static List<EventConsumer<?>> detachPath(Entity entity, Identifier... path) {
         EventDistributor distributor = getExist(entity);
         return distributor != null ? distributor.detachPath(path) : List.of();
     }
@@ -160,7 +164,8 @@ public final class EventDispatcher {
     /**
      * 分发事件到实体。
      *
-     * <p>直接调用实体的 EventDistributor.post()。
+     * <p>
+     * 直接调用实体的 EventDistributor.post()。
      *
      * @param entity 实体
      * @param event  事件
@@ -174,7 +179,8 @@ public final class EventDispatcher {
     /**
      * 从实体自身获取并分发事件。
      *
-     * <p>适用于 {@link EntityEvent} 子类。
+     * <p>
+     * 适用于 {@link EntityEvent} 子类。
      *
      * @param event EntityEvent 实例
      * @return 是否有消费器被执行
@@ -186,7 +192,8 @@ public final class EventDispatcher {
     /**
      * 从实体自身获取并分发事件。
      *
-     * <p>适用于 {@link IEntityAboutEvent} 的实现事件。
+     * <p>
+     * 适用于 {@link IEntityAboutEvent} 的实现事件。
      *
      * @param event EntityEvent 实例
      * @return 是否有消费器被执行

@@ -8,7 +8,7 @@ import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
-import net.phasetranscrystal.breacore.common.eventdispatch.EntityEventPublisher;
+import net.phasetranscrystal.breacore.common.event.EntityEventPublisher;
 import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
 import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
 import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
