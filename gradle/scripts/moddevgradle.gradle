@@ -1,3 +1,7 @@
+test {
+    useJUnitPlatform()
+}
+
 neoForge {
     // 指定要使用的NeoForge版本。
     version = project.neo_version
