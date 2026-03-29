@@ -1,19 +1,21 @@
 package net.phasetranscrystal.breacore.api.perk.test;
 
+import net.phasetranscrystal.brealib.BreaLib;
+
+import net.phasetranscrystal.breacore.api.perk.*;
+import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.phasetranscrystal.breacore.api.perk.*;
-import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
-import net.phasetranscrystal.brealib.BreaLib;
 
 import java.util.Collection;
 import java.util.List;
 
 public class TestPerks {
-    public static void bootstrap(){
-    }
+
+    public static void bootstrap() {}
 
     public static boolean attachedCalled;
     public static boolean detachedCalled;
@@ -44,6 +46,7 @@ public class TestPerks {
         BreaRegistries.PERKS.unfreeze(true);
 
         SUM = BreaRegistries.PERKS.register(BreaLib.id("test_sum"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public void onAttached(LivingEntity entity, PerkInfo info) {
                 attachedCalled = true;
@@ -69,39 +72,40 @@ public class TestPerks {
         AVERAGE = BreaRegistries.PERKS.register(BreaLib.id("test_average"), new Perk(PerkStackingType.AVERAGE) {});
 
         ARMOR_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_armor"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.ARMOR,
                         AttributeModifier.Operation.ADD_VALUE,
-                        level * 2.0
-                ));
+                        level * 2.0));
             }
         });
 
         SPEED_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_speed"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.MOVEMENT_SPEED,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        level * 0.1
-                ));
+                        level * 0.1));
             }
         });
 
         HEALTH_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_health"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.MAX_HEALTH,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
-                        level * 0.2
-                ));
+                        level * 0.2));
             }
         });
 
         EVENT_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_event"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public List<PerkConsumer<?>> getEventConsumers(PerkInfo info) {
                 return List.of(new PerkConsumer<>(
@@ -109,19 +113,18 @@ public class TestPerks {
                         false,
                         (event, consumer, perkInfo) -> {
                             eventTriggerCount++;
-                        }
-                ));
+                        }));
             }
         });
 
         COMBO_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_combo"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.ARMOR_TOUGHNESS,
                         AttributeModifier.Operation.ADD_VALUE,
-                        level * 1.5
-                ));
+                        level * 1.5));
             }
 
             @Override
@@ -132,19 +135,18 @@ public class TestPerks {
                         (event, consumer, perkInfo) -> {
                             eventTriggerCount++;
                             eventTriggerPerkLevel = perkInfo.level();
-                        }
-                ));
+                        }));
             }
         });
 
         COMBO_PERK_2 = BreaRegistries.PERKS.register(BreaLib.id("test_combo_2"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.ATTACK_KNOCKBACK,
                         AttributeModifier.Operation.ADD_VALUE,
-                        level * 0.5
-                ));
+                        level * 0.5));
             }
 
             @Override
@@ -154,19 +156,18 @@ public class TestPerks {
                         false,
                         (event, consumer, perkInfo) -> {
                             eventTriggerCount++;
-                        }
-                ));
+                        }));
             }
         });
 
         COMBINED_A = BreaRegistries.PERKS.register(BreaLib.id("test_combined_a"), new Perk(PerkStackingType.SUM) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.ARMOR,
                         AttributeModifier.Operation.ADD_VALUE,
-                        level * 3.0
-                ));
+                        level * 3.0));
             }
 
             @Override
@@ -176,19 +177,18 @@ public class TestPerks {
                         false,
                         (event, consumer, perkInfo) -> {
                             eventTriggerCount++;
-                        }
-                ));
+                        }));
             }
         });
 
         COMBINED_B = BreaRegistries.PERKS.register(BreaLib.id("test_combined_b"), new Perk(PerkStackingType.MAX) {
+
             @Override
             public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
                 return List.of(new PerkAttributeModifier(
                         Attributes.ATTACK_DAMAGE,
                         AttributeModifier.Operation.ADD_VALUE,
-                        level * 5.0
-                ));
+                        level * 5.0));
             }
 
             @Override
@@ -198,8 +198,7 @@ public class TestPerks {
                         false,
                         (event, consumer, perkInfo) -> {
                             eventTriggerCount++;
-                        }
-                ));
+                        }));
             }
         });
 

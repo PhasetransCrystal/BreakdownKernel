@@ -1,8 +1,8 @@
 package net.phasetranscrystal.breacore.api.perk;
 
-import lombok.Getter;
-import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.brealib.BreaLib;
+
+import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
@@ -10,9 +10,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
+import lombok.Getter;
+
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Perk {
@@ -81,7 +82,7 @@ public class Perk {
         };
     }
 
-    //TODO DOING TEST
+    // TODO DOING TEST
     public PerkDisplayInfo getDisplayInfo() {
         Collection<PerkAttributeModifier> modifiers = getAttributeModifiers(null, 0f, true);
         List<PerkDisplayInfo.PerkAttributeModifierDisplay> modifierDisplays = groupModifiersByAttribute(modifiers);
@@ -93,8 +94,7 @@ public class Perk {
                 getNameKey(),
                 getExplainKey(),
                 modifierDisplays,
-                eventDisplays
-        );
+                eventDisplays);
     }
 
     private List<PerkDisplayInfo.PerkAttributeModifierDisplay> groupModifiersByAttribute(Collection<PerkAttributeModifier> modifiers) {
@@ -110,14 +110,12 @@ public class Perk {
                 .sorted((a, b) -> Integer.compare(getOperationOrder(a.operation()), getOperationOrder(b.operation())))
                 .map(m -> new PerkDisplayInfo.ModifierEntry(
                         m.getDisplayFormula(),
-                        m.extraInfoKey()
-                ))
+                        m.extraInfoKey()))
                 .toList();
 
         return new PerkDisplayInfo.PerkAttributeModifierDisplay(
                 attribute,
-                entries
-        );
+                entries);
     }
 
     private int getOperationOrder(AttributeModifier.Operation operation) {

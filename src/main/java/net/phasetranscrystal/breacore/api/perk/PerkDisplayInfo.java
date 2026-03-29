@@ -1,7 +1,5 @@
 package net.phasetranscrystal.breacore.api.perk;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -11,25 +9,25 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import java.util.List;
 import java.util.Optional;
 
 public record PerkDisplayInfo(
-                                 Identifier perkId,
-                                 String perkNameKey,
-                                 String perkExplainKey,
-                                 List<PerkAttributeModifierDisplay> attributeModifiers,
-                                 List<EventDisplayInfo> eventDisplays) {
+                              Identifier perkId,
+                              String perkNameKey,
+                              String perkExplainKey,
+                              List<PerkAttributeModifierDisplay> attributeModifiers,
+                              List<EventDisplayInfo> eventDisplays) {
 
-    public static final Codec<PerkDisplayInfo> CODEC = RecordCodecBuilder.create(consumer ->
-            consumer.group(
-                    Identifier.CODEC.fieldOf("perkId").forGetter(PerkDisplayInfo::perkId),
-                    Codec.STRING.fieldOf("perkNameKey").forGetter(PerkDisplayInfo::perkNameKey),
-                    Codec.STRING.fieldOf("perkExplainKey").forGetter(PerkDisplayInfo::perkExplainKey),
-                    PerkAttributeModifierDisplay.CODEC.listOf().fieldOf("attributeModifiers").forGetter(PerkDisplayInfo::attributeModifiers),
-                    EventDisplayInfo.CODEC.listOf().fieldOf("eventDisplays").forGetter(PerkDisplayInfo::eventDisplays)
-            ).apply(consumer, PerkDisplayInfo::new)
-    );
+    public static final Codec<PerkDisplayInfo> CODEC = RecordCodecBuilder.create(consumer -> consumer.group(
+            Identifier.CODEC.fieldOf("perkId").forGetter(PerkDisplayInfo::perkId),
+            Codec.STRING.fieldOf("perkNameKey").forGetter(PerkDisplayInfo::perkNameKey),
+            Codec.STRING.fieldOf("perkExplainKey").forGetter(PerkDisplayInfo::perkExplainKey),
+            PerkAttributeModifierDisplay.CODEC.listOf().fieldOf("attributeModifiers").forGetter(PerkDisplayInfo::attributeModifiers),
+            EventDisplayInfo.CODEC.listOf().fieldOf("eventDisplays").forGetter(PerkDisplayInfo::eventDisplays)).apply(consumer, PerkDisplayInfo::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PerkDisplayInfo> STREAM_CODEC = StreamCodec.of(
             (buf, info) -> {
@@ -44,20 +42,15 @@ public record PerkDisplayInfo(
                     ByteBufCodecs.STRING_UTF8.decode(buf),
                     ByteBufCodecs.STRING_UTF8.decode(buf),
                     ByteBufCodecs.fromCodec(PerkAttributeModifierDisplay.CODEC.listOf()).decode(buf),
-                    ByteBufCodecs.fromCodec(EventDisplayInfo.CODEC.listOf()).decode(buf)
-            )
-    );
+                    ByteBufCodecs.fromCodec(EventDisplayInfo.CODEC.listOf()).decode(buf)));
 
     public record PerkAttributeModifierDisplay(
-                                                     Holder<Attribute> attribute,
-                                                     List<ModifierEntry> modifiers) {
+                                               Holder<Attribute> attribute,
+                                               List<ModifierEntry> modifiers) {
 
-        public static final Codec<PerkAttributeModifierDisplay> CODEC = RecordCodecBuilder.create(consumer ->
-                consumer.group(
-                        Attribute.CODEC.fieldOf("attribute").forGetter(PerkAttributeModifierDisplay::attribute),
-                        ModifierEntry.CODEC.listOf().fieldOf("modifiers").forGetter(PerkAttributeModifierDisplay::modifiers)
-                ).apply(consumer, PerkAttributeModifierDisplay::new)
-        );
+        public static final Codec<PerkAttributeModifierDisplay> CODEC = RecordCodecBuilder.create(consumer -> consumer.group(
+                Attribute.CODEC.fieldOf("attribute").forGetter(PerkAttributeModifierDisplay::attribute),
+                ModifierEntry.CODEC.listOf().fieldOf("modifiers").forGetter(PerkAttributeModifierDisplay::modifiers)).apply(consumer, PerkAttributeModifierDisplay::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, PerkAttributeModifierDisplay> STREAM_CODEC = StreamCodec.of(
                 (buf, display) -> {
@@ -66,14 +59,12 @@ public record PerkDisplayInfo(
                 },
                 buf -> new PerkAttributeModifierDisplay(
                         ByteBufCodecs.holderRegistry(Registries.ATTRIBUTE).decode(buf),
-                        ByteBufCodecs.fromCodec(ModifierEntry.CODEC.listOf()).decode(buf)
-                )
-        );
+                        ByteBufCodecs.fromCodec(ModifierEntry.CODEC.listOf()).decode(buf)));
     }
 
     public record ModifierEntry(
-                                       String valueFormat,
-                                       Optional<String> extraInfoKey) {
+                                String valueFormat,
+                                Optional<String> extraInfoKey) {
 
         private static int getOperationOrder(AttributeModifier.Operation operation) {
             return switch (operation) {
@@ -83,12 +74,9 @@ public record PerkDisplayInfo(
             };
         }
 
-        public static final Codec<ModifierEntry> CODEC = RecordCodecBuilder.create(consumer ->
-                consumer.group(
-                        Codec.STRING.fieldOf("valueFormat").forGetter(ModifierEntry::valueFormat),
-                        Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(ModifierEntry::extraInfoKey)
-                ).apply(consumer, ModifierEntry::new)
-        );
+        public static final Codec<ModifierEntry> CODEC = RecordCodecBuilder.create(consumer -> consumer.group(
+                Codec.STRING.fieldOf("valueFormat").forGetter(ModifierEntry::valueFormat),
+                Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(ModifierEntry::extraInfoKey)).apply(consumer, ModifierEntry::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ModifierEntry> STREAM_CODEC = StreamCodec.of(
                 (buf, entry) -> {
@@ -97,25 +85,20 @@ public record PerkDisplayInfo(
                 },
                 buf -> new ModifierEntry(
                         ByteBufCodecs.STRING_UTF8.decode(buf),
-                        Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))
-                )
-        );
+                        Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))));
     }
 
     public record EventDisplayInfo(
-                                           String eventNameKey,
-                                           String valueFormat,
-                                           String unit,
-                                           Optional<String> extraInfoKey) {
+                                   String eventNameKey,
+                                   String valueFormat,
+                                   String unit,
+                                   Optional<String> extraInfoKey) {
 
-        public static final Codec<EventDisplayInfo> CODEC = RecordCodecBuilder.create(consumer ->
-                consumer.group(
-                        Codec.STRING.fieldOf("eventNameKey").forGetter(EventDisplayInfo::eventNameKey),
-                        Codec.STRING.fieldOf("valueFormat").forGetter(EventDisplayInfo::valueFormat),
-                        Codec.STRING.fieldOf("unit").forGetter(EventDisplayInfo::unit),
-                        Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(EventDisplayInfo::extraInfoKey)
-                ).apply(consumer, EventDisplayInfo::new)
-        );
+        public static final Codec<EventDisplayInfo> CODEC = RecordCodecBuilder.create(consumer -> consumer.group(
+                Codec.STRING.fieldOf("eventNameKey").forGetter(EventDisplayInfo::eventNameKey),
+                Codec.STRING.fieldOf("valueFormat").forGetter(EventDisplayInfo::valueFormat),
+                Codec.STRING.fieldOf("unit").forGetter(EventDisplayInfo::unit),
+                Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(EventDisplayInfo::extraInfoKey)).apply(consumer, EventDisplayInfo::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, EventDisplayInfo> STREAM_CODEC = StreamCodec.of(
                 (buf, display) -> {
@@ -128,8 +111,6 @@ public record PerkDisplayInfo(
                         ByteBufCodecs.STRING_UTF8.decode(buf),
                         ByteBufCodecs.STRING_UTF8.decode(buf),
                         ByteBufCodecs.STRING_UTF8.decode(buf),
-                        Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))
-                )
-        );
+                        Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))));
     }
 }

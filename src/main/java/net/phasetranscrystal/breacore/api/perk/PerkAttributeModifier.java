@@ -1,9 +1,6 @@
 package net.phasetranscrystal.breacore.api.perk;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,26 +9,26 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import java.util.Optional;
+
+import javax.annotation.Nonnull;
 
 public record PerkAttributeModifier(
                                     Holder<Attribute> attribute,
                                     AttributeModifier.Operation operation,
                                     double value,
-                                    @Nonnull String valueFormat, //shouldn't be empty
+                                    @Nonnull String valueFormat, // shouldn't be empty
                                     Optional<String> extraInfoKey) {
 
-    public static final Codec<PerkAttributeModifier> CODEC = RecordCodecBuilder.create(consumer ->
-            consumer.group(
-                    Attribute.CODEC.fieldOf("attribute").forGetter(PerkAttributeModifier::attribute),
-                    AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(PerkAttributeModifier::operation),
-                    Codec.DOUBLE.fieldOf("value").forGetter(PerkAttributeModifier::value),
-                    Codec.STRING.fieldOf("valueFormat").forGetter(PerkAttributeModifier::valueFormat),
-                    Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(PerkAttributeModifier::extraInfoKey)
-            ).apply(consumer, PerkAttributeModifier::new)
-    );
+    public static final Codec<PerkAttributeModifier> CODEC = RecordCodecBuilder.create(consumer -> consumer.group(
+            Attribute.CODEC.fieldOf("attribute").forGetter(PerkAttributeModifier::attribute),
+            AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(PerkAttributeModifier::operation),
+            Codec.DOUBLE.fieldOf("value").forGetter(PerkAttributeModifier::value),
+            Codec.STRING.fieldOf("valueFormat").forGetter(PerkAttributeModifier::valueFormat),
+            Codec.STRING.optionalFieldOf("extraInfoKey").forGetter(PerkAttributeModifier::extraInfoKey)).apply(consumer, PerkAttributeModifier::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PerkAttributeModifier> STREAM_CODEC = StreamCodec.of(
             (buf, modifier) -> {
@@ -46,12 +43,10 @@ public record PerkAttributeModifier(
                     ByteBufCodecs.fromCodec(AttributeModifier.Operation.CODEC).decode(buf),
                     ByteBufCodecs.DOUBLE.decode(buf),
                     ByteBufCodecs.STRING_UTF8.decode(buf),
-                    Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))
-            )
-    );
+                    Optional.of(ByteBufCodecs.STRING_UTF8.decode(buf))));
 
     @Deprecated
-    //test only. use the method below.
+    // test only. use the method below.
     public PerkAttributeModifier(Holder<Attribute> attribute, AttributeModifier.Operation operation, double value) {
         this(attribute, operation, value, "", Optional.empty());
     }

@@ -6,6 +6,8 @@ import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
 import net.phasetranscrystal.breacore.api.event.GatherEntityDistributeEvent;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
 import net.phasetranscrystal.breacore.api.eventdispatch.IEntityAboutEvent;
+import net.phasetranscrystal.breacore.api.perk.event.PerkChangeEvent;
+import net.phasetranscrystal.breacore.api.perk.event.StackPerkProviderComponentChangeEvent;
 
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.Event;
@@ -19,8 +21,6 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.phasetranscrystal.breacore.api.perk.event.PerkChangeEvent;
-import net.phasetranscrystal.breacore.api.perk.event.StackPerkProviderComponentChangeEvent;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -102,7 +102,7 @@ public final class EntityEventPublisher {
         addEntityEventListener(EntityTeleportEvent.class);
         addEntityEventListener(ProjectileImpactEvent.class);
 
-        //perk system
+        // perk system
         addEntityEventListener(PerkChangeEvent.class);
         addEntityEventListener(StackPerkProviderComponentChangeEvent.class);
     }

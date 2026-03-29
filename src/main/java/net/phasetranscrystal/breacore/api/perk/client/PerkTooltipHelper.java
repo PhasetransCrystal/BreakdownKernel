@@ -1,12 +1,13 @@
 package net.phasetranscrystal.breacore.api.perk.client;
 
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.item.ItemStack;
 import net.phasetranscrystal.breacore.api.perk.IPerkProvider;
 import net.phasetranscrystal.breacore.api.perk.Perk;
 import net.phasetranscrystal.breacore.api.perk.PerkDisplayInfo;
 import net.phasetranscrystal.breacore.api.perk.PerkStack;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +49,7 @@ public class PerkTooltipHelper {
     }
 
     public record PerkTooltipEntry(
-            String perkNameKey,
-            float level,
-            Identifier perkId) {}
+                                   String perkNameKey,
+                                   float level,
+                                   Identifier perkId) {}
 }

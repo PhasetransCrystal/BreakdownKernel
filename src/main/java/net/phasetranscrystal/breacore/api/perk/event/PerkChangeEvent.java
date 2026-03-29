@@ -1,18 +1,17 @@
 package net.phasetranscrystal.breacore.api.perk.event;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.phasetranscrystal.breacore.api.perk.Perk;
 import net.phasetranscrystal.breacore.api.perk.PerkChangeType;
 import net.phasetranscrystal.breacore.api.perk.PerkInfo;
 
-import net.minecraft.world.entity.Entity;
-import net.neoforged.bus.api.Event;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
 import lombok.Getter;
 
 @Getter
 public class PerkChangeEvent extends LivingEvent {
+
     private final Perk perk;
     private final PerkChangeType changeType;
     private final float oldLevel;

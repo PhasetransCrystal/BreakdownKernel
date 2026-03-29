@@ -1,11 +1,11 @@
 package net.phasetranscrystal.breacore.api.registry;
 
-import net.phasetranscrystal.breacore.api.perk.Perk;
 import net.phasetranscrystal.brealib.BreaLib;
 
 import net.phasetranscrystal.breacore.api.material.Element;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
+import net.phasetranscrystal.breacore.api.perk.Perk;
 import net.phasetranscrystal.breacore.api.sound.SoundEntry;
 
 import net.minecraft.client.Minecraft;

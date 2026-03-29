@@ -1,6 +1,11 @@
 package net.phasetranscrystal.breacore.api.perk.test;
 
-import com.tterrag.registrate.util.entry.ItemEntry;
+import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
+import net.phasetranscrystal.breacore.api.perk.RecordPerkProvider;
+import net.phasetranscrystal.breacore.common.registry.BreaRegistration;
+import net.phasetranscrystal.breacore.common.registry.DataComponentRegistry;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -9,17 +14,14 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
-import net.phasetranscrystal.breacore.BreakdownCore;
-import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
-import net.phasetranscrystal.breacore.api.perk.RecordPerkProvider;
-import net.phasetranscrystal.breacore.common.registry.BreaRegistration;
-import net.phasetranscrystal.breacore.common.registry.DataComponentRegistry;
+
+import com.tterrag.registrate.util.entry.ItemEntry;
 
 import java.util.function.Consumer;
 
@@ -39,79 +41,66 @@ public class TestPerkItems {
     public static void onModifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         event.modify(Items.DIAMOND_HELMET, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.SUM, 1.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.SUM, 1.0f)));
 
         event.modify(Items.DIAMOND_CHESTPLATE, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.SUM, 3.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.SUM, 3.0f)));
 
         event.modify(Items.DIAMOND_LEGGINGS, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.LEGS, TestPerks.MAX, 5.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.LEGS, TestPerks.MAX, 5.0f)));
 
         event.modify(Items.DIAMOND_BOOTS, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.FEET, TestPerks.MAX, 8.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.FEET, TestPerks.MAX, 8.0f)));
 
         event.modify(Items.SHIELD, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.OFFHAND, TestPerks.AVERAGE, 2.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.OFFHAND, TestPerks.AVERAGE, 2.0f)));
 
         event.modify(Items.GOLDEN_HELMET, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.ARMOR_PERK, 5.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.ARMOR_PERK, 5.0f)));
 
         event.modify(Items.GOLDEN_BOOTS, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.FEET, TestPerks.SPEED_PERK, 3.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.FEET, TestPerks.SPEED_PERK, 3.0f)));
 
         event.modify(Items.GOLDEN_CHESTPLATE, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.HEALTH_PERK, 2.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.HEALTH_PERK, 2.0f)));
 
         event.modify(Items.IRON_HELMET, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.EVENT_PERK, 1.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.EVENT_PERK, 1.0f)));
 
         event.modify(Items.IRON_CHESTPLATE, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.COMBO_PERK, 2.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.COMBO_PERK, 2.0f)));
 
         event.modify(Items.IRON_LEGGINGS, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.LEGS, TestPerks.COMBO_PERK_2, 1.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.LEGS, TestPerks.COMBO_PERK_2, 1.0f)));
 
         event.modify(Items.NETHERITE_HELMET, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.COMBINED_A, 2.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.HEAD, TestPerks.COMBINED_A, 2.0f)));
 
         event.modify(Items.NETHERITE_CHESTPLATE, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
-                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.COMBINED_B, 3.0f)
-        ));
+                new RecordPerkProvider(EquipmentSlotGroup.CHEST, TestPerks.COMBINED_B, 3.0f)));
 
         event.modify(Items.DIAMOND_SWORD, builder -> builder.set(
                 DataComponentRegistry.PERK_RECORD_PROVIDER.get(),
                 new RecordPerkProvider(EquipmentSlotGroup.MAINHAND,
                         TestPerks.SUM, 1.0f,
                         TestPerks.COMBO_PERK, 1.0f,
-                        TestPerks.COMBINED_A, 1.0f)
-        ));
+                        TestPerks.COMBINED_A, 1.0f)));
     }
 
     public static class QueryPerkItem extends Item {
+
         public QueryPerkItem(Properties properties) {
             super(properties);
         }
@@ -145,6 +134,7 @@ public class TestPerkItems {
     }
 
     public static class ClearPerkItem extends Item {
+
         public ClearPerkItem(Properties properties) {
             super(properties);
         }

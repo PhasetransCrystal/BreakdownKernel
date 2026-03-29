@@ -1,7 +1,5 @@
 package net.phasetranscrystal.breacore.data.items;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.Item;
 import net.phasetranscrystal.breacore.api.items.debug.PerkDebugItem;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
 
@@ -22,6 +20,5 @@ public class DebugItems {
         REGISTRATE.creativeModeTab(() -> BreaCreativeModeTabs.DEBUG_ITEMS);
     }
 
-    public static void init() {
-    }
+    public static void init() {}
 }
