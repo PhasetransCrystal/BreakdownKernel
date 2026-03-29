@@ -23,6 +23,21 @@ public record RecordPerkProvider(Map<EquipmentSlotGroup, List<PerkStack>> map) i
         this(EquipmentSlotGroup.ANY,perk,level);
     }
 
+    public RecordPerkProvider(EquipmentSlotGroup group, Perk perk, float level, Object... morePerks) {
+        this(Map.ofEntries(
+                Map.entry(group, buildPerkStackList(perk, level, morePerks))
+        ));
+    }
+
+    private static List<PerkStack> buildPerkStackList(Perk perk, float level, Object... morePerks) {
+        java.util.ArrayList<PerkStack> list = new java.util.ArrayList<>();
+        list.add(new PerkStack(perk, level));
+        for (int i = 0; i < morePerks.length; i += 2) {
+            list.add(new PerkStack((Perk) morePerks[i], (Float) morePerks[i + 1]));
+        }
+        return list;
+    }
+
     @Override
     public Map<EquipmentSlotGroup, List<PerkStack>> getPerkStacks() {
         return map;

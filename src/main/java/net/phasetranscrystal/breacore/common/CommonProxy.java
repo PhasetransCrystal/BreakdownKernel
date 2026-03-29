@@ -6,9 +6,12 @@ import net.phasetranscrystal.breacore.api.addon.AddonFinder;
 import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
 import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
+import net.phasetranscrystal.breacore.api.perk.test.TestPerkItems;
+import net.phasetranscrystal.breacore.api.perk.test.TestPerks;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
 import net.phasetranscrystal.breacore.common.event.EntityEventPublisher;
+import net.phasetranscrystal.breacore.common.event.LivingEquipmentChangeEventDispatcher;
 import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
 import net.phasetranscrystal.breacore.common.registry.DataComponentRegistry;
 import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
@@ -92,6 +95,14 @@ public class CommonProxy {
         });
 
         EntityEventPublisher.bootstrap();
+
+//        bootstrapTest();
+    }
+
+    private static void bootstrapTest(){
+        //Perk system test
+        TestPerks.bootstrap();
+        TestPerkItems.bootstrap();
     }
 
     private static void initMaterials() {

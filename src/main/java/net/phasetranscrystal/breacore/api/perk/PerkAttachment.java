@@ -61,6 +61,14 @@ public class PerkAttachment {
         return new HashMap<>(attachment.perkLevels);
     }
 
+    public static Map<Perk, PerkInfo> getAllPerkInfos(LivingEntity entity) {
+        PerkAttachment attachment = entity.getExistingDataOrNull(TYPE);
+        if (attachment == null) {
+            return Map.of();
+        }
+        return new HashMap<>(attachment.perkInfos);
+    }
+
     public static Map<Perk, Float> collectPerkStacks(ItemStack stack, EquipmentSlot slot) {
         if (stack.isEmpty()) {
             return Map.of();
@@ -221,7 +229,7 @@ public class PerkAttachment {
             if (attributeInstance != null) {
                 Identifier modifierId = perk.getAttributeModifierId(perkModifier.operation());
                 modifierMap.put(modifierId, perkModifier.attribute());
-                attributeInstance.addPermanentModifier(perkModifier.toModifier(modifierId));
+                attributeInstance.addOrUpdateTransientModifier(perkModifier.toModifier(modifierId));
             }
         }
 

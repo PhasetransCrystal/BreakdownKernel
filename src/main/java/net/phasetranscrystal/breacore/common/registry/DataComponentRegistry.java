@@ -11,4 +11,7 @@ public class DataComponentRegistry {
     public static final RegistryEntry<DataComponentType<?>, DataComponentType<RecordPerkProvider>> PERK_RECORD_PROVIDER =
             BreaRegistration.REGISTRATE.simple("perk_record_provider", Registries.DATA_COMPONENT_TYPE, () -> DataComponentType.<RecordPerkProvider>builder().persistent(RecordPerkProvider.CODEC).build());
 
+    public static final RegistryEntry<DataComponentType<?>, DataComponentType<RecordPerkProvider>> PERK_RECORD_PROVIDER4TEST =
+            BreaRegistration.REGISTRATE.simple("perk_record_provider4test", Registries.DATA_COMPONENT_TYPE, () -> DataComponentType.<RecordPerkProvider>builder().persistent(RecordPerkProvider.CODEC).build());
+
 }

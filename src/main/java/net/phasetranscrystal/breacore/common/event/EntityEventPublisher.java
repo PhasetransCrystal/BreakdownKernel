@@ -19,6 +19,8 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.phasetranscrystal.breacore.api.perk.event.PerkChangeEvent;
+import net.phasetranscrystal.breacore.api.perk.event.StackPerkProviderComponentChangeEvent;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -99,6 +101,10 @@ public final class EntityEventPublisher {
         addEntityEventListener(EntityStruckByLightningEvent.class);
         addEntityEventListener(EntityTeleportEvent.class);
         addEntityEventListener(ProjectileImpactEvent.class);
+
+        //perk system
+        addEntityEventListener(PerkChangeEvent.class);
+        addEntityEventListener(StackPerkProviderComponentChangeEvent.class);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
