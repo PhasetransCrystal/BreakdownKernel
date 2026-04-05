@@ -1,14 +1,18 @@
 package net.phasetranscrystal.breacore.api.annotation;
 
-import org.apache.commons.lang3.NotImplementedException;
+import net.phasetranscrystal.breacore.api.lang.CNEN;
 
-public class TranslationKeyProvider {
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-    public static String getTranslationKey(String var0, String var1) {
-        throw new NotImplementedException();
+public final class TranslationKeyProvider {
+
+    public static final Object2ObjectOpenHashMap<String, CNEN> LANG;
+
+    public TranslationKeyProvider() {
+        throw new UnsatisfiedLinkError("Not Impl");
     }
 
-    public static String getTranslationKey(String var0, String var1, String var2) {
-        throw new NotImplementedException();
-    }
+    public static native String getTranslationKey(String var0, String var1);
+
+    public static native String getTranslationKey(String var0, String var1, String var2);
 }
