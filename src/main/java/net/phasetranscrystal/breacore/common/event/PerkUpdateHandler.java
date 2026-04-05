@@ -15,7 +15,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import java.util.Map;
 
 @EventBusSubscriber(modid = BreakdownCore.MOD_ID)
-public class LivingEquipmentChangeEventDispatcher {
+public class PerkUpdateHandler {
 
     @SubscribeEvent
     public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {

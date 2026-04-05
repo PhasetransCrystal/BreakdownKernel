@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.perk.test;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.attribute.DetailedAttributeModifier;
 import net.phasetranscrystal.breacore.api.perk.*;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 
@@ -74,8 +75,8 @@ public class TestPerks {
         ARMOR_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_armor"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.ARMOR,
                         AttributeModifier.Operation.ADD_VALUE,
                         level * 2.0));
@@ -85,8 +86,8 @@ public class TestPerks {
         SPEED_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_speed"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.MOVEMENT_SPEED,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
                         level * 0.1));
@@ -96,8 +97,8 @@ public class TestPerks {
         HEALTH_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_health"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.MAX_HEALTH,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
                         level * 0.2));
@@ -120,8 +121,8 @@ public class TestPerks {
         COMBO_PERK = BreaRegistries.PERKS.register(BreaLib.id("test_combo"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.ARMOR_TOUGHNESS,
                         AttributeModifier.Operation.ADD_VALUE,
                         level * 1.5));
@@ -142,8 +143,8 @@ public class TestPerks {
         COMBO_PERK_2 = BreaRegistries.PERKS.register(BreaLib.id("test_combo_2"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.ATTACK_KNOCKBACK,
                         AttributeModifier.Operation.ADD_VALUE,
                         level * 0.5));
@@ -163,8 +164,8 @@ public class TestPerks {
         COMBINED_A = BreaRegistries.PERKS.register(BreaLib.id("test_combined_a"), new Perk(PerkStackingType.SUM) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.ARMOR,
                         AttributeModifier.Operation.ADD_VALUE,
                         level * 3.0));
@@ -184,8 +185,8 @@ public class TestPerks {
         COMBINED_B = BreaRegistries.PERKS.register(BreaLib.id("test_combined_b"), new Perk(PerkStackingType.MAX) {
 
             @Override
-            public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
-                return List.of(new PerkAttributeModifier(
+            public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+                return List.of(new DetailedAttributeModifier(
                         Attributes.ATTACK_DAMAGE,
                         AttributeModifier.Operation.ADD_VALUE,
                         level * 5.0));

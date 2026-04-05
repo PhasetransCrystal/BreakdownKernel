@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.perk;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.attribute.DetailedAttributeModifier;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 
 import net.minecraft.core.Holder;
@@ -51,11 +52,11 @@ public class Perk {
         return List.of();
     }
 
-    public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
+    public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level) {
         return getAttributeModifiers(entity, level, false);
     }
 
-    public Collection<PerkAttributeModifier> getAttributeModifiers(LivingEntity entity, float level, boolean isDisplayMode) {
+    public Collection<DetailedAttributeModifier> getAttributeModifiers(LivingEntity entity, float level, boolean isDisplayMode) {
         return List.of();
     }
 
@@ -84,7 +85,7 @@ public class Perk {
 
     // TODO DOING TEST
     public PerkDisplayInfo getDisplayInfo() {
-        Collection<PerkAttributeModifier> modifiers = getAttributeModifiers(null, 0f, true);
+        Collection<DetailedAttributeModifier> modifiers = getAttributeModifiers(null, 0f, true);
         List<PerkDisplayInfo.PerkAttributeModifierDisplay> modifierDisplays = groupModifiersByAttribute(modifiers);
 
         List<PerkDisplayInfo.EventDisplayInfo> eventDisplays = getEventDisplayInfo();
@@ -97,15 +98,15 @@ public class Perk {
                 eventDisplays);
     }
 
-    private List<PerkDisplayInfo.PerkAttributeModifierDisplay> groupModifiersByAttribute(Collection<PerkAttributeModifier> modifiers) {
+    private List<PerkDisplayInfo.PerkAttributeModifierDisplay> groupModifiersByAttribute(Collection<DetailedAttributeModifier> modifiers) {
         return modifiers.stream()
-                .collect(Collectors.groupingBy(PerkAttributeModifier::attribute))
+                .collect(Collectors.groupingBy(DetailedAttributeModifier::attribute))
                 .entrySet().stream()
                 .map(entry -> toModifierDisplay(entry.getKey(), entry.getValue()))
                 .toList();
     }
 
-    protected PerkDisplayInfo.PerkAttributeModifierDisplay toModifierDisplay(Holder<Attribute> attribute, List<PerkAttributeModifier> modifiers) {
+    protected PerkDisplayInfo.PerkAttributeModifierDisplay toModifierDisplay(Holder<Attribute> attribute, List<DetailedAttributeModifier> modifiers) {
         List<PerkDisplayInfo.ModifierEntry> entries = modifiers.stream()
                 .sorted((a, b) -> Integer.compare(getOperationOrder(a.operation()), getOperationOrder(b.operation())))
                 .map(m -> new PerkDisplayInfo.ModifierEntry(

@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.perk;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.attribute.DetailedAttributeModifier;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventConsumer;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
 import net.phasetranscrystal.breacore.api.perk.event.PerkChangeEvent;
@@ -10,7 +11,6 @@ import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
+
+import lombok.Getter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +29,9 @@ public class PerkAttachment {
     public static final AttachmentType<PerkAttachment> TYPE = AttachmentTypeRegistry.PERK_CONTROLLER.get();
     public static final Identifier SYSTEM_ID = BreaLib.id("perk_system");
 
+    @Getter
     private final Map<Perk, PerkInfo> perkInfos = new HashMap<>();
+    @Getter
     private final Map<Perk, Float> perkLevels = new HashMap<>();
     private final Map<EquipmentSlot, ItemStack> currentEquipment = new EnumMap<>(EquipmentSlot.class);
     private final Map<EquipmentSlot, Map<Perk, Float>> slotPerkCache = new EnumMap<>(EquipmentSlot.class);
@@ -37,70 +41,8 @@ public class PerkAttachment {
         return entity.getData(TYPE);
     }
 
-    public static PerkInfo getPerkInfo(LivingEntity entity, Perk perk) {
-        PerkAttachment attachment = entity.getExistingDataOrNull(TYPE);
-        if (attachment == null) {
-            return null;
-        }
-        return attachment.perkInfos.get(perk);
-    }
-
-    public static float getPerkLevel(LivingEntity entity, Perk perk) {
-        PerkAttachment attachment = entity.getExistingDataOrNull(TYPE);
-        if (attachment == null) {
-            return 0f;
-        }
-        return attachment.perkLevels.getOrDefault(perk, 0f);
-    }
-
-    public static Map<Perk, Float> getAllPerkLevels(LivingEntity entity) {
-        PerkAttachment attachment = entity.getExistingDataOrNull(TYPE);
-        if (attachment == null) {
-            return Map.of();
-        }
-        return new HashMap<>(attachment.perkLevels);
-    }
-
-    public static Map<Perk, PerkInfo> getAllPerkInfos(LivingEntity entity) {
-        PerkAttachment attachment = entity.getExistingDataOrNull(TYPE);
-        if (attachment == null) {
-            return Map.of();
-        }
-        return new HashMap<>(attachment.perkInfos);
-    }
-
     public static Map<Perk, Float> collectPerkStacks(ItemStack stack, EquipmentSlot slot) {
-        if (stack.isEmpty()) {
-            return Map.of();
-        }
-
-        Map<Perk, List<Float>> levelsByPerk = new HashMap<>();
-        Collection<IPerkProvider> providers = getPerkProviders(stack);
-
-        for (IPerkProvider provider : providers) {
-            Map<EquipmentSlotGroup, List<PerkStack>> providerStacks = provider.getPerkStacks();
-            for (Map.Entry<EquipmentSlotGroup, List<PerkStack>> entry : providerStacks.entrySet()) {
-                if (entry.getKey().test(slot)) {
-                    for (PerkStack perkStack : entry.getValue()) {
-                        levelsByPerk.computeIfAbsent(perkStack.perk(), k -> new ArrayList<>())
-                                .add(perkStack.level());
-                    }
-                }
-            }
-        }
-
-        Map<Perk, Float> result = new HashMap<>();
-        for (Map.Entry<Perk, List<Float>> entry : levelsByPerk.entrySet()) {
-            result.put(entry.getKey(), entry.getKey().calculateLevel(entry.getValue()));
-        }
-        return result;
-    }
-
-    private static Collection<IPerkProvider> getPerkProviders(ItemStack stack) {
-        return stack.getComponents().stream()
-                .filter(c -> c.value() instanceof IPerkProvider)
-                .map(c -> (IPerkProvider) c.value())
-                .toList();
+        return PerkHelper.collectPerkStacks(stack, slot);
     }
 
     public void updateEquipment(LivingEntity entity, EquipmentSlot slot, ItemStack newStack, Map<Perk, Float> oldPerkStacks, Map<Perk, Float> newPerkStacks) {
@@ -221,10 +163,10 @@ public class PerkAttachment {
     private void updateAttributeModifiers(LivingEntity entity, Perk perk, float oldLevel, float newLevel) {
         removeAttributeModifiers(entity, perk);
 
-        Collection<PerkAttributeModifier> modifiers = perk.getAttributeModifiers(entity, newLevel);
+        Collection<DetailedAttributeModifier> modifiers = perk.getAttributeModifiers(entity, newLevel);
         Map<Identifier, Holder<Attribute>> modifierMap = new HashMap<>();
 
-        for (PerkAttributeModifier perkModifier : modifiers) {
+        for (DetailedAttributeModifier perkModifier : modifiers) {
             AttributeInstance attributeInstance = entity.getAttribute(perkModifier.attribute());
             if (attributeInstance != null) {
                 Identifier modifierId = perk.getAttributeModifierId(perkModifier.operation());

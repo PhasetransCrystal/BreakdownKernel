@@ -1,7 +1,7 @@
 package net.phasetranscrystal.breacore.api.perk.test;
 
 import net.phasetranscrystal.breacore.BreakdownCore;
-import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
+import net.phasetranscrystal.breacore.api.perk.PerkHelper;
 import net.phasetranscrystal.breacore.api.perk.RecordPerkProvider;
 import net.phasetranscrystal.breacore.common.registry.BreaRegistration;
 import net.phasetranscrystal.breacore.common.registry.DataComponentRegistry;
@@ -118,7 +118,7 @@ public class TestPerkItems {
                 sb.append("eventTriggerCount: ").append(TestPerks.eventTriggerCount).append("\n");
                 sb.append("eventTriggerPerkLevel: ").append(TestPerks.eventTriggerPerkLevel).append("\n");
                 sb.append("Perk Levels:\n");
-                for (var entry : PerkAttachment.getAllPerkLevels(serverPlayer).entrySet()) {
+                for (var entry : PerkHelper.getAllPerkLevels(serverPlayer).entrySet()) {
                     sb.append("  ").append(entry.getKey().getId()).append(": ").append(entry.getValue()).append("\n");
                 }
 

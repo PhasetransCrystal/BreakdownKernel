@@ -1,7 +1,7 @@
 package net.phasetranscrystal.breacore.api.items.debug;
 
 import net.phasetranscrystal.breacore.api.perk.Perk;
-import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
+import net.phasetranscrystal.breacore.api.perk.PerkHelper;
 import net.phasetranscrystal.breacore.api.perk.PerkInfo;
 
 import net.minecraft.ChatFormatting;
@@ -52,8 +52,8 @@ public class PerkDebugItem extends Item {
     }
 
     private void showPerkStatus(Player player, LivingEntity entity) {
-        Map<Perk, PerkInfo> perkInfos = PerkAttachment.getAllPerkInfos(entity);
-        Map<Perk, Float> perkLevels = PerkAttachment.getAllPerkLevels(entity);
+        Map<Perk, PerkInfo> perkInfos = PerkHelper.getAllPerkInfos(entity);
+        Map<Perk, Float> perkLevels = PerkHelper.getAllPerkLevels(entity);
 
         player.sendSystemMessage(Component.translatable(KEY_PREFIX + "title", getEntityName(entity))
                 .withStyle(ChatFormatting.GOLD));

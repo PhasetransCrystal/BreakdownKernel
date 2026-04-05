@@ -2,6 +2,9 @@ package net.phasetranscrystal.breacore.api.registry;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.equipforge.EquipmentType;
+import net.phasetranscrystal.breacore.api.equipforge.ModificationType;
+import net.phasetranscrystal.breacore.api.equipforge.PartType;
 import net.phasetranscrystal.breacore.api.material.Element;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
@@ -38,6 +41,15 @@ public class BreaRegistries {
 
     public static final ResourceKey<Registry<Perk>> PERK_KEY = makeRegistryKey(BreaLib.id("perk"));
     public static final BreaRegistry<Perk> PERKS = new BreaRegistry<>(PERK_KEY);
+
+    public static final ResourceKey<Registry<EquipmentType>> EQUIPMENT_TYPE_KEY = makeRegistryKey(BreaLib.id("equipment_type"));
+    public static final BreaRegistry<EquipmentType> EQUIPMENT_TYPES = new BreaRegistry<>(EQUIPMENT_TYPE_KEY);
+
+    public static final ResourceKey<Registry<PartType>> PART_TYPE_KEY = makeRegistryKey(BreaLib.id("part_type"));
+    public static final BreaRegistry<PartType> PART_TYPES = new BreaRegistry<>(PART_TYPE_KEY);
+
+    public static final ResourceKey<Registry<ModificationType>> MODIFICATION_TYPE_KEY = makeRegistryKey(BreaLib.id("modification_type"));
+    public static final BreaRegistry<ModificationType> MODIFICATION_TYPES = new BreaRegistry<>(MODIFICATION_TYPE_KEY);
 
     public static <T> ResourceKey<Registry<T>> makeRegistryKey(Identifier registryId) {
         return ResourceKey.createRegistryKey(registryId);
