@@ -3,6 +3,8 @@ package net.phasetranscrystal.breacore.data.materials;
 import net.phasetranscrystal.brealib.BreaLib;
 
 import net.phasetranscrystal.breacore.api.BreaApi;
+import net.phasetranscrystal.breacore.api.addon.AddonFinder;
+import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
 import net.phasetranscrystal.breacore.api.material.Element;
 
 import net.minecraft.core.Holder;
@@ -12,6 +14,10 @@ import java.util.Optional;
 import static net.phasetranscrystal.breacore.api.registry.BreaRegistries.ELEMENTS;
 
 public class BreaElements {
+
+    static {
+        ELEMENTS.unfreeze(true);
+    }
 
     public static final Element H = createAndRegister(1, 0, -1, null, "Hydrogen", "H", false);
     public static final Element D = createAndRegister(1, 1, -1, "H", "Deuterium", "D", true);
@@ -139,10 +145,6 @@ public class BreaElements {
     public static final Element Ts = createAndRegister(117, 177, -1, null, "Tennessine", "Ts", false);
     public static final Element Og = createAndRegister(118, 176, -1, null, "Oganesson", "Og", false);
 
-    static {
-        ELEMENTS.unfreeze(true);
-    }
-
     public static Element createAndRegister(long protons, long neutrons, long halfLifeSeconds, String decayTo,
                                             String name, String symbol, boolean isIsotope) {
         Element element = new Element(protons, neutrons, halfLifeSeconds, decayTo, name, symbol, isIsotope);
@@ -151,6 +153,7 @@ public class BreaElements {
     }
 
     public static void init() {
+        AddonFinder.getAddonList().forEach(IBreaAddon::addElement);
         BreaApi.postRegisterEvent(ELEMENTS);
         ELEMENTS.freeze();
     }

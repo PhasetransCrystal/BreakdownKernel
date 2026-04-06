@@ -4,91 +4,55 @@ import net.phasetranscrystal.brealib.util.BreaMath;
 import net.phasetranscrystal.brealib.util.FormattingUtil;
 
 import net.phasetranscrystal.breacore.api.BreaApi;
-import net.phasetranscrystal.breacore.api.fluid.FluidRegisterBuilder;
-import net.phasetranscrystal.breacore.api.fluid.store.FluidStorageKey;
-import net.phasetranscrystal.breacore.api.fluid.store.FluidStorageKeys;
-import net.phasetranscrystal.breacore.api.material.info.MaterialFlag;
-import net.phasetranscrystal.breacore.api.material.info.MaterialFlags;
+import net.phasetranscrystal.breacore.api.material.attributes.AttributeType;
+import net.phasetranscrystal.breacore.api.material.attributes.MaterialAttribute;
+import net.phasetranscrystal.breacore.api.material.attributes.MaterialAttributeSet;
+import net.phasetranscrystal.breacore.api.material.info.MaterialIconLayer;
 import net.phasetranscrystal.breacore.api.material.info.MaterialIconSet;
-import net.phasetranscrystal.breacore.api.material.property.FluidProperty;
-import net.phasetranscrystal.breacore.api.material.property.IMaterialProperty;
-import net.phasetranscrystal.breacore.api.material.property.MaterialProperties;
-import net.phasetranscrystal.breacore.api.material.property.PropertyKey;
+import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
+import net.phasetranscrystal.breacore.api.material.registry.IMaterialBuilderExtension;
+import net.phasetranscrystal.breacore.api.material.stack.MaterialResource;
 import net.phasetranscrystal.breacore.api.material.stack.MaterialStack;
-import net.phasetranscrystal.breacore.api.tag.TagUtil;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterialIconSet;
+import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
 
-public class Material implements Comparable<Material> {
+public class Material implements Comparable<Material>, IMaterialExtension {
 
-    /**
-     * 此材料的基本信息。
-     *
-     * @see MaterialInfo
-     */
-    @NotNull
     @Getter
+    @NotNull
     private final MaterialInfo materialInfo;
-
-    /**
-     * 此材料的属性。
-     *
-     * @see MaterialProperties
-     */
-    @NotNull
     @Getter
-    private final MaterialProperties properties;
-
-    /**
-     * 此材料的生成标志。
-     *
-     * @see MaterialFlags
-     */
     @NotNull
+    private final MaterialAttributeSet attributeSet;
     @Getter
-    private final MaterialFlags flags;
-
-    /**
-     * 此材料的化学式。
-     */
     private String chemicalFormula;
 
-    public Material(@NotNull MaterialInfo materialInfo, @NotNull MaterialProperties properties,
-                    @NotNull MaterialFlags flags) {
+    private Material(@NotNull MaterialInfo materialInfo, @NotNull MaterialAttributeSet attributeSet) {
         this.materialInfo = materialInfo;
-        this.properties = properties;
-        this.flags = flags;
-        this.properties.setMaterial(this);
+        this.attributeSet = attributeSet;
         verifyMaterial();
     }
 
-    // thou shall not call
-    protected Material(Identifier Identifier) {
-        materialInfo = new MaterialInfo(Identifier);
-        materialInfo.iconSet = MaterialIconSet.DULL;
-        properties = new MaterialProperties();
-        flags = new MaterialFlags();
+    protected Material(Identifier identifier) {
+        this.materialInfo = new MaterialInfo(identifier);
+        this.attributeSet = new MaterialAttributeSet();
+        this.attributeSet.setMaterial(this);
     }
 
     private String calculateChemicalFormula() {
@@ -104,15 +68,11 @@ public class Material implements Comparable<Material> {
         }
         if (!materialInfo.componentList.isEmpty()) {
             StringBuilder components = new StringBuilder();
-            for (MaterialStack component : materialInfo.componentList)
+            for (var component : materialInfo.componentList)
                 components.append(component.toString());
             return components.toString();
         }
         return "";
-    }
-
-    public String getChemicalFormula() {
-        return chemicalFormula;
     }
 
     public Material setFormula(String formula) {
@@ -125,12 +85,11 @@ public class Material implements Comparable<Material> {
     }
 
     public ImmutableList<MaterialStack> getMaterialComponents() {
-        return materialInfo.componentList;
+        return this.materialInfo.componentList;
     }
 
     public Material setComponents(MaterialStack... components) {
         this.materialInfo.setComponents(components);
-        this.chemicalFormula = this.calculateChemicalFormula();
         return this;
     }
 
@@ -139,294 +98,72 @@ public class Material implements Comparable<Material> {
     }
 
     public String getName() {
-        return materialInfo.Identifier.getPath();
+        return materialInfo.identifier.getPath();
     }
 
-    public String getModid() {
-        return materialInfo.Identifier.getNamespace();
-    }
-
-    public void addFlags(MaterialFlag... flags) {
-        this.flags.addFlags(flags).verify(this);
-    }
-
-    public boolean hasFlag(MaterialFlag flag) {
-        return flags.hasFlag(flag);
+    public String getModId() {
+        return materialInfo.identifier.getNamespace();
     }
 
     public boolean isElement() {
         return materialInfo.element != null;
     }
 
-    @Nullable
-    public Element getElement() {
-        return materialInfo.element;
-    }
-
-    public boolean hasFlags(MaterialFlag... flags) {
-        return Arrays.stream(flags).allMatch(this::hasFlag);
-    }
-
-    public boolean hasAnyOfFlags(MaterialFlag... flags) {
-        return Arrays.stream(flags).anyMatch(this::hasFlag);
+    public Optional<Element> getElement() {
+        return Optional.ofNullable(materialInfo.element);
     }
 
     protected void calculateDecompositionType() {}
 
-    /**
-     * Retrieves a fluid from the material.
-     * Attempts to retrieve with {@link FluidProperty#getPrimaryKey()}, {@link FluidStorageKeys#LIQUID} and
-     * {@link FluidStorageKeys#GAS}.
-     *
-     * @return the fluid
-     * @see #getFluid(FluidStorageKey)
-     */
-    public Fluid getFluid() {
-        FluidProperty prop = getProperty(PropertyKey.FLUID);
-        if (prop == null) {
-            throw new IllegalArgumentException("Material " + getIdentifier() + " does not have a Fluid!");
-        }
-
-        Fluid fluid = prop.get(prop.getPrimaryKey());
-        if (fluid != null) return fluid;
-
-        fluid = getFluid(FluidStorageKeys.LIQUID);
-        if (fluid != null) return fluid;
-
-        return getFluid(FluidStorageKeys.GAS);
+    public int getLayerARBG(MaterialIconLayer layer) {
+        if (!materialInfo.colors.containsKey(layer)) return -1;
+        var layerColor = getMaterialARBG(layer);
+        if (layerColor != -1 || layer == MaterialIconLayer.BaseLayer) return layerColor;
+        else return getMaterialARBG(layer);
     }
 
-    /**
-     * @param key the key for the fluid
-     * @return the fluid corresponding with the key
-     */
-    public Fluid getFluid(@NotNull FluidStorageKey key) {
-        FluidProperty prop = getProperty(PropertyKey.FLUID);
-        if (prop == null) {
-            throw new IllegalArgumentException("Material " + getIdentifier() + " does not have a Fluid!");
-        }
-
-        return prop.get(key);
+    public int getMaterialARBG() {
+        return materialInfo.colors.get(MaterialIconLayer.BaseLayer) | 0xFF000000;
     }
 
-    /**
-     * @param amount the amount the FluidStack should have
-     * @return a FluidStack with the fluid and amount
-     * @see #getFluid(FluidStorageKey, int)
-     */
-    public FluidStack getFluid(int amount) {
-        return new FluidStack(getFluid(), amount);
+    public int getMaterialARBG(MaterialIconLayer layer) {
+        return materialInfo.colors.get(layer) | 0xFF000000;
     }
 
-    /**
-     * @param key    the key for the fluid
-     * @param amount the amount the FluidStack should have
-     * @return a FluidStack with the fluid and amount
-     */
-    public FluidStack getFluid(@NotNull FluidStorageKey key, int amount) {
-        return new FluidStack(getFluid(key), amount);
+    public int getMaterialRBG() {
+        return materialInfo.colors.get(MaterialIconLayer.BaseLayer);
     }
 
-    /**
-     * @return a {@code TagKey<Fluid>} with the material's name as the tag key
-     * @see #getFluid(FluidStorageKey, int)
-     */
-    public TagKey<Fluid> getFluidTag() {
-        return TagUtil.createFluidTag(this.getName());
+    public int getMaterialRBG(MaterialIconLayer layer) {
+        return materialInfo.colors.get(layer);
     }
 
-    /**
-     * Retrieves a fluid builder from the material.
-     * <br/>
-     * NOTE: only available before the fluids are registered.
-     * <br/>
-     * Attempts to retrieve with {@link FluidProperty#getPrimaryKey()}, {@link FluidStorageKeys#LIQUID} and
-     * {@link FluidStorageKeys#GAS}.
-     *
-     * @return the fluid builder
-     */
-    public FluidRegisterBuilder getFluidBuilder() {
-        FluidProperty prop = getProperty(PropertyKey.FLUID);
-        if (prop == null) {
-            throw new IllegalArgumentException("Material " + getIdentifier() + " does not have a Fluid!");
-        }
-
-        FluidStorageKey key = prop.getPrimaryKey();
-        FluidRegisterBuilder fluid = null;
-
-        if (key != null) fluid = prop.getStorage().getQueuedBuilder(key);
-        if (fluid != null) return fluid;
-
-        fluid = getFluidBuilder(FluidStorageKeys.LIQUID);
-        if (fluid != null) return fluid;
-
-        return getFluidBuilder(FluidStorageKeys.GAS);
+    public void setMaterialARBG(int materialARBG) {
+        materialInfo.colors.put(MaterialIconLayer.BaseLayer, materialARBG);
     }
 
-    /**
-     * NOTE: only available before the fluids are registered.
-     *
-     * @param key the key for the fluid
-     * @return the fluid corresponding with the key
-     */
-    public FluidRegisterBuilder getFluidBuilder(@NotNull FluidStorageKey key) {
-        FluidProperty prop = getProperty(PropertyKey.FLUID);
-        if (prop == null) {
-            throw new IllegalArgumentException("Material " + getIdentifier() + " does not have a Fluid!");
-        }
-
-        return prop.getStorage().getQueuedBuilder(key);
-    }
-
-    public Item getBucket() {
-        Fluid fluid = getFluid();
-        return fluid.getBucket();
-    }
-
-    public int getBlockHarvestLevel() {
-        if (!hasProperty(PropertyKey.DUST))
-            throw new IllegalArgumentException("Material " + materialInfo.Identifier +
-                    " does not have a harvest level! Is probably a Fluid");
-        int harvestLevel = getProperty(PropertyKey.DUST).getHarvestLevel();
-        return harvestLevel > 0 ? harvestLevel - 1 : harvestLevel;
-    }
-
-    public int getLayerARGB(int layerIndex) {
-        // get 2nd digit as positive if emissive layer
-        if (layerIndex < -100) {
-            layerIndex = (Math.abs(layerIndex) % 100) / 10;
-        }
-        if (layerIndex > materialInfo.colors.size() - 1 || layerIndex < 0) return -1;
-        int layerColor = getMaterialARGB(layerIndex);
-        if (layerColor != -1 || layerIndex == 0) return layerColor;
-        else return getMaterialARGB(0);
-    }
-
-    public int getMaterialARGB() {
-        return materialInfo.colors.getInt(0) | 0xff000000;
-    }
-
-    public void setMaterialARGB(int materialRGB) {
-        materialInfo.colors.set(0, materialRGB);
-    }
-
-    public int getMaterialSecondaryARGB() {
-        return materialInfo.colors.getInt(1) | 0xff000000;
-    }
-
-    public void setMaterialSecondaryARGB(int materialRGB) {
-        materialInfo.colors.set(1, materialRGB);
-    }
-
-    /**
-     * 获取特定颜色图层的ARGB值。
-     *
-     * @param index 图层索引 [0,10)。如果传入值大于10会导致崩溃。
-     * @return 特定颜色图层的ARGB值。
-     */
-    public int getMaterialARGB(int index) {
-        return materialInfo.colors.getInt(index) | 0xff000000;
-    }
-
-    /**
-     * 获取材料的RGB颜色值（默认图层）。
-     *
-     * @return 材料的RGB颜色值。
-     */
-    public int getMaterialRGB() {
-        return materialInfo.colors.getInt(0);
-    }
-
-    /**
-     * 获取特定颜色图层的RGB值。
-     *
-     * @param index 图层索引 [0,10)。如果传入值大于10会导致崩溃。
-     * @return 特定颜色图层的RGB值。
-     */
-    public int getMaterialRGB(int index) {
-        return materialInfo.colors.getInt(index);
-    }
-
-    public int getMaterialSecondaryRGB() {
-        return materialInfo.colors.getInt(1);
+    public void setMaterialARBG(MaterialIconLayer layer, int materialARBG) {
+        materialInfo.colors.put(layer, materialARBG);
     }
 
     public boolean hasFluidColor() {
-        return materialInfo.hasFluidColor;
+        return materialInfo.colors.containsKey(MaterialIconLayer.FluidLayer);
     }
 
     public MaterialIconSet getMaterialIconSet() {
-        return materialInfo.iconSet;
+        return this.materialInfo.iconSet;
     }
 
     public void setMaterialIconSet(MaterialIconSet materialIconSet) {
-        materialInfo.iconSet = materialIconSet;
+        this.materialInfo.iconSet = materialIconSet;
     }
 
-    public boolean isRadioactive() {
-        if (materialInfo.element != null)
-            return materialInfo.element.halfLifeSeconds() >= 0;
-        for (MaterialStack material : materialInfo.componentList)
-            if (material.material().isRadioactive()) return true;
-        return false;
-    }
-
-    public long getProtons() {
-        if (materialInfo.element != null)
-            return materialInfo.element.protons();
-        if (materialInfo.componentList.isEmpty())
-            return Math.max(1, 43);
-        long totalProtons = 0, totalAmount = 0;
-        for (MaterialStack material : materialInfo.componentList) {
-            if (material.isEmpty()) continue;
-            totalAmount += material.amount();
-            totalProtons += material.amount() * material.material().getProtons();
-        }
-        if (totalAmount == 0) return 0;
-        return totalProtons / totalAmount;
-    }
-
-    public long getNeutrons() {
-        if (materialInfo.element != null)
-            return materialInfo.element.neutrons();
-        if (materialInfo.componentList.isEmpty())
-            return 55;
-        long totalNeutrons = 0, totalAmount = 0;
-        for (MaterialStack material : materialInfo.componentList) {
-            if (material.isEmpty()) continue;
-            totalAmount += material.amount();
-            totalNeutrons += material.amount() * material.material().getNeutrons();
-        }
-        if (totalAmount == 0) return 0;
-        return totalNeutrons / totalAmount;
-    }
-
-    public long getMass() {
-        if (materialInfo.element != null)
-            return materialInfo.element.mass();
-        if (materialInfo.componentList.isEmpty())
-            return 98;
-        long totalMass = 0, totalAmount = 0;
-        for (MaterialStack material : materialInfo.componentList) {
-            if (material.isEmpty()) continue;
-            totalAmount += material.amount();
-            totalMass += material.amount() * material.material().getMass();
-        }
-        if (totalAmount == 0) return 0;
-        return totalMass / totalAmount;
-    }
-
-    public String toCamelCaseString() {
-        return FormattingUtil.lowerUnderscoreToUpperCamel(getName());
-    }
-
-    @NotNull
     public Identifier getIdentifier() {
-        return materialInfo.Identifier;
+        return materialInfo.identifier;
     }
 
     public String getUnlocalizedName() {
-        return materialInfo.Identifier.toLanguageKey("material");
+        return materialInfo.identifier.toLanguageKey("material");
     }
 
     public MutableComponent getLocalizedName() {
@@ -434,50 +171,38 @@ public class Material implements Comparable<Material> {
     }
 
     @Override
-    public int compareTo(Material material) {
+    public int compareTo(@NonNull Material material) {
         return toString().compareTo(material.toString());
     }
 
     @Override
     public String toString() {
-        return materialInfo.Identifier.toString();
+        return materialInfo.identifier.toString();
     }
 
-    // must be named multiply for GroovyScript to allow `mat * quantity -> MaterialStack`
-    public MaterialStack multiply(long amount) {
+    public MaterialStack multiply(int amount) {
         return new MaterialStack(this, amount);
     }
 
-    public <T extends IMaterialProperty> boolean hasProperty(PropertyKey<T> key) {
-        return getProperty(key) != null;
+    public <T extends MaterialAttribute> boolean hasAttribute(AttributeType<T> type) {
+        return attributeSet.hasAttribute(type);
     }
 
-    public <T extends IMaterialProperty> T getProperty(PropertyKey<T> key) {
-        return properties.getProperty(key);
+    public <T extends MaterialAttribute> T getAttribute(AttributeType<T> type) {
+        return attributeSet.getAttribute(type);
     }
 
-    public <T extends IMaterialProperty> void setProperty(PropertyKey<T> key, IMaterialProperty property) {
-        properties.setProperty(key, property);
-        properties.verify();
-    }
-
-    public boolean isSolid() {
-        return hasProperty(PropertyKey.INGOT) || hasProperty(PropertyKey.GEM);
-    }
-
-    public boolean hasFluid() {
-        return hasProperty(PropertyKey.FLUID);
+    public <T extends MaterialAttribute> void setAttribute(AttributeType<T> type, T value) {
+        attributeSet.setAttribute(type, value);
     }
 
     public void verifyMaterial() {
-        properties.verify();
-        flags.verify(this);
         this.chemicalFormula = calculateChemicalFormula();
         calculateDecompositionType();
     }
 
     public boolean isNull() {
-        return this == BreaMaterials.NULL;
+        return this == MarkerMaterial.NULL;
     }
 
     @Override
@@ -495,93 +220,67 @@ public class Material implements Comparable<Material> {
         return Objects.hashCode(this.getIdentifier());
     }
 
-    /**
-     * 保存材料的基本信息，如名称、颜色、ID等。
-     */
-    @SuppressWarnings("UnusedReturnValue")
+    public Holder<Material> builtInRegistryHolder() {
+        return BreaRegistries.MATERIALS.get(getIdentifier()).get();
+    }
+
+    public boolean isSame(Material other) {
+        return other == this;
+    }
+
+    private MaterialResource defaultResource;
+
+    public MaterialResource computeDefaultResource(Function<Material, MaterialResource> resourceConstructor) {
+        if (this.defaultResource == null) {
+            this.defaultResource = (MaterialResource) resourceConstructor.apply(this);
+        }
+
+        return this.defaultResource;
+    }
+
     @Accessors(chain = true)
     public static class MaterialInfo {
 
         /**
-         * 此材料的modid和未本地化名称。
-         * <p>
-         * 必需项。
+         * 材料的ID
          */
         @Getter
-        private final Identifier Identifier;
-
+        private final Identifier identifier;
         /**
-         * 此材料的颜色。
-         * 如果索引0之后的任何颜色值为-1，则表示未使用。
-         * <p>
-         * 默认值：若无成分则为0xFFFFFF，否则将为成分的平均值。
+         * 材料的贴图层级颜色
          */
         @Getter
         @Setter
-        private IntList colors = new IntArrayList(List.of(-1, -1));
-
-        /**
-         * 此材料的流体颜色是否启用。
-         * <p>
-         * 默认值：true
-         */
-        @Getter
-        @Setter
-        private boolean hasFluidColor = true;
-
-        /**
-         * 此材料的成分列表。
-         * <p>
-         * 默认值：无。
-         */
+        private Map<MaterialIconLayer, Integer> colors = new HashMap<>();
         @Getter
         @Setter
         private ImmutableList<MaterialStack> componentList;
-
-        /**
-         * 此材料的图标集。
-         * <p>
-         * 默认值：- 若具有GemProperty则为GEM_VERTICAL。
-         * - 若具有DustProperty或IngotProperty则为DULL。
-         */
         @Getter
         @Setter
         private MaterialIconSet iconSet;
-
-        /**
-         * 此材料的元素（如果是直接元素）。
-         * <p>
-         * 默认值：无。
-         */
         @Getter
         @Setter
         private Element element;
 
-        public MaterialInfo(Identifier Identifier) {
-            this.Identifier = Identifier;
+        public MaterialInfo(@NotNull Identifier identifier) {
+            this.identifier = identifier;
+            colors.put(MaterialIconLayer.BaseLayer, -1);
         }
 
-        public void verifyInfo(MaterialProperties p, boolean averageRGB) {
-            // Verify IconSet
-
-            if (iconSet == null) {
-                if (p.hasProperty(PropertyKey.FLUID)) {
-                    iconSet = BreaMaterialIconSet.FLUID;
-                } else iconSet = BreaMaterialIconSet.DULL;
-            }
-
-            // Verify MaterialRGB
-            if (colors.getInt(0) == -1) {
+        public void verifyInfo(MaterialAttributeSet attributeSet, boolean averageRGB) {
+            if (iconSet == null)
+                iconSet = attributeSet.hasAttribute(AttributeType.FLUID) ? MaterialIconSet.FLUID : MaterialIconSet.DEFAULT;
+            if (colors.get(MaterialIconLayer.BaseLayer) == -1) {
                 if (!averageRGB || componentList.isEmpty())
-                    colors.set(0, 0xFFFFFF);
+                    colors.put(MaterialIconLayer.BaseLayer, 0xFFFFFF);
                 else {
                     long colorTemp = 0;
                     long divisor = 0;
-                    for (MaterialStack stack : componentList) {
-                        colorTemp += stack.material().getMaterialARGB() * stack.amount();
+                    for (var stack : componentList) {
+                        colorTemp += stack.getMaterial().getMaterialARBG() * stack.amount();
                         divisor += stack.amount();
                     }
-                    colors.set(0, BreaMath.saturatedCast(colorTemp / divisor));
+                    colors.put(MaterialIconLayer.BaseLayer, BreaMath.saturatedCast(colorTemp / divisor));
                 }
             }
         }
@@ -589,6 +288,139 @@ public class Material implements Comparable<Material> {
         public MaterialInfo setComponents(MaterialStack... components) {
             this.componentList = ImmutableList.copyOf(Arrays.stream(components).toList());
             return this;
+        }
+    }
+
+    public static class Builder implements IMaterialBuilderExtension {
+
+        private final Material.MaterialInfo materialInfo;
+        private final MaterialAttributeSet attributeSet;
+        private Set<MaterialVariant> ignoredVariants = null;
+
+        private String formula = null;
+
+        /*
+         * The temporary list of components for this Material.
+         */
+        private List<MaterialStack> composition = new ArrayList<>();
+
+        /*
+         * Temporary value to use to determine how to calculate default RGB
+         */
+        private boolean averageRGB = false;
+
+        public Builder(Identifier Identifier) {
+            String name = Identifier.getPath();
+            if (name.charAt(name.length() - 1) == '_')
+                throw new IllegalArgumentException("Material name cannot end with a '_'!");
+            materialInfo = new Material.MaterialInfo(Identifier);
+            attributeSet = new MaterialAttributeSet();
+        }
+
+        public <T extends MaterialAttribute> T getAttribute(AttributeType<T> key) {
+            return attributeSet.getAttribute(key);
+        }
+
+        public <T extends MaterialAttribute> boolean hasAttribute(AttributeType<T> key) {
+            return attributeSet.hasAttribute(key);
+        }
+
+        public <T extends MaterialAttribute> Builder setAttribute(AttributeType<T> key, T value) {
+            attributeSet.setAttribute(key, value);
+            return this;
+        }
+
+        public <T extends MaterialAttribute> Builder addAttribute(AttributeType<T> key) {
+            attributeSet.setAttribute(key, key.constructDefault().orElseThrow(() -> new IllegalArgumentException("attribute \"" + key + "\" do not have default constructor!")));
+            return this;
+        }
+
+        public Builder color(int color) {
+            materialInfo.getColors().put(MaterialIconLayer.BaseLayer, color);
+            return this;
+        }
+
+        public Builder secondaryColor(int color) {
+            materialInfo.getColors().put(MaterialIconLayer.SecondaryLayer, color);
+            return this;
+        }
+
+        public Builder color(MaterialIconLayer layer, int color) {
+            this.materialInfo.getColors().put(layer, color);
+            return this;
+        }
+
+        public Builder colorAverage() {
+            this.averageRGB = true;
+            return this;
+        }
+
+        public Builder iconSet(MaterialIconSet iconSet) {
+            materialInfo.setIconSet(iconSet);
+            return this;
+        }
+
+        public Builder components(Object... components) {
+            Preconditions.checkArgument(
+                    components.length % 2 == 0,
+                    "Material Components list malformed!");
+
+            for (int i = 0; i < components.length; i += 2) {
+                if (components[i] == null) {
+                    throw new IllegalArgumentException(
+                            "Material in Components List is null for Material " + this.materialInfo.getIdentifier());
+                }
+                composition.add(new MaterialStack(components[i] instanceof CharSequence chars ? BreaMaterials.get(chars.toString()) : (Material) components[i],
+                        ((Number) components[i + 1]).intValue()));
+            }
+            return this;
+        }
+
+        public Builder componentStacks(MaterialStack... components) {
+            composition = Arrays.asList(components);
+            return this;
+        }
+
+        public Builder componentStacks(ImmutableList<MaterialStack> components) {
+            composition = components;
+            return this;
+        }
+
+        public Builder ignoredVariants(MaterialVariant... variants) {
+            if (this.ignoredVariants == null) {
+                this.ignoredVariants = new HashSet<>();
+            }
+            this.ignoredVariants.addAll(Arrays.asList(variants));
+            return this;
+        }
+
+        public Builder element(Element element) {
+            this.materialInfo.setElement(element);
+            return this;
+        }
+
+        public Builder formula(String formula) {
+            this.formula = formula;
+            return this;
+        }
+
+        public Material buildAndRegister() {
+            materialInfo.setComponentList(ImmutableList.copyOf(composition));
+            for (MaterialStack materialStack : materialInfo.getComponentList()) {
+                Material material = materialStack.getMaterial();
+            }
+
+            var mat = new Material(materialInfo, attributeSet);
+            if (formula != null) {
+                mat.setFormula(formula);
+            }
+            materialInfo.verifyInfo(attributeSet, averageRGB);
+            mat.registerMaterial();
+            if (ignoredVariants != null) {
+                // ignoredVariants.forEach(p -> p.setIgnored(mat));
+            }
+            mat.verifyMaterial();
+            return mat;
         }
     }
 }

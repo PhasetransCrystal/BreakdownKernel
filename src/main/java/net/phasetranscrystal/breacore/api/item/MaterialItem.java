@@ -1,22 +1,24 @@
-package net.phasetranscrystal.breacore.api.block;
+package net.phasetranscrystal.breacore.api.item;
 
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
 
 import lombok.Getter;
 
-public class MaterialBlock extends Block {
+public class MaterialItem extends Item {
 
     @Getter
     private final MaterialVariant variant;
     @Getter
     private final Material material;
 
-    public MaterialBlock(MaterialVariant variant, Material material, Properties properties) {
+    public MaterialItem(MaterialVariant variant, Material mat, Properties properties) {
         super(properties);
         this.variant = variant;
-        this.material = material;
+        this.material = mat;
     }
+
+    public void onRegister() {}
 }

@@ -1,38 +1,19 @@
 package net.phasetranscrystal.breacore.data.materials;
 
-import net.phasetranscrystal.brealib.BreaLib;
-
 import net.phasetranscrystal.breacore.BreakdownCore;
 import net.phasetranscrystal.breacore.api.BreaApi;
+import net.phasetranscrystal.breacore.api.addon.AddonFinder;
+import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
 import net.phasetranscrystal.breacore.api.material.MarkerMaterial;
-import net.phasetranscrystal.breacore.api.material.MarkerMaterials;
 import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.material.info.MaterialFlag;
-import net.phasetranscrystal.breacore.api.material.stack.MaterialStack;
-import net.phasetranscrystal.breacore.api.tag.TagPrefix;
 import net.phasetranscrystal.breacore.data.materials.material.*;
 
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static net.phasetranscrystal.breacore.api.material.info.MaterialFlags.*;
-import static net.phasetranscrystal.breacore.api.tag.TagPrefix.ORES;
-import static net.phasetranscrystal.breacore.data.tagprefix.BreaTagPrefixes.*;
-
 public class BreaMaterials {
 
-    public static final List<MaterialFlag> STD_METAL = new ArrayList<>();
-    public static final List<MaterialFlag> EXT_METAL = new ArrayList<>();
-    public static final List<MaterialFlag> EXT2_METAL = new ArrayList<>();
-    public static final MarkerMaterial NULL = new MarkerMaterial(BreaLib.id("null"));
     /// 化学颜料
     public static Material[] CHEMICAL_DYES;
     // region 元素周期表材料
@@ -284,16 +265,6 @@ public class BreaMaterials {
     // 空气
     public static Material LiquidEnderAir;
 
-    static {
-        STD_METAL.add(GENERATE_PLATE);
-
-        EXT_METAL.addAll(STD_METAL);
-        EXT_METAL.add(GENERATE_ROD);
-
-        EXT2_METAL.addAll(EXT_METAL);
-        EXT2_METAL.addAll(Arrays.asList(GENERATE_LONG_ROD, GENERATE_BOLT_SCREW));
-    }
-
     public static void init() {
         MarkerMaterials.register();
         ElementMaterials.register();
@@ -305,6 +276,8 @@ public class BreaMaterials {
 
         MaterialFlagAddition.register();
 
+        AddonFinder.getAddonList().forEach(IBreaAddon::addMaterial);
+
         CHEMICAL_DYES = new Material[] {
                 DyeWhite, DyeOrange,
                 DyeMagenta, DyeLightBlue,
@@ -315,155 +288,16 @@ public class BreaMaterials {
                 DyeBrown, DyeGreen,
                 DyeRed, DyeBlack
         };
-
-        gem.setIgnored(Diamond, Items.DIAMOND);
-        gem.setIgnored(Emerald, Items.EMERALD);
-        gem.setIgnored(Lapis, Items.LAPIS_LAZULI);
-        gem.setIgnored(NetherQuartz, Items.QUARTZ);
-        gem.setIgnored(Coal, Items.COAL);
-        gem.setIgnored(Amethyst, Items.AMETHYST_SHARD);
-        gem.setIgnored(EchoShard, Items.ECHO_SHARD);
-        excludeAllGems(Charcoal, Items.CHARCOAL);
-        excludeAllGems(Flint, Items.FLINT);
-        excludeAllGems(EnderPearl, Items.ENDER_PEARL);
-        excludeAllGems(EnderEye, Items.ENDER_EYE);
-        excludeAllGems(NetherStar, Items.NETHER_STAR);
-
-        dust.setIgnored(Redstone, Items.REDSTONE);
-        dust.setIgnored(Glowstone, Items.GLOWSTONE_DUST);
-        dust.setIgnored(Gunpowder, Items.GUNPOWDER);
-        dust.setIgnored(Sugar, Items.SUGAR);
-        dust.setIgnored(Bone, Items.BONE_MEAL);
-        dust.setIgnored(Blaze, Items.BLAZE_POWDER);
-
-        rod.setIgnored(Wood, Items.STICK);
-        rod.setIgnored(Bone, Items.BONE);
-        rod.setIgnored(Blaze, Items.BLAZE_ROD);
-        rod.setIgnored(Paper);
-
-        ingot.setIgnored(Iron, Items.IRON_INGOT);
-        ingot.setIgnored(Gold, Items.GOLD_INGOT);
-        ingot.setIgnored(Copper, Items.COPPER_INGOT);
-        ingot.setIgnored(Netherite, Items.NETHERITE_INGOT);
-        ingot.setIgnored(Brick, Items.BRICK);
-        ingot.setIgnored(Wax, Items.HONEYCOMB);
-
-        nugget.setIgnored(Gold, Items.GOLD_NUGGET);
-        nugget.setIgnored(Iron, Items.IRON_NUGGET);
-
-        plate.setIgnored(Paper, Items.PAPER);
-
-        block.setIgnored(Iron, Blocks.IRON_BLOCK);
-        block.setIgnored(Gold, Blocks.GOLD_BLOCK);
-        block.setIgnored(Copper, Blocks.COPPER_BLOCK);
-        block.setIgnored(Netherite, Items.NETHERITE_BLOCK);
-        block.setIgnored(Lapis, Blocks.LAPIS_BLOCK);
-        block.setIgnored(Emerald, Blocks.EMERALD_BLOCK);
-        block.setIgnored(Redstone, Blocks.REDSTONE_BLOCK);
-        block.setIgnored(Diamond, Blocks.DIAMOND_BLOCK);
-        block.setIgnored(Coal, Blocks.COAL_BLOCK);
-        block.setIgnored(Amethyst, Blocks.AMETHYST_BLOCK);
-        block.setIgnored(Glass, Blocks.GLASS);
-        block.setIgnored(Glowstone, Blocks.GLOWSTONE);
-        block.setIgnored(Wood);
-        block.setIgnored(TreatedWood);
-        block.setIgnored(Clay, Blocks.CLAY);
-        block.setIgnored(Brick, Blocks.BRICKS);
-        block.setIgnored(Bone, Blocks.BONE_BLOCK);
-        block.setIgnored(NetherQuartz, Blocks.QUARTZ_BLOCK);
-        block.setIgnored(Ice, Blocks.ICE);
-        block.setIgnored(Concrete, Blocks.WHITE_CONCRETE, Blocks.ORANGE_CONCRETE, Blocks.MAGENTA_CONCRETE,
-                Blocks.LIGHT_BLUE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE,
-                Blocks.PINK_CONCRETE, Blocks.GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE, Blocks.CYAN_CONCRETE,
-                Blocks.PURPLE_CONCRETE, Blocks.BLUE_CONCRETE,
-                Blocks.BROWN_CONCRETE, Blocks.GREEN_CONCRETE, Blocks.RED_CONCRETE, Blocks.BLACK_CONCRETE);
-        block.setIgnored(Blaze);
-        block.setIgnored(Wax, Blocks.HONEYCOMB_BLOCK);
-
-        rock.setIgnored(Granite, Blocks.GRANITE);
-        rock.setIgnored(Granite, Blocks.POLISHED_GRANITE);
-        rock.setIgnored(Andesite, Blocks.ANDESITE);
-        rock.setIgnored(Andesite, Blocks.POLISHED_ANDESITE);
-        rock.setIgnored(Diorite, Blocks.DIORITE);
-        rock.setIgnored(Diorite, Blocks.POLISHED_DIORITE);
-        rock.setIgnored(Stone, Blocks.STONE);
-        rock.setIgnored(Calcite, Blocks.CALCITE);
-        rock.setIgnored(Netherrack, Blocks.NETHERRACK);
-        rock.setIgnored(Obsidian, Blocks.OBSIDIAN);
-        rock.setIgnored(Endstone, Blocks.END_STONE);
-        rock.setIgnored(Deepslate, Blocks.DEEPSLATE);
-        rock.setIgnored(Basalt, Blocks.BASALT);
-        rock.setIgnored(Blackstone, Blocks.BLACKSTONE);
-        block.setIgnored(Sculk, Blocks.SCULK);
-
-        for (TagPrefix prefix : ORES.keySet()) {
-            TagPrefix.OreType oreType = ORES.get(prefix);
-            if (oreType.shouldDropAsItem() && oreType.material() != null) {
-                prefix.addSecondaryMaterial(new MaterialStack(oreType.material().get(), dust.materialAmount()));
-            }
-        }
-
-        dye.setIgnored(DyeBlack, Items.BLACK_DYE);
-        dye.setIgnored(DyeRed, Items.RED_DYE);
-        dye.setIgnored(DyeGreen, Items.GREEN_DYE);
-        dye.setIgnored(DyeBrown, Items.BROWN_DYE);
-        dye.setIgnored(DyeBlue, Items.BLUE_DYE);
-        dye.setIgnored(DyePurple, Items.PURPLE_DYE);
-        dye.setIgnored(DyeCyan, Items.CYAN_DYE);
-        dye.setIgnored(DyeLightGray, Items.LIGHT_GRAY_DYE);
-        dye.setIgnored(DyeGray, Items.GRAY_DYE);
-        dye.setIgnored(DyePink, Items.PINK_DYE);
-        dye.setIgnored(DyeLime, Items.LIME_DYE);
-        dye.setIgnored(DyeYellow, Items.YELLOW_DYE);
-        dye.setIgnored(DyeLightBlue, Items.LIGHT_BLUE_DYE);
-        dye.setIgnored(DyeMagenta, Items.MAGENTA_DYE);
-        dye.setIgnored(DyeOrange, Items.ORANGE_DYE);
-        dye.setIgnored(DyeWhite, Items.WHITE_DYE);
-
-        // register vanilla materials
-
-        rawOre.setIgnored(Gold, Items.RAW_GOLD);
-        rawOre.setIgnored(Iron, Items.RAW_IRON);
-        rawOre.setIgnored(Copper, Items.RAW_COPPER);
-        rawOreBlock.setIgnored(Gold, Blocks.RAW_GOLD_BLOCK);
-        rawOreBlock.setIgnored(Iron, Blocks.RAW_IRON_BLOCK);
-        rawOreBlock.setIgnored(Copper, Blocks.RAW_COPPER_BLOCK);
-
-        block.modifyMaterialAmount(Amethyst, 4);
-        block.modifyMaterialAmount(EchoShard, 4);
-        block.modifyMaterialAmount(Glowstone, 4);
-        block.modifyMaterialAmount(NetherQuartz, 4);
-        block.modifyMaterialAmount(CertusQuartz, 4);
-        block.modifyMaterialAmount(Brick, 4);
-        block.modifyMaterialAmount(Clay, 4);
-
-        block.modifyMaterialAmount(Concrete, 1);
-        block.modifyMaterialAmount(Glass, 1);
-        block.modifyMaterialAmount(Ice, 1);
-        block.modifyMaterialAmount(Obsidian, 1);
-        block.modifyMaterialAmount(Sculk, 1);
-        block.modifyMaterialAmount(Wax, 4);
-
-        rod.modifyMaterialAmount(Blaze, 4);
-        rod.modifyMaterialAmount(Bone, 5);
     }
 
     @NotNull
     public static Material get(String name) {
         var mat = BreaApi.materialManager.getMaterial(Identifier.parse(name));
-        // mat could be null here due to the registrate grabbing a material that isn't in the map
+        // mat could be null here due to the registrate grabbing a oldmaterial that isn't in the map
         if (mat == null) {
             BreakdownCore.LOGGER.warn("{} is not a known Material", name);
-            return BreaMaterials.NULL;
+            return MarkerMaterial.NULL;
         }
         return mat;
     }
-
-    // region MISC
-    private static void excludeAllGems(Material material, ItemLike... items) {
-        gem.setIgnored(material, items);
-        excludeAllGemsButNormal(material);
-    }
-
-    private static void excludeAllGemsButNormal(Material material) {}
 }
