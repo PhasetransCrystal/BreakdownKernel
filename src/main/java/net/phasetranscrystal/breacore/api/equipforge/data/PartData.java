@@ -47,10 +47,10 @@ public class PartData {
     }
 
     public void recalculateCache() {
-        Map<Identifier, Double> baseValues = MaterialPerkHelper.extractBaseValues(material);
+        Map<Identifier, Double> baseValues = MaterialPerkHelper.extractBaseValues(material, partType.getForgingType());
         this.cachedValues = calculateValues(baseValues, partType, modification.orElse(null));
 
-        List<PerkStack> basePerks = MaterialPerkHelper.extractPerkList(material);
+        List<PerkStack> basePerks = MaterialPerkHelper.extractPerkList(material, partType.getForgingType());
         this.cachedPerks = new ArrayList<>(partType.getPerks(Map.of(partType.getPerkSourceId(), basePerks)));
     }
 

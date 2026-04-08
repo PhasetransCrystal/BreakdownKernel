@@ -1,10 +1,11 @@
 package net.phasetranscrystal.breacore.api.equipforge;
 
-import net.phasetranscrystal.breacore.api.material.Material;
+import net.phasetranscrystal.breacore.api.material.attributes.AttributeType;
 import net.phasetranscrystal.breacore.api.perk.PerkStack;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,9 @@ public abstract class PartType {
         return BreaRegistries.PART_TYPES.getKey(this);
     }
 
-    public abstract boolean isMaterialValid(Material material);
+    public boolean isItemStackValid(ItemStack stack) {// TODO
+        return false;
+    };
 
     public abstract Map<Identifier, Double> getBaseValues(Map<Identifier, Double> materialValues);
 
@@ -25,4 +28,6 @@ public abstract class PartType {
     }
 
     public abstract Identifier getPerkSourceId();
+
+    public abstract AttributeType<? extends IForgingProperty> getForgingType();
 }
