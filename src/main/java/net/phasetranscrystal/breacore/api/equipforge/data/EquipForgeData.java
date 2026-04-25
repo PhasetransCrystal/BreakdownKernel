@@ -18,6 +18,7 @@ import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,8 @@ public class EquipForgeData implements IPerkProvider {
 
     public static final Codec<EquipForgeData> CODEC = RecordCodecBuilder.create(i -> i.group(
             BreaRegistries.EQUIPMENT_TYPES.byNameCodec().fieldOf("type").forGetter(EquipForgeData::getEquipmentType),
-            Codec.unboundedMap(Identifier.CODEC, PartData.CODEC).fieldOf("parts").forGetter(EquipForgeData::getParts)).apply(i, EquipForgeData::new));
+            Codec.unboundedMap(Identifier.CODEC, PartData.CODEC).fieldOf("parts").forGetter(EquipForgeData::getParts),
+            Codec.BOOL.fieldOf("broken").forGetter(EquipForgeData::isBroken)).apply(i, EquipForgeData::new));
 
     public static final StreamCodec<ByteBuf, EquipForgeData> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
@@ -33,13 +35,16 @@ public class EquipForgeData implements IPerkProvider {
     private final EquipmentType equipmentType;
     @Getter
     private final Map<Identifier, PartData> parts;
+    @Getter
+    private boolean broken;
 
     private Map<Identifier, Double> mergedValuesCache;
     private List<PerkStack> mergedPerksCache;
 
-    public EquipForgeData(EquipmentType type, Map<Identifier, PartData> parts) {
+    public EquipForgeData(EquipmentType type, Map<Identifier, PartData> parts,boolean broken) {
         this.equipmentType = type;
         this.parts = parts;
+        this.broken = broken;
     }
 
     public Map<Identifier, Double> getMergedValues() {
@@ -50,7 +55,7 @@ public class EquipForgeData implements IPerkProvider {
     }
 
     public Collection<EquipAttributeModifier> compute() {
-        return equipmentType.convertToAttributeModifiers(getMergedValues());
+        return broken ? Collections.emptyList() : equipmentType.convertToAttributeModifiers(getMergedValues());
     }
 
     public void applyToItemStack(ItemStack stack) {
@@ -65,6 +70,7 @@ public class EquipForgeData implements IPerkProvider {
     }
 
     public Map<EquipmentSlotGroup, List<PerkStack>> getPerkStacks() {
+        if(broken) return Collections.emptyMap();
         EquipmentSlotGroup slotGroup = equipmentType.getEquipmentSlot();
         return Map.of(slotGroup, getMergedPerks());
     }
