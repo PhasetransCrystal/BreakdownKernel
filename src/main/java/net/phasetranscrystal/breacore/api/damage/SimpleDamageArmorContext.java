@@ -9,6 +9,7 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.phasetranscrystal.breacore.api.magic.Element;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -104,6 +105,7 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     @Override
     public void setSpellShieldDurability(double durability) {
         this.spellShieldDurability = Math.max(0.0, durability);
+        //TODO 护盾损坏算法
     }
 
     @Override
@@ -132,13 +134,38 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
             return 0.0;
         }
 
-        CommonHooks.onArmorHurt(damageSource, ARMOR_SLOTS, (float) remaining, victim);
+        List<EquipmentSlot> effectiveArmorSlots = resolveEffectiveArmorSlots();
+        if (effectiveArmorSlots.isEmpty()) {
+            return 0.0;
+        }
+
+        double splitLoss = remaining / effectiveArmorSlots.size();
+        CommonHooks.onArmorHurt(
+                damageSource,
+                effectiveArmorSlots.toArray(EquipmentSlot[]::new),
+                (float) splitLoss,
+                victim
+        );
         return remaining;
     }
 
     private double applyGlobalChestInsert(double armorDurabilityLoss) {
         // TODO 胸甲插板全局生效逻辑：若存在插板，优先消耗插板并减少 remaining。
         return armorDurabilityLoss;
+    }
+
+    private List<EquipmentSlot> resolveEffectiveArmorSlots() {
+        return List.of(ARMOR_SLOTS).stream()
+                .filter(slot -> {
+                    ItemStack armorStack = victim.getItemBySlot(slot);
+                    return !armorStack.isEmpty() && !isArmorBroken(armorStack, slot);
+                })
+                .toList();
+    }
+
+    private boolean isArmorBroken(ItemStack armorStack, EquipmentSlot slot) {
+        // TODO 对接你的护甲损坏状态系统：为 true 时该护甲不再损耗耐久，也不计入有效护甲件数。
+        return false;
     }
 
     private static Map<Element, Double> initializeElementResistance(LivingEntity victim) {
