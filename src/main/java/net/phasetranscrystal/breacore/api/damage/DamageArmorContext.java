@@ -36,6 +36,14 @@ public interface DamageArmorContext {
     double getSoftArmorValue();
 
     /**
+     * 返回暴击伤害减免值。
+     */
+    default double getCriticalDamageReduction() {
+        // TODO 对接防御实体 attribute：暴击伤害减免。
+        return 0.0;
+    }
+
+    /**
      * 返回元素抗性值，范围建议为 [0,1]。
      */
     double getElementResistance(Element element);

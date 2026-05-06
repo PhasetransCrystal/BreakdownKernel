@@ -17,6 +17,8 @@ public abstract class DamageCalculationEvent extends EntityEvent {
     private final double physicalLayerFinalDamage;
     private final double hardArmorDurabilityLoss;
     private final double softArmorDurabilityLoss;
+    private final double preCriticalFinalDamage;
+    private final double criticalMultiplier;
 
     protected DamageCalculationEvent(
             LivingEntity victim,
@@ -24,7 +26,9 @@ public abstract class DamageCalculationEvent extends EntityEvent {
             double spellLayerFinalDamage,
             double physicalLayerFinalDamage,
             double hardArmorDurabilityLoss,
-            double softArmorDurabilityLoss
+            double softArmorDurabilityLoss,
+            double preCriticalFinalDamage,
+            double criticalMultiplier
     ) {
         super(victim);
         this.damageSource = damageSource;
@@ -32,6 +36,8 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         this.physicalLayerFinalDamage = Math.max(0.0, physicalLayerFinalDamage);
         this.hardArmorDurabilityLoss = Math.max(0.0, hardArmorDurabilityLoss);
         this.softArmorDurabilityLoss = Math.max(0.0, softArmorDurabilityLoss);
+        this.preCriticalFinalDamage = Math.max(0.0, preCriticalFinalDamage);
+        this.criticalMultiplier = Math.max(1.0, criticalMultiplier);
     }
 
     @Override
@@ -75,6 +81,14 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         return softArmorDurabilityLoss;
     }
 
+    public double getPreCriticalFinalDamage() {
+        return preCriticalFinalDamage;
+    }
+
+    public double getCriticalMultiplier() {
+        return criticalMultiplier;
+    }
+
     /**
      * 初次计算后、应用前的可修改事件。
      */
@@ -84,6 +98,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         private double shieldDurabilityLoss;
         private double armorDurabilityLoss;
         private double finalDamage;
+        private boolean critical;
 
         public Pre(
                 LivingEntity victim,
@@ -94,6 +109,9 @@ public abstract class DamageCalculationEvent extends EntityEvent {
                 double physicalLayerFinalDamage,
                 double hardArmorDurabilityLoss,
                 double softArmorDurabilityLoss,
+                double preCriticalFinalDamage,
+                double criticalMultiplier,
+                boolean critical,
                 double finalDamage
         ) {
             super(
@@ -102,11 +120,14 @@ public abstract class DamageCalculationEvent extends EntityEvent {
                     spellLayerFinalDamage,
                     physicalLayerFinalDamage,
                     hardArmorDurabilityLoss,
-                    softArmorDurabilityLoss
+                    softArmorDurabilityLoss,
+                    preCriticalFinalDamage,
+                    criticalMultiplier
             );
             this.shieldHealthLoss = Math.max(0.0, shieldHealthLoss);
             this.shieldDurabilityLoss = Math.max(0.0, shieldDurabilityLoss);
             this.armorDurabilityLoss = Math.max(0.0, hardArmorDurabilityLoss + softArmorDurabilityLoss);
+            this.critical = critical;
             this.finalDamage = Math.max(0.0, finalDamage);
         }
 
@@ -141,6 +162,14 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         public void setFinalDamage(double finalDamage) {
             this.finalDamage = Math.max(0.0, finalDamage);
         }
+
+        public boolean isCritical() {
+            return critical;
+        }
+
+        public void setCritical(boolean critical) {
+            this.critical = critical;
+        }
     }
 
     /**
@@ -153,6 +182,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         private final double armorDurabilityLoss;
         private final double finalDamage;
         private final double appliedArmorDurabilityLoss;
+        private final boolean critical;
 
         public Post(Pre pre, double appliedArmorDurabilityLoss) {
             super(
@@ -161,13 +191,16 @@ public abstract class DamageCalculationEvent extends EntityEvent {
                     pre.getSpellLayerFinalDamage(),
                     pre.getPhysicalLayerFinalDamage(),
                     pre.getHardArmorDurabilityLoss(),
-                    pre.getSoftArmorDurabilityLoss()
+                    pre.getSoftArmorDurabilityLoss(),
+                    pre.getPreCriticalFinalDamage(),
+                    pre.getCriticalMultiplier()
             );
             this.shieldHealthLoss = Math.max(0.0, pre.getShieldHealthLoss());
             this.shieldDurabilityLoss = Math.max(0.0, pre.getShieldDurabilityLoss());
             this.armorDurabilityLoss = Math.max(0.0, pre.getArmorDurabilityLoss());
             this.finalDamage = Math.max(0.0, pre.getFinalDamage());
             this.appliedArmorDurabilityLoss = Math.max(0.0, appliedArmorDurabilityLoss);
+            this.critical = pre.isCritical();
         }
 
         public double getShieldHealthLoss() {
@@ -188,6 +221,10 @@ public abstract class DamageCalculationEvent extends EntityEvent {
 
         public double getAppliedArmorDurabilityLoss() {
             return appliedArmorDurabilityLoss;
+        }
+
+        public boolean isCritical() {
+            return critical;
         }
     }
 }

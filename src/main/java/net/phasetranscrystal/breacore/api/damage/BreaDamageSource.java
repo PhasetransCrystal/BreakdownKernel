@@ -21,6 +21,8 @@ public class BreaDamageSource extends DamageSource {
     private final double softArmorPenetrationValue;
     private final double hardArmorActionRatio;
     private final double softArmorActionRatio;
+    private final double criticalChance;
+    private final double criticalDamage;
 
     public BreaDamageSource(
             Holder<DamageType> type,
@@ -33,7 +35,9 @@ public class BreaDamageSource extends DamageSource {
             double hardArmorPenetrationValue,
             double softArmorPenetrationValue,
             double hardArmorActionRatio,
-            double softArmorActionRatio
+            double softArmorActionRatio,
+            double criticalChance,
+            double criticalDamage
     ) {
         super(type, directEntity, causingEntity, damageSourcePosition);
         this.element = element;
@@ -43,6 +47,8 @@ public class BreaDamageSource extends DamageSource {
         this.softArmorPenetrationValue = clampPenetrationValue(softArmorPenetrationValue);
         this.hardArmorActionRatio = clamp01(hardArmorActionRatio);
         this.softArmorActionRatio = clamp01(softArmorActionRatio);
+        this.criticalChance = clamp01(criticalChance);
+        this.criticalDamage = Math.max(0.0, criticalDamage);
     }
 
     public BreaDamageSource(
@@ -68,7 +74,9 @@ public class BreaDamageSource extends DamageSource {
                 hardArmorPenetrationValue,
                 softArmorPenetrationValue,
                 hardArmorActionRatio,
-                softArmorActionRatio
+                softArmorActionRatio,
+                resolveCriticalChance(causingEntity, directEntity),
+                resolveCriticalDamage(causingEntity, directEntity)
         );
     }
 
@@ -92,7 +100,9 @@ public class BreaDamageSource extends DamageSource {
                 Double.MAX_VALUE,
                 Double.MAX_VALUE,
                 1.0,
-                1.0
+                1.0,
+                resolveCriticalChance(causingEntity, directEntity),
+                resolveCriticalDamage(causingEntity, directEntity)
         );
     }
 
@@ -136,7 +146,9 @@ public class BreaDamageSource extends DamageSource {
                 hardArmorPenetrationValue,
                 softArmorPenetrationValue,
                 hardArmorActionRatio,
-                softArmorActionRatio
+                softArmorActionRatio,
+                0.0,
+                0.0
         );
     }
 
@@ -157,7 +169,9 @@ public class BreaDamageSource extends DamageSource {
                 Double.MAX_VALUE,
                 Double.MAX_VALUE,
                 1.0,
-                1.0
+                1.0,
+                0.0,
+                0.0
         );
     }
 
@@ -189,6 +203,14 @@ public class BreaDamageSource extends DamageSource {
         return softArmorActionRatio;
     }
 
+    public double getCriticalChance() {
+        return criticalChance;
+    }
+
+    public double getCriticalDamage() {
+        return criticalDamage;
+    }
+
     private static double clamp01(double value) {
         return Math.clamp(value, 0.0, 1.0);
     }
@@ -198,5 +220,15 @@ public class BreaDamageSource extends DamageSource {
             return Double.MAX_VALUE;
         }
         return Math.max(0.0, value);
+    }
+
+    private static double resolveCriticalChance(@Nullable Entity causingEntity, @Nullable Entity directEntity) {
+        // TODO 对接伤害来源实体 attribute：暴击率。
+        return 0.0;
+    }
+
+    private static double resolveCriticalDamage(@Nullable Entity causingEntity, @Nullable Entity directEntity) {
+        // TODO 对接伤害来源实体 attribute：暴击伤害。
+        return 0.0;
     }
 }

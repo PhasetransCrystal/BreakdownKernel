@@ -34,6 +34,7 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     private final double spellShieldSturdiness;
     private final double hardArmorValue;
     private final double softArmorValue;
+    private final double criticalDamageReduction;
 
     private final Map<Element, Double> elementResistance;
 
@@ -59,6 +60,7 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         this.spellShieldSturdiness = 0.0; // TODO 从实体护盾系统提取默认护盾坚固度（[0,1]）。
         this.hardArmorValue = Math.max(0.0, victim.getAttributeValue(Attributes.ARMOR));
         this.softArmorValue = Math.max(0.0, victim.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+        this.criticalDamageReduction = 0.0; // TODO 从防御实体 attribute 中提取暴击伤害减免。
         this.elementResistance = initializeElementResistance(victim);
     }
 
@@ -116,6 +118,11 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     @Override
     public double getSoftArmorValue() {
         return softArmorValue;
+    }
+
+    @Override
+    public double getCriticalDamageReduction() {
+        return criticalDamageReduction;
     }
 
     @Override

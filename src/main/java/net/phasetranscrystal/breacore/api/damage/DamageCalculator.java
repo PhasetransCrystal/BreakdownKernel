@@ -69,6 +69,14 @@ public final class DamageCalculator {
         double softPenetrationRatio = penetrationRatioFor(softOutcome, softPenetrationComparisonRatio);
         double physicalLayerFinalDamage = remainingAfterHard * softPenetrationRatio;
 
+        double preCriticalFinalDamage = spellLayerFinalDamage + physicalLayerFinalDamage;
+        boolean critical = armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
+        double criticalMultiplier = critical ?  Math.max(
+                1.0,
+                1.0 + damageSource.getCriticalDamage() - armorContext.getCriticalDamageReduction()
+        ) : 0;
+        double finalDamage = preCriticalFinalDamage * criticalMultiplier;
+
         DamageCalculationEvent.Pre preEvent = new DamageCalculationEvent.Pre(
                 armorContext.getVictim(),
                 damageSource,
@@ -78,7 +86,10 @@ public final class DamageCalculator {
                 physicalLayerFinalDamage,
                 hardArmorDurabilityLoss,
                 softArmorDurabilityLoss,
-                spellLayerFinalDamage + physicalLayerFinalDamage
+                preCriticalFinalDamage,
+                criticalMultiplier,
+                critical,
+                finalDamage
         );
 
         NeoForge.EVENT_BUS.post(preEvent);
@@ -93,6 +104,7 @@ public final class DamageCalculator {
             preEvent.setShieldHealthLoss(0.0);
             preEvent.setShieldDurabilityLoss(0.0);
             preEvent.setArmorDurabilityLoss(0.0);
+            preEvent.setCritical(false);
             preEvent.setFinalDamage(0.0);
         }
 
