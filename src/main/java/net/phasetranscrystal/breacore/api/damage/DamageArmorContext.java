@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import net.phasetranscrystal.breacore.api.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.mixins.LivingEntityAccessor;
 
 /**
  * 伤害结算所需的受击方护甲上下文。
@@ -65,7 +66,7 @@ public interface DamageArmorContext {
     double applyArmorDurabilityLoss(BreaDamageSource damageSource, double armorDurabilityLoss);
 
     /**
-     * 默认应用为实体受伤 + 覆盖无敌帧。
+     * 将最终伤害直接应用到实体，不重复进入 hurtServer 计算流程。
      */
     default boolean applyFinalDamage(BreaDamageSource damageSource, double finalDamage) {
         if (finalDamage <= 0.0) {
@@ -77,7 +78,9 @@ public interface DamageArmorContext {
             return false;
         }
 
-        boolean hurtApplied = victim.hurtServer(serverLevel, damageSource, (float) finalDamage);
+        float before = victim.getHealth();
+        ((LivingEntityAccessor) victim).breacore$invokeActuallyHurt(serverLevel, damageSource, (float) finalDamage);
+        boolean hurtApplied = victim.getHealth() < before || victim.isDeadOrDying();
         if (hurtApplied) {
             victim.invulnerableTime = damageSource.getInvulnerabilityTicks();
         }

@@ -1,5 +1,6 @@
 package net.phasetranscrystal.breacore.api.event;
 
+import lombok.Setter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -98,6 +99,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         private double shieldDurabilityLoss;
         private double armorDurabilityLoss;
         private double finalDamage;
+        @Setter
         private boolean critical;
 
         public Pre(
@@ -167,9 +169,6 @@ public abstract class DamageCalculationEvent extends EntityEvent {
             return critical;
         }
 
-        public void setCritical(boolean critical) {
-            this.critical = critical;
-        }
     }
 
     /**
@@ -183,8 +182,9 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         private final double finalDamage;
         private final double appliedArmorDurabilityLoss;
         private final boolean critical;
+        private final boolean damageApplied;
 
-        public Post(Pre pre, double appliedArmorDurabilityLoss) {
+        public Post(Pre pre, double appliedArmorDurabilityLoss, boolean damageApplied) {
             super(
                     pre.getEntity(),
                     pre.getDamageSource(),
@@ -201,6 +201,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
             this.finalDamage = Math.max(0.0, pre.getFinalDamage());
             this.appliedArmorDurabilityLoss = Math.max(0.0, appliedArmorDurabilityLoss);
             this.critical = pre.isCritical();
+            this.damageApplied = damageApplied;
         }
 
         public double getShieldHealthLoss() {
@@ -225,6 +226,10 @@ public abstract class DamageCalculationEvent extends EntityEvent {
 
         public boolean isCritical() {
             return critical;
+        }
+
+        public boolean isDamageApplied() {
+            return damageApplied;
         }
     }
 }

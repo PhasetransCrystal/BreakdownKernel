@@ -1,6 +1,8 @@
 package net.phasetranscrystal.breacore.api.damage;
 
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.phasetranscrystal.breacore.api.event.DamageCalculationEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
 
@@ -27,6 +29,19 @@ public final class DamageCalculator {
             DamageArmorContext armorContext,
             double rawDamage
     ) {
+        DamageCalculationEvent.Pre preEvent = calculatePre(damageSource, armorContext, rawDamage);
+
+        DamageRuntimeContext.pushArmorDurability(armorContext.getVictim(), damageSource, preEvent.getArmorDurabilityLoss());
+        boolean damageApplied = armorContext.applyFinalDamage(damageSource, preEvent.getFinalDamage());
+
+        return finalizeAfterHurt(damageSource, armorContext, preEvent, damageApplied);
+    }
+
+    public static DamageCalculationEvent.Pre calculatePre(
+            BreaDamageSource damageSource,
+            DamageArmorContext armorContext,
+            double rawDamage
+    ) {
         double sourceDamage = Math.max(0.0, rawDamage);
 
         double spellInitialDamage = sourceDamage * damageSource.getSpellShieldHitRatio();
@@ -34,7 +49,7 @@ public final class DamageCalculator {
 
         double resistance = 0.0;
         if (damageSource.getElement() != Element.NONE) {
-            resistance = clamp01(armorContext.getElementResistance(damageSource.getElement()));
+            resistance = armorContext.getElementResistance(damageSource.getElement());
         }
 
         double shieldHealth = Math.max(0.0, armorContext.getSpellShieldHealth());
@@ -74,7 +89,7 @@ public final class DamageCalculator {
         double criticalMultiplier = critical ?  Math.max(
                 1.0,
                 1.0 + damageSource.getCriticalDamage() - armorContext.getCriticalDamageReduction()
-        ) : 0;
+        ) : 1.0;
         double finalDamage = preCriticalFinalDamage * criticalMultiplier;
 
         DamageCalculationEvent.Pre preEvent = new DamageCalculationEvent.Pre(
@@ -93,25 +108,63 @@ public final class DamageCalculator {
         );
 
         NeoForge.EVENT_BUS.post(preEvent);
+        return preEvent;
+    }
 
-        boolean damageApplied = armorContext.applyFinalDamage(damageSource, preEvent.getFinalDamage());
-
-        double appliedArmorDurabilityLoss = 0.0;
+    public static DamageCalculationEvent.Post finalizeAfterHurt(
+            BreaDamageSource damageSource,
+            DamageArmorContext armorContext,
+            DamageCalculationEvent.Pre preEvent,
+            boolean damageApplied
+    ) {
+        double appliedArmorDurabilityLoss = DamageRuntimeContext.pullAppliedArmorDurability(armorContext.getVictim(), damageSource);
+        DamageRuntimeContext.clearArmorDurability(armorContext.getVictim(), damageSource);
         if (damageApplied) {
             armorContext.applySpellShieldLoss(damageSource, preEvent.getShieldHealthLoss(), preEvent.getShieldDurabilityLoss());
-            appliedArmorDurabilityLoss = armorContext.applyArmorDurabilityLoss(damageSource, preEvent.getArmorDurabilityLoss());
         } else {
             preEvent.setShieldHealthLoss(0.0);
             preEvent.setShieldDurabilityLoss(0.0);
             preEvent.setArmorDurabilityLoss(0.0);
             preEvent.setCritical(false);
             preEvent.setFinalDamage(0.0);
+            appliedArmorDurabilityLoss = 0.0;
         }
 
-        DamageCalculationEvent.Post postEvent = new DamageCalculationEvent.Post(preEvent, appliedArmorDurabilityLoss);
-
+        DamageCalculationEvent.Post postEvent = new DamageCalculationEvent.Post(preEvent, appliedArmorDurabilityLoss, damageApplied);
         NeoForge.EVENT_BUS.post(postEvent);
         return postEvent;
+    }
+
+    public static DamageCalculationEvent.Pre prepareForVanillaApply(
+            BreaDamageSource damageSource,
+            DamageArmorContext armorContext,
+            double rawDamage
+    ) {
+        DamageCalculationEvent.Pre preEvent = calculatePre(damageSource, armorContext, rawDamage);
+        DamageRuntimeContext.pushArmorDurability(armorContext.getVictim(), damageSource, preEvent.getArmorDurabilityLoss());
+        DamageRuntimeContext.pushPendingCalculation(armorContext.getVictim(), damageSource, armorContext, preEvent);
+        return preEvent;
+    }
+
+    public static DamageCalculationEvent.Post finalizePendingForVanillaApply(
+            LivingEntity victim,
+            DamageSource source,
+            boolean damageApplied
+    ) {
+        if (!(source instanceof BreaDamageSource breaDamageSource)) {
+            return null;
+        }
+        DamageRuntimeContext.PendingCalculationEntry pending = DamageRuntimeContext.pullPendingCalculation(victim, source);
+        if (pending == null) {
+            DamageRuntimeContext.clearArmorDurability(victim, source);
+            DamageRuntimeContext.clearPendingCalculation(victim, source);
+            return null;
+        }
+        try {
+            return finalizeAfterHurt(breaDamageSource, pending.getArmorContext(), pending.getPreEvent(), damageApplied);
+        } finally {
+            DamageRuntimeContext.clearPendingCalculation(victim, source);
+        }
     }
 
     /**

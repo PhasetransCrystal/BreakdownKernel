@@ -7,6 +7,9 @@
   "mixins": [
     "AbstractRegistrateAccessor",
     "BlockPropertiesAccessor",
+    "LivingEntityAccessor",
+    "LivingEntityArmorDurabilityMixin",
+    "LivingEntityDamageMixin",
     "MappedRegistryAccess",
     "RegisterEventAccessor",
     "ResourceKeyAccessor"
