@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
-import net.phasetranscrystal.breacore.api.event.SpellShieldHurtEvent;
+import net.phasetranscrystal.breacore.api.damage.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
 import net.phasetranscrystal.breacore.mixins.LivingEntityAccessor;
 

@@ -1,4 +1,4 @@
-package net.phasetranscrystal.breacore.api.event;
+package net.phasetranscrystal.breacore.api.damage.event;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.ICancellableEvent;

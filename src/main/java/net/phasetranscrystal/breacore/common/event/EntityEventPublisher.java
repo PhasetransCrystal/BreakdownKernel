@@ -1,9 +1,11 @@
 package net.phasetranscrystal.breacore.common.event;
 
 import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
 import net.phasetranscrystal.breacore.api.event.EntityAttackEvent;
 import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
 import net.phasetranscrystal.breacore.api.event.GatherEntityDistributeEvent;
+import net.phasetranscrystal.breacore.api.damage.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
 import net.phasetranscrystal.breacore.api.eventdispatch.IEntityAboutEvent;
 
@@ -55,6 +57,7 @@ public final class EntityEventPublisher {
         addEntityEventListener(LivingIncomingDamageEvent.class);
         addEntityEventListener(LivingDamageEvent.Pre.class);
         addEntityEventListener(LivingDamageEvent.Post.class);
+        addEntityEventListener(LivingDeathEvent.class);
 
         addEntityEventListener(ItemTossEvent.class);
         addEntityEventListener(ItemExpireEvent.class);
@@ -99,6 +102,11 @@ public final class EntityEventPublisher {
         addEntityEventListener(EntityStruckByLightningEvent.class);
         addEntityEventListener(EntityTeleportEvent.class);
         addEntityEventListener(ProjectileImpactEvent.class);
+
+        // BreaCore custom entity-related events
+        addEntityEventListener(DamageCalculationEvent.Pre.class);
+        addEntityEventListener(DamageCalculationEvent.Post.class);
+        addEntityEventListener(SpellShieldHurtEvent.class);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
