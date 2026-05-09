@@ -1,6 +1,8 @@
 package net.phasetranscrystal.breacore.common.event;
 
 import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.damage.event.BreaDamageArmorContextEvent;
+import net.phasetranscrystal.breacore.api.damage.event.BreaDamageSourceResolveEvent;
 import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
 import net.phasetranscrystal.breacore.api.event.EntityAttackEvent;
 import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
@@ -104,6 +106,8 @@ public final class EntityEventPublisher {
         addEntityEventListener(ProjectileImpactEvent.class);
 
         // BreaCore custom entity-related events
+        addEntityEventListener(BreaDamageSourceResolveEvent.class);
+        addEntityEventListener(BreaDamageArmorContextEvent.class);
         addEntityEventListener(DamageCalculationEvent.Pre.class);
         addEntityEventListener(DamageCalculationEvent.Post.class);
         addEntityEventListener(SpellShieldHurtEvent.class);

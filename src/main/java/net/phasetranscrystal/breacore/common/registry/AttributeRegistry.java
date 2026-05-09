@@ -2,22 +2,67 @@ package net.phasetranscrystal.breacore.common.registry;
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 
 /**
  * BreaCore 属性注册。
  *
  * <p>说明：</p>
  * <ul>
- *     <li>带 % 的属性按乘数因子注册，默认值 1.0。</li>
  *     <li>硬质护甲/软质护甲直接使用原版 ARMOR / ARMOR_TOUGHNESS，不重复注册。</li>
  * </ul>
  */
-public final class AttributeRergistry {
+public final class AttributeRegistry {
 
     public static void bootstrap() {
         // 触发类加载，确保静态注册项加入 Registrate。
+    }
+
+    public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+        addPlayerAttribute(event, MAGIC_SHIELD_HEALTH);
+        addPlayerAttribute(event, SUPER_ABILITY_CHARGING_SPEED);
+        addPlayerAttribute(event, SUPER_ABILITY_TIME_FACTOR);
+        addPlayerAttribute(event, SUPER_ABILITY_STRENGTH_FACTOR);
+        addPlayerAttribute(event, SUPER_ABILITY_EFFECT_RANGE);
+        addPlayerAttribute(event, OCCUPATION_SKILL_CHARGING_SPEED);
+        addPlayerAttribute(event, OCCUPATION_SKILL_STRENGTH_FACTOR);
+        addPlayerAttribute(event, CRITICAL_DAMAGE_REDUCING);
+        addPlayerAttribute(event, CRITICAL_HIT);
+        addPlayerAttribute(event, CRITICAL_DAMAGE);
+        addPlayerAttribute(event, DAMAGE_ATTENUATION_START_DISTANCE);
+        addPlayerAttribute(event, DAMAGE_ATTENUATION_END_DISTANCE);
+        addPlayerAttribute(event, SHOOTING_SPEED);
+        addPlayerAttribute(event, DISPERSION_RATE);
+        addPlayerAttribute(event, STABILITY);
+        addPlayerAttribute(event, HURTING_STABILITY);
+        addPlayerAttribute(event, MAGNIFICATION);
+        addPlayerAttribute(event, PREPARING_TIME);
+        addPlayerAttribute(event, AIMING_TIME);
+        addPlayerAttribute(event, RELOADING_TIME);
+        addPlayerAttribute(event, PAYLOAD_CAPACITY);
+        addPlayerAttribute(event, CHARGING_TIME_FACTOR);
+        addPlayerAttribute(event, HARD_ARMOR_PENETRATION_VALUE);
+        addPlayerAttribute(event, SOFT_ARMOR_PENETRATION_VALUE);
+        addPlayerAttribute(event, DEBUFF_ACCUMULATION_RATE);
+        addPlayerAttribute(event, DEBUFF_FADING_SPEED);
+        addPlayerAttribute(event, DEBUFF_INTENSITY_FACTOR);
+        addPlayerAttribute(event, DEBUFF_TIME_FACTOR);
+        addPlayerAttribute(event, BUFF_INTENSITY_FACTOR);
+        addPlayerAttribute(event, BUFF_TIME_FACTOR);
+        addPlayerAttribute(event, NATURAL_RECOVERY);
+        addPlayerAttribute(event, RECOVERY_FACTOR);
+        addPlayerAttribute(event, ITEM_USING_SPEED_FACTOR);
+        addPlayerAttribute(event, MAGICAL_SHIELD_RECOVERY);
+    }
+
+    private static void addPlayerAttribute(
+            EntityAttributeModificationEvent event,
+            RegistryEntry<Attribute, Attribute> attribute
+    ) {
+        event.add(EntityType.PLAYER, attribute);
     }
 
     // ========= 基础 =========
@@ -63,9 +108,9 @@ public final class AttributeRergistry {
 
     // ========= 防御 =========
 
-    /** 暴击伤害减免因子（乘数，默认 1）。 */
-    public static final RegistryEntry<Attribute, Attribute> CRITICAL_DAMAGE_REDUCING = registerFactor(
-            "critical_damage_reducing"
+    /** 暴击伤害减免 */
+    public static final RegistryEntry<Attribute, Attribute> CRITICAL_DAMAGE_REDUCING = register(
+            "critical_damage_reducing", 0.0, -1024, 1024
     );
 
     // ========= 攻击 =========
@@ -77,7 +122,7 @@ public final class AttributeRergistry {
 
     /** 暴击伤害百分比。 */
     public static final RegistryEntry<Attribute, Attribute> CRITICAL_DAMAGE = register(
-            "critical_damage", 0.0, 0.0, 1024
+            "critical_damage", 0.5, 0.0, 1024
     );
 
     // ========= 攻击 / 枪械 =========
@@ -89,10 +134,6 @@ public final class AttributeRergistry {
     /** 伤害衰减终止距离。 */
     public static final RegistryEntry<Attribute, Attribute> DAMAGE_ATTENUATION_END_DISTANCE = register(
             "damage_attenuation_end_distance", 0.0, 0.0, 1024
-    );
-    /** 远程攻击伤害。 */
-    public static final RegistryEntry<Attribute, Attribute> RANGE_DAMAGE = register(
-            "range_damage", 0.0, 0.0, Float.MAX_VALUE
     );
     /** 射击速度（发/分钟）。 */
     public static final RegistryEntry<Attribute, Attribute> SHOOTING_SPEED = register(
@@ -137,10 +178,6 @@ public final class AttributeRergistry {
 
     // ========= 攻击 / 伤害参数 =========
 
-    /** 法术护盾命中率。 */
-    public static final RegistryEntry<Attribute, Attribute> MAGIC_SHIELD_HIT_RATE = register(
-            "magic_shield_hit_rate", 1.0, 0.0, 1.0
-    );
     /** 硬甲穿甲值。 */
     public static final RegistryEntry<Attribute, Attribute> HARD_ARMOR_PENETRATION_VALUE = register(
             "hard_armor_penetration_value", 0, 0.0, Double.MAX_VALUE
@@ -215,6 +252,6 @@ public final class AttributeRergistry {
     }
 
     private static RegistryEntry<Attribute, Attribute> registerFactor(String id) {
-        return register(id, 1.0, 0.0, 1000.0);
+        return register(id, 1.0, 0.0, 1024.0);
     }
 }

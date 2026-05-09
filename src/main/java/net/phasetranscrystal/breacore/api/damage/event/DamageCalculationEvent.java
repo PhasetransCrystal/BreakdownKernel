@@ -4,6 +4,7 @@ import lombok.Setter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.tags.DamageTypeTags;
 import net.neoforged.neoforge.event.entity.EntityEvent;
 import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
 
@@ -112,6 +113,13 @@ public abstract class DamageCalculationEvent extends EntityEvent {
 
     public BreaDamageSource getDamageSource() {
         return damageSource;
+    }
+
+    /**
+     * 是否为真实伤害（命中原版 BYPASSES_ARMOR 标签）。
+     */
+    public boolean isTrueDamage() {
+        return damageSource != null && damageSource.is(DamageTypeTags.BYPASSES_ARMOR);
     }
 
     public double getRawDamage() {

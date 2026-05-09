@@ -1,14 +1,17 @@
 package net.phasetranscrystal.breacore.api.damage;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,13 +58,15 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         this.victim = victim;
         this.weapon = weapon;
 
-        this.spellShieldHealth = 0.0; // TODO 从实体护盾系统提取默认护盾血量。
-        this.spellShieldDurability = 0.0; // TODO 从实体护盾系统提取默认护盾耐久。
-        this.spellShieldSturdiness = 0.0; // TODO 从实体护盾系统提取默认护盾坚固度（[0,1]）。
-        this.hardArmorValue = Math.max(0.0, victim.getAttributeValue(Attributes.ARMOR));
-        this.softArmorValue = Math.max(0.0, victim.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
-        this.criticalDamageReduction = 0.0; // TODO 从防御实体 attribute 中提取暴击伤害减免。
-        this.elementResistance = initializeElementResistance(victim);
+        // TODO 后续接入属性系统：护盾相关参数暂时留空占位。
+        this.spellShieldHealth = 0.0;
+        this.spellShieldDurability = 0.0;
+        this.spellShieldSturdiness = 0.0;
+        this.hardArmorValue = readAttributeValue(victim, Attributes.ARMOR);
+        this.softArmorValue = readAttributeValue(victim, Attributes.ARMOR_TOUGHNESS);
+        this.criticalDamageReduction = readAttributeValue(victim, AttributeRegistry.CRITICAL_DAMAGE_REDUCING);
+        // TODO 后续接入属性系统：元素抗性暂时留空占位。
+        this.elementResistance = Map.of();
     }
 
     @Override
@@ -175,13 +180,12 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         return false;
     }
 
-    private static Map<Element, Double> initializeElementResistance(LivingEntity victim) {
-        EnumMap<Element, Double> resistanceMap = new EnumMap<>(Element.class);
-        for (Element element : Element.values()) {
-            resistanceMap.put(element, 0.0);
+    private static double readAttributeValue(LivingEntity victim, Holder<Attribute> attribute) {
+        AttributeInstance instance = victim.getAttribute(attribute);
+        if (instance == null) {
+            return attribute.value().getDefaultValue();
         }
-        // TODO 从实体抗性系统提取每种 Element 对应的默认抗性并覆盖 resistanceMap。
-        return Map.copyOf(resistanceMap);
+        return instance.getValue();
     }
 
 }

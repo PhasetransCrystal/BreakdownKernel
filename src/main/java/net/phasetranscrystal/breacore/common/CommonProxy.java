@@ -10,7 +10,8 @@ import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
 import net.phasetranscrystal.breacore.common.event.EntityEventPublisher;
 import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
-import net.phasetranscrystal.breacore.common.registry.AttributeRergistry;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.common.registry.ItemComponentRegistry;
 import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
 import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
 import net.phasetranscrystal.breacore.data.datagen.BreaRegistrateDatagen;
@@ -51,6 +52,7 @@ public class CommonProxy {
         var modBus = BreakdownCore.getModEventBus();
         BreaApi.materialManager = BreaRegistries.MATERIALS;
         modBus.register(CommonProxy.class);
+        modBus.addListener(AttributeRegistry::onEntityAttributeModification);
         init();
 
         BreaRegistries.init(modBus);
@@ -58,7 +60,8 @@ public class CommonProxy {
 
     public static void init() {
         AttachmentTypeRegistry.bootstrap();
-        AttributeRergistry.bootstrap();
+        AttributeRegistry.bootstrap();
+        ItemComponentRegistry.bootstrap();
 
         BreaElements.init();
         BreaMaterialIconSet.init();

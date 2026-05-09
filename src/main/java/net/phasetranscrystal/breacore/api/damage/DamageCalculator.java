@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.damage;
 
 import net.neoforged.neoforge.common.NeoForge;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.tags.DamageTypeTags;
 import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
 
@@ -15,34 +16,41 @@ public final class DamageCalculator {
     private static final double RICOCHET_RATIO_THRESHOLD = 0.5;
     private static final double PENETRATION_RATIO_THRESHOLD = 1.0;
 
-    /**
-     * 执行完整伤害结算并应用到受击实体。
-     *
-     * @param damageSource 伤害源扩展参数
-     * @param armorContext 护甲/护盾上下文
-     * @param rawDamage 原始伤害值
-     * @return 最终不可变结果事件
-     */
-    public static DamageCalculationEvent.Post calculateAndApply(
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext,
-            double rawDamage
-    ) {
-        DamageCalculationEvent.Pre preEvent = prepareForVanillaApply(damageSource, armorContext, rawDamage);
-        try {
-            boolean damageApplied = armorContext.applyFinalDamage(damageSource, preEvent.getFinalDamage());
-            return finalizeAfterHurt(damageSource, armorContext, preEvent, damageApplied);
-        } finally {
-            DamageRuntimeContext.clearCalculation(armorContext.getVictim(), damageSource);
-        }
-    }
-
     public static DamageCalculationEvent.Pre calculatePre(
             BreaDamageSource damageSource,
             DamageArmorContext armorContext,
             double rawDamage
     ) {
         double sourceDamage = Math.max(0.0, rawDamage);
+
+        if (damageSource.is(DamageTypeTags.BYPASSES_ARMOR)) {
+            DamageCalculationEvent.Pre preEvent = new DamageCalculationEvent.Pre(
+                    armorContext.getVictim(),
+                    damageSource,
+                    sourceDamage,
+                    sourceDamage,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    sourceDamage,
+                    sourceDamage,
+                    0.0,
+                    0.0,
+                    sourceDamage,
+                    0.0,
+                    sourceDamage,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    false
+            );
+            NeoForge.EVENT_BUS.post(preEvent);
+            return preEvent;
+        }
+
         double spellRawDamage = sourceDamage * damageSource.getSpellShieldHitRatio();
         double physicalRawDamage = sourceDamage - spellRawDamage;
 
@@ -52,11 +60,12 @@ public final class DamageCalculator {
         }
 
         double spellWeightedDamage = spellRawDamage * (1.0 - clamp01(resistance));
-        boolean critical = physicalRawDamage > 0.0
-                && armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
+        boolean critical = damageSource.hasCriticalDecision()
+                ? damageSource.isCriticalResolved() && physicalRawDamage > 0.0
+                : physicalRawDamage > 0.0 && armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
         double criticalMultiplier = critical ?  Math.max(
                 1.0,
-                1.0 + damageSource.getCriticalDamage() - armorContext.getCriticalDamageReduction()
+                1.0 + damageSource.getCriticalDamage() + damageSource.getCriticalBonusMultiplier() - armorContext.getCriticalDamageReduction()
         ) : 1.0;
         double physicalWeightedDamage = physicalRawDamage * criticalMultiplier;
         double weightedDamage = spellWeightedDamage + physicalWeightedDamage;
@@ -127,45 +136,6 @@ public final class DamageCalculator {
         return preEvent;
     }
 
-    public static DamageCalculationEvent.Post finalizeAfterHurt(
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext,
-            DamageCalculationEvent.Pre preEvent,
-            boolean damageApplied
-    ) {
-        double appliedArmorDurabilityLoss = DamageRuntimeContext.pullAppliedArmorDurability(armorContext.getVictim(), damageSource);
-        if (!damageApplied) {
-            preEvent.setShieldHealthLoss(0.0);
-            preEvent.setShieldDurabilityLoss(0.0);
-            preEvent.setArmorDurabilityLoss(0.0);
-            preEvent.setCritical(false);
-            preEvent.setFinalDamage(0.0);
-            appliedArmorDurabilityLoss = 0.0;
-        }
-
-        DamageCalculationEvent.Post postEvent = new DamageCalculationEvent.Post(preEvent, appliedArmorDurabilityLoss, damageApplied);
-        NeoForge.EVENT_BUS.post(postEvent);
-        return postEvent;
-    }
-
-    public static DamageCalculationEvent.Pre prepareForVanillaApply(
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext,
-            double rawDamage
-    ) {
-        DamageCalculationEvent.Pre preEvent = calculatePre(damageSource, armorContext, rawDamage);
-        DamageRuntimeContext.pushCalculation(
-                armorContext.getVictim(),
-                damageSource,
-                armorContext,
-                preEvent,
-                preEvent.getArmorDurabilityLoss(),
-                preEvent.getHardArmorAbsorbedDamage() + preEvent.getSoftArmorAbsorbedDamage(),
-                preEvent.getSpellAbsorbedByShield()
-        );
-        return preEvent;
-    }
-
     public static DamageCalculationEvent.Post finalizePendingForVanillaApply(
             LivingEntity victim,
             BreaDamageSource source,
@@ -175,18 +145,15 @@ public final class DamageCalculator {
         if (pending == null) {
             return null;
         }
-        return finalizeAfterHurt(source, pending.getArmorContext(), pending.getPreEvent(), damageApplied);
-    }
+        DamageCalculationEvent.Pre preEvent = pending.getPreEvent();
+        double appliedArmorDurabilityLoss = DamageRuntimeContext.pullAppliedArmorDurability(pending.getArmorContext().getVictim(), source);
+        if (!damageApplied) {
+            preEvent.setFinalDamage(0.0);
+        }
 
-    /**
-     * {@link #calculateAndApply(BreaDamageSource, DamageArmorContext, double)} 的 float 便捷重载。
-     */
-    public static DamageCalculationEvent.Post calculateAndApply(
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext,
-            float rawDamage
-    ) {
-        return calculateAndApply(damageSource, armorContext, (double) rawDamage);
+        DamageCalculationEvent.Post postEvent = new DamageCalculationEvent.Post(preEvent, appliedArmorDurabilityLoss, damageApplied);
+        NeoForge.EVENT_BUS.post(postEvent);
+        return postEvent;
     }
 
     /**

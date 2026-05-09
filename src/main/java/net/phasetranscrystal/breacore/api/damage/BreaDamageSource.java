@@ -13,16 +13,10 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BreaDamageSource extends DamageSource {
 
-    private final Element element;
-    private final int invulnerabilityTicks;
-
-    private final double spellShieldHitRatio;
-    private final double hardArmorPenetrationValue;
-    private final double softArmorPenetrationValue;
-    private final double hardArmorActionRatio;
-    private final double softArmorActionRatio;
-    private final double criticalChance;
-    private final double criticalDamage;
+    private final BreaDamageParameters parameters;
+    private boolean hasCriticalDecision;
+    private boolean criticalResolved;
+    private double criticalBonusMultiplier;
 
     public BreaDamageSource(
             Holder<DamageType> type,
@@ -39,44 +33,22 @@ public class BreaDamageSource extends DamageSource {
             double criticalChance,
             double criticalDamage
     ) {
-        super(type, directEntity, causingEntity, damageSourcePosition);
-        this.element = element;
-        this.invulnerabilityTicks = Math.max(0, invulnerabilityTicks);
-        this.spellShieldHitRatio = clamp01(spellShieldHitRatio);
-        this.hardArmorPenetrationValue = clampPenetrationValue(hardArmorPenetrationValue);
-        this.softArmorPenetrationValue = clampPenetrationValue(softArmorPenetrationValue);
-        this.hardArmorActionRatio = clamp01(hardArmorActionRatio);
-        this.softArmorActionRatio = clamp01(softArmorActionRatio);
-        this.criticalChance = clamp01(criticalChance);
-        this.criticalDamage = Math.max(0.0, criticalDamage);
-    }
-
-    public BreaDamageSource(
-            Holder<DamageType> type,
-            @Nullable Entity directEntity,
-            @Nullable Entity causingEntity,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio,
-            double hardArmorPenetrationValue,
-            double softArmorPenetrationValue,
-            double hardArmorActionRatio,
-            double softArmorActionRatio
-    ) {
         this(
                 type,
                 directEntity,
                 causingEntity,
-                null,
-                element,
-                invulnerabilityTicks,
-                spellShieldHitRatio,
-                hardArmorPenetrationValue,
-                softArmorPenetrationValue,
-                hardArmorActionRatio,
-                softArmorActionRatio,
-                resolveCriticalChance(causingEntity, directEntity),
-                resolveCriticalDamage(causingEntity, directEntity)
+                damageSourcePosition,
+                new BreaDamageParameters(
+                        element,
+                        invulnerabilityTicks,
+                        spellShieldHitRatio,
+                        hardArmorPenetrationValue,
+                        softArmorPenetrationValue,
+                        hardArmorActionRatio,
+                        softArmorActionRatio,
+                        criticalChance,
+                        criticalDamage
+                )
         );
     }
 
@@ -85,150 +57,71 @@ public class BreaDamageSource extends DamageSource {
             @Nullable Entity directEntity,
             @Nullable Entity causingEntity,
             @Nullable Vec3 damageSourcePosition,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio
+            BreaDamageParameters parameters
     ) {
-        this(
-                type,
-                directEntity,
-                causingEntity,
-                damageSourcePosition,
-                element,
-                invulnerabilityTicks,
-                spellShieldHitRatio,
-                Double.MAX_VALUE,
-                Double.MAX_VALUE,
-                1.0,
-                1.0,
-                resolveCriticalChance(causingEntity, directEntity),
-                resolveCriticalDamage(causingEntity, directEntity)
-        );
+        super(type, directEntity, causingEntity, damageSourcePosition);
+        this.parameters = parameters == null ? BreaDamageParameters.DEFAULT : parameters;
+        this.hasCriticalDecision = false;
+        this.criticalResolved = false;
+        this.criticalBonusMultiplier = 0.0;
     }
 
-    public BreaDamageSource(
-            Holder<DamageType> type,
-            @Nullable Entity directEntity,
-            @Nullable Entity causingEntity,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio
-    ) {
-        this(
-                type,
-                directEntity,
-                causingEntity,
-                null,
-                element,
-                invulnerabilityTicks,
-                spellShieldHitRatio
-        );
-    }
-
-    public BreaDamageSource(
-            Holder<DamageType> type,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio,
-            double hardArmorPenetrationValue,
-            double softArmorPenetrationValue,
-            double hardArmorActionRatio,
-            double softArmorActionRatio
-    ) {
-        this(
-                type,
-                null,
-                null,
-                null,
-                element,
-                invulnerabilityTicks,
-                spellShieldHitRatio,
-                hardArmorPenetrationValue,
-                softArmorPenetrationValue,
-                hardArmorActionRatio,
-                softArmorActionRatio,
-                0.0,
-                0.0
-        );
-    }
-
-    public BreaDamageSource(
-            Holder<DamageType> type,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio
-    ) {
-        this(
-                type,
-                null,
-                null,
-                null,
-                element,
-                invulnerabilityTicks,
-                spellShieldHitRatio,
-                Double.MAX_VALUE,
-                Double.MAX_VALUE,
-                1.0,
-                1.0,
-                0.0,
-                0.0
-        );
-    }
 
     public Element getElement() {
-        return element;
+        return parameters.element();
     }
 
     public int getInvulnerabilityTicks() {
-        return invulnerabilityTicks;
+        return parameters.invulnerabilityTicks();
     }
 
     public double getSpellShieldHitRatio() {
-        return spellShieldHitRatio;
+        return parameters.spellShieldHitRatio();
     }
 
     public double getHardArmorPenetrationValue() {
-        return hardArmorPenetrationValue;
+        return parameters.hardArmorPenetrationValue();
     }
 
     public double getSoftArmorPenetrationValue() {
-        return softArmorPenetrationValue;
+        return parameters.softArmorPenetrationValue();
     }
 
     public double getHardArmorActionRatio() {
-        return hardArmorActionRatio;
+        return parameters.hardArmorActionRatio();
     }
 
     public double getSoftArmorActionRatio() {
-        return softArmorActionRatio;
+        return parameters.softArmorActionRatio();
     }
 
     public double getCriticalChance() {
-        return criticalChance;
+        return parameters.criticalChance();
     }
 
     public double getCriticalDamage() {
-        return criticalDamage;
+        return parameters.criticalDamage();
     }
 
-    private static double clamp01(double value) {
-        return Math.clamp(value, 0.0, 1.0);
+    public boolean isCriticalResolved() {
+        return criticalResolved;
     }
 
-    private static double clampPenetrationValue(double value) {
-        if (value == Double.MAX_VALUE) {
-            return Double.MAX_VALUE;
-        }
-        return Math.max(0.0, value);
+    public boolean hasCriticalDecision() {
+        return hasCriticalDecision;
     }
 
-    private static double resolveCriticalChance(@Nullable Entity causingEntity, @Nullable Entity directEntity) {
-        // TODO 对接伤害来源实体 attribute：暴击率。
-        return 0.0;
+    public double getCriticalBonusMultiplier() {
+        return criticalBonusMultiplier;
     }
 
-    private static double resolveCriticalDamage(@Nullable Entity causingEntity, @Nullable Entity directEntity) {
-        // TODO 对接伤害来源实体 attribute：暴击伤害。
-        return 0.0;
+    public void setCriticalDecision(boolean criticalResolved, double criticalBonusMultiplier) {
+        this.hasCriticalDecision = true;
+        this.criticalResolved = criticalResolved;
+        this.criticalBonusMultiplier = Math.max(0.0, criticalBonusMultiplier);
+    }
+
+    public BreaDamageParameters getParameters() {
+        return parameters;
     }
 }
