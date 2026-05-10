@@ -1,21 +1,31 @@
 package net.phasetranscrystal.breacore.api.damage;
 
+import lombok.Getter;
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.phys.Vec3;
 import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
 import org.jetbrains.annotations.Nullable;
+
+import com.tterrag.registrate.util.entry.RegistryEntry;
 
 /**
  * 带有 breacore 伤害计算附加参数的 {@link DamageSource}。
  */
 public class BreaDamageSource extends DamageSource {
 
+    @Getter
     private final BreaDamageParameters parameters;
     private boolean hasCriticalDecision;
+    @Getter
     private boolean criticalResolved;
+    @Getter
     private double criticalBonusMultiplier;
 
     public BreaDamageSource(
@@ -103,16 +113,19 @@ public class BreaDamageSource extends DamageSource {
         return parameters.criticalDamage();
     }
 
-    public boolean isCriticalResolved() {
-        return criticalResolved;
+    public double getSpellDamageAmplification() {
+        Element element = getElement();
+        if (element == null || element == Element.NONE) {
+            return 0.0;
+        }
+
+        RegistryEntry<Attribute, Attribute> attribute = AttributeRegistry.getSpellDamageAmplificationAttribute(element);
+        LivingEntity attacker = resolveAttacker();
+        return AttributeHelper.getValueOrDefault(attacker, attribute);
     }
 
     public boolean hasCriticalDecision() {
         return hasCriticalDecision;
-    }
-
-    public double getCriticalBonusMultiplier() {
-        return criticalBonusMultiplier;
     }
 
     public void setCriticalDecision(boolean criticalResolved, double criticalBonusMultiplier) {
@@ -121,7 +134,13 @@ public class BreaDamageSource extends DamageSource {
         this.criticalBonusMultiplier = Math.max(0.0, criticalBonusMultiplier);
     }
 
-    public BreaDamageParameters getParameters() {
-        return parameters;
+    private LivingEntity resolveAttacker() {
+        if (getEntity() instanceof LivingEntity causing) {
+            return causing;
+        }
+        if (getDirectEntity() instanceof LivingEntity direct) {
+            return direct;
+        }
+        return null;
     }
 }

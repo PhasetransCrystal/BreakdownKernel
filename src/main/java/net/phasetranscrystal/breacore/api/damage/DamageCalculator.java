@@ -54,12 +54,12 @@ public final class DamageCalculator {
         double spellRawDamage = sourceDamage * damageSource.getSpellShieldHitRatio();
         double physicalRawDamage = sourceDamage - spellRawDamage;
 
-        double resistance = 0.0;
-        if (damageSource.getElement() != Element.NONE) {
-            resistance = armorContext.getElementResistance(damageSource.getElement());
-        }
+        double resistance = armorContext.getElementResistance(damageSource.getElement());
+        double spellAmplification = damageSource.getSpellDamageAmplification();
 
-        double spellWeightedDamage = spellRawDamage * (1.0 - clamp01(resistance));
+        double spellWeightedDamage = spellRawDamage
+                * Math.max(0.0, 1.0 + spellAmplification)
+                * Math.max(0.0, 1 - resistance);
         boolean critical = damageSource.hasCriticalDecision()
                 ? damageSource.isCriticalResolved() && physicalRawDamage > 0.0
                 : physicalRawDamage > 0.0 && armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
@@ -163,11 +163,11 @@ public final class DamageCalculator {
         if (penetrationValue == Double.MAX_VALUE) {
             return ArmorPenetrationOutcome.PENETRATED;
         }
-        if (penetrationValue <= 0.0) {
-            return ArmorPenetrationOutcome.RICOCHET;
-        }
         if (armorValue <= 0.0) {
             return ArmorPenetrationOutcome.PENETRATED;
+        }
+        if (penetrationValue <= 0.0) {
+            return ArmorPenetrationOutcome.RICOCHET;
         }
 
         double ratio = penetrationComparisonRatio(penetrationValue, armorValue);

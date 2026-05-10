@@ -7,7 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import net.phasetranscrystal.breacore.api.damage.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
 import net.phasetranscrystal.breacore.mixins.LivingEntityAccessor;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
 
 /**
  * 伤害结算所需的受击方护甲上下文。
@@ -40,8 +42,7 @@ public interface DamageArmorContext {
      * 返回暴击伤害减免值。
      */
     default double getCriticalDamageReduction() {
-        // TODO 对接防御实体 attribute：暴击伤害减免。
-        return 0.0;
+        return AttributeHelper.getValueOrDefault(getVictim(), AttributeRegistry.CRITICAL_DAMAGE_REDUCING);
     }
 
     /**
@@ -50,7 +51,7 @@ public interface DamageArmorContext {
     double getElementResistance(Element element);
 
     default void applySpellShieldLoss(BreaDamageSource damageSource, double shieldHealthLoss, double shieldDurabilityLoss) {
-        double next = Math.max(0.0, getSpellShieldHealth() - Math.max(0.0, shieldHealthLoss));
+        double next = Math.max(0.0, getSpellShieldHealth() - shieldHealthLoss);
         setSpellShieldHealth(next);
 
         SpellShieldHurtEvent event = NeoForge.EVENT_BUS.post(new SpellShieldHurtEvent(getVictim(), damageSource, shieldDurabilityLoss));

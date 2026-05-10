@@ -6,6 +6,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.phasetranscrystal.breacore.api.magic.Element;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * BreaCore 属性注册。
@@ -16,6 +20,37 @@ import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
  * </ul>
  */
 public final class AttributeRegistry {
+
+    public static final Map<Element, RegistryEntry<Attribute, Attribute>> SPELL_DAMAGE_AMPLIFICATION_BY_ELEMENT =
+            new EnumMap<>(Element.class);
+    public static final Map<Element, RegistryEntry<Attribute, Attribute>> SPELL_DAMAGE_RESISTANCE_BY_ELEMENT =
+            new EnumMap<>(Element.class);
+
+    static {
+        for (Element element : Element.values()) {
+            if (element == Element.NONE) {
+                continue;
+            }
+            SPELL_DAMAGE_AMPLIFICATION_BY_ELEMENT.put(
+                    element,
+                    register(
+                            "spell_damage_amplification_" + element.id,
+                            0,
+                            -1,
+                            1024
+                    )
+            );
+            SPELL_DAMAGE_RESISTANCE_BY_ELEMENT.put(
+                    element,
+                    register(
+                            "spell_damage_resistance_" + element.id,
+                            0,
+                            -1024,
+                            1
+                    )
+            );
+        }
+    }
 
     public static void bootstrap() {
         // 触发类加载，确保静态注册项加入 Registrate。
@@ -56,6 +91,12 @@ public final class AttributeRegistry {
         addPlayerAttribute(event, RECOVERY_FACTOR);
         addPlayerAttribute(event, ITEM_USING_SPEED_FACTOR);
         addPlayerAttribute(event, MAGICAL_SHIELD_RECOVERY);
+        addPlayerElementalAttributes(event);
+    }
+
+    private static void addPlayerElementalAttributes(EntityAttributeModificationEvent event) {
+        SPELL_DAMAGE_AMPLIFICATION_BY_ELEMENT.values().forEach(attribute -> addPlayerAttribute(event, attribute));
+        SPELL_DAMAGE_RESISTANCE_BY_ELEMENT.values().forEach(attribute -> addPlayerAttribute(event, attribute));
     }
 
     private static void addPlayerAttribute(
@@ -232,6 +273,20 @@ public final class AttributeRegistry {
     public static final RegistryEntry<Attribute, Attribute> MAGICAL_SHIELD_RECOVERY = register(
             "magical_shield_recovery", 0.0, 0.0, Float.MAX_VALUE
     );
+
+    public static RegistryEntry<Attribute, Attribute> getSpellDamageAmplificationAttribute(Element element) {
+        if (element == null || element == Element.NONE) {
+            return null;
+        }
+        return SPELL_DAMAGE_AMPLIFICATION_BY_ELEMENT.get(element);
+    }
+
+    public static RegistryEntry<Attribute, Attribute> getSpellDamageResistanceAttribute(Element element) {
+        if (element == null || element == Element.NONE) {
+            return null;
+        }
+        return SPELL_DAMAGE_RESISTANCE_BY_ELEMENT.get(element);
+    }
 
     // ========= 原版属性说明（不重复注册） =========
     // 硬质护甲（盔甲值） -> Attributes.ARMOR

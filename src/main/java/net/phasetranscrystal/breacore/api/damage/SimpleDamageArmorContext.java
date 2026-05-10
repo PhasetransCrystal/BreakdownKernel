@@ -1,19 +1,19 @@
 package net.phasetranscrystal.breacore.api.damage;
 
-import net.minecraft.core.Holder;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.CommonHooks;
+import net.phasetranscrystal.breacore.api.equipment.EntityShieldAttachment;
 import net.phasetranscrystal.breacore.api.magic.Element;
 import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 通用的护甲上下文默认实现，可在未接入正式攻击流程前直接用于计算测试。
@@ -31,15 +31,11 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     private final Entity directAttacker;
     private final LivingEntity victim;
     private final ItemStack weapon;
+    private final EntityShieldAttachment shieldAttachment;
 
-    private double spellShieldHealth;
-    private double spellShieldDurability;
-    private final double spellShieldSturdiness;
     private final double hardArmorValue;
     private final double softArmorValue;
     private final double criticalDamageReduction;
-
-    private final Map<Element, Double> elementResistance;
 
     /**
      * @param rootAttacker 根源攻击实体（如发射者）
@@ -58,15 +54,10 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         this.victim = victim;
         this.weapon = weapon;
 
-        EntityShieldAttachment shieldAttachment = EntityShieldAttachment.getOrNull(victim);
-        this.spellShieldHealth = shieldAttachment == null ? 0.0 : shieldAttachment.getCurrentShieldValue();
-        this.spellShieldDurability = shieldAttachment == null ? 0.0 : shieldAttachment.getCurrentShieldValue();
-        this.spellShieldSturdiness = shieldAttachment == null ? 0.0 : shieldAttachment.getSpellResistance();
-        this.hardArmorValue = readAttributeValue(victim, Attributes.ARMOR);
-        this.softArmorValue = readAttributeValue(victim, Attributes.ARMOR_TOUGHNESS);
-        this.criticalDamageReduction = readAttributeValue(victim, AttributeRegistry.CRITICAL_DAMAGE_REDUCING);
-        // TODO 后续接入属性系统：元素抗性暂时留空占位。
-        this.elementResistance = Map.of();
+        this.shieldAttachment = EntityShieldAttachment.getOrNull(victim);
+        this.hardArmorValue = AttributeHelper.getValueOrDefault(victim, Attributes.ARMOR);
+        this.softArmorValue = AttributeHelper.getValueOrDefault(victim, Attributes.ARMOR_TOUGHNESS);
+        this.criticalDamageReduction = AttributeHelper.getValueOrDefault(victim, AttributeRegistry.CRITICAL_DAMAGE_REDUCING);
     }
 
     @Override
@@ -91,28 +82,37 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
 
     @Override
     public double getSpellShieldHealth() {
-        return spellShieldHealth;
+        return shieldAttachment == null ? 0.0 : shieldAttachment.getCurrentShieldHealth();
     }
 
     @Override
     public void setSpellShieldHealth(double health) {
-        this.spellShieldHealth = Math.max(0.0, health);
+        double nextHealth = Math.max(0.0, health);
+
+        if (shieldAttachment != null) {
+            shieldAttachment.setShieldHealth(nextHealth);
+        }
     }
 
     @Override
     public double getSpellShieldSturdiness() {
-        return spellShieldSturdiness;
+        return shieldAttachment == null ? 0.0 : shieldAttachment.getSpellSturdiness();
     }
 
     @Override
     public double getSpellShieldDurability() {
-        return spellShieldDurability;
+        return shieldAttachment == null ? 0.0 : shieldAttachment.getSpellDurability();
     }
 
     @Override
     public void setSpellShieldDurability(double durability) {
-        this.spellShieldDurability = Math.max(0.0, durability);
-        //TODO 护盾损坏算法
+        double nextDurability = Math.max(0.0, durability);
+
+        if (shieldAttachment == null) {
+            return;
+        }
+
+        shieldAttachment.setShieldDurability(nextDurability);
     }
 
     @Override
@@ -132,7 +132,11 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
 
     @Override
     public double getElementResistance(Element element) {
-        return Math.clamp(elementResistance.getOrDefault(element, 0.0), 0.0, 1.0);
+        RegistryEntry<Attribute, Attribute> attribute = AttributeRegistry.getSpellDamageResistanceAttribute(element);
+        if (attribute == null) {
+            return 0.0;
+        }
+        return AttributeHelper.getValueOrDefault(victim, attribute);
     }
 
     @Override
@@ -178,14 +182,6 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     private boolean isArmorBroken(ItemStack armorStack, EquipmentSlot slot) {
         // TODO 对接你的护甲损坏状态系统：为 true 时该护甲不再损耗耐久，也不计入有效护甲件数。
         return false;
-    }
-
-    private static double readAttributeValue(LivingEntity victim, Holder<Attribute> attribute) {
-        AttributeInstance instance = victim.getAttribute(attribute);
-        if (instance == null) {
-            return attribute.value().getDefaultValue();
-        }
-        return instance.getValue();
     }
 
 }

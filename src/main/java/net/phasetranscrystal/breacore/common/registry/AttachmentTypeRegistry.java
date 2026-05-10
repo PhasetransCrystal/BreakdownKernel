@@ -1,7 +1,7 @@
 package net.phasetranscrystal.breacore.common.registry;
 
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDistributor;
-import net.phasetranscrystal.breacore.api.damage.EntityShieldAttachment;
+import net.phasetranscrystal.breacore.api.equipment.EntityShieldAttachment;
 import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
 
 import net.neoforged.neoforge.attachment.AttachmentType;

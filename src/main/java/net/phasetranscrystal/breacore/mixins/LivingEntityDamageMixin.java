@@ -5,7 +5,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
@@ -25,7 +24,7 @@ import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
 import net.phasetranscrystal.breacore.api.magic.Element;
 import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
 import net.phasetranscrystal.breacore.common.registry.ItemComponentRegistry;
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -124,8 +123,8 @@ public abstract class LivingEntityDamageMixin {
             return null;
         }
 
-        double criticalChance = breacore$getAttributeValueOrDefault(attacker, AttributeRegistry.CRITICAL_HIT);
-        double criticalDamage = breacore$getAttributeValueOrDefault(attacker, AttributeRegistry.CRITICAL_DAMAGE);
+        double criticalChance = AttributeHelper.getValueOrDefault(attacker, AttributeRegistry.CRITICAL_HIT);
+        double criticalDamage = AttributeHelper.getValueOrDefault(attacker, AttributeRegistry.CRITICAL_DAMAGE);
 
         Entity directEntity = source.getDirectEntity();
         Entity causingEntity = source.getEntity();
@@ -212,11 +211,4 @@ public abstract class LivingEntityDamageMixin {
         return null;
     }
 
-    private double breacore$getAttributeValueOrDefault(LivingEntity entity, RegistryEntry<Attribute, Attribute> attribute) {
-        AttributeInstance instance = entity.getAttribute(attribute);
-        if (instance == null) {
-            return attribute.value().getDefaultValue();
-        }
-        return instance.getValue();
-    }
 }
