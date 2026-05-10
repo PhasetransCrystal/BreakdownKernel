@@ -58,10 +58,10 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         this.victim = victim;
         this.weapon = weapon;
 
-        // TODO 后续接入属性系统：护盾相关参数暂时留空占位。
-        this.spellShieldHealth = 0.0;
-        this.spellShieldDurability = 0.0;
-        this.spellShieldSturdiness = 0.0;
+        EntityShieldAttachment shieldAttachment = EntityShieldAttachment.getOrNull(victim);
+        this.spellShieldHealth = shieldAttachment == null ? 0.0 : shieldAttachment.getCurrentShieldValue();
+        this.spellShieldDurability = shieldAttachment == null ? 0.0 : shieldAttachment.getCurrentShieldValue();
+        this.spellShieldSturdiness = shieldAttachment == null ? 0.0 : shieldAttachment.getSpellResistance();
         this.hardArmorValue = readAttributeValue(victim, Attributes.ARMOR);
         this.softArmorValue = readAttributeValue(victim, Attributes.ARMOR_TOUGHNESS);
         this.criticalDamageReduction = readAttributeValue(victim, AttributeRegistry.CRITICAL_DAMAGE_REDUCING);
