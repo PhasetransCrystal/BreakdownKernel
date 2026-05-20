@@ -3,7 +3,7 @@ dependencies {
 
     jarJar(api("dev:registrate:1.5.0-beta"))
     jarJar(api(project(":BreaLib")))
-    implementation("dev:ldlib2-neoforge:26.1.0.0-alpha-26.0.0")
+    implementation("dev:ldlib2-neoforge:26.1-26.1.2.10")
     // Source: https://mvnrepository.com/artifact/dev.vfyjxf/taffy
     compileOnly("dev.vfyjxf:taffy:1.1.4")
 
