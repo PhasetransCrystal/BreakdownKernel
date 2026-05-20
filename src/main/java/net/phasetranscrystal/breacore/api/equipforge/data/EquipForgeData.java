@@ -41,7 +41,7 @@ public class EquipForgeData implements IPerkProvider {
     private Map<Identifier, Double> mergedValuesCache;
     private List<PerkStack> mergedPerksCache;
 
-    public EquipForgeData(EquipmentType type, Map<Identifier, PartData> parts,boolean broken) {
+    public EquipForgeData(EquipmentType type, Map<Identifier, PartData> parts, boolean broken) {
         this.equipmentType = type;
         this.parts = parts;
         this.broken = broken;
@@ -70,7 +70,7 @@ public class EquipForgeData implements IPerkProvider {
     }
 
     public Map<EquipmentSlotGroup, List<PerkStack>> getPerkStacks() {
-        if(broken) return Collections.emptyMap();
+        if (broken) return Collections.emptyMap();
         EquipmentSlotGroup slotGroup = equipmentType.getEquipmentSlot();
         return Map.of(slotGroup, getMergedPerks());
     }
