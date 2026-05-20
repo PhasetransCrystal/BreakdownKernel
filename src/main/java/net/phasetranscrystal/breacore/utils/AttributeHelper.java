@@ -8,8 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 
 public final class AttributeHelper {
 
-    private AttributeHelper() {
-    }
+    private AttributeHelper() {}
 
     public static double getValueOrDefault(Entity entity, Holder<Attribute> attributeHolder) {
         if (attributeHolder == null) {

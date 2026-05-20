@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.damage;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

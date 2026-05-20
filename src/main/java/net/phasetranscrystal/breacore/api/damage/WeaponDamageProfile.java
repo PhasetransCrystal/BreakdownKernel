@@ -1,9 +1,10 @@
 package net.phasetranscrystal.breacore.api.damage;
 
+import net.phasetranscrystal.breacore.api.magic.Element;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.Getter;
-import net.phasetranscrystal.breacore.api.magic.Element;
 
 /**
  * 武器附带的伤害构建参数组件（可变）。
@@ -23,8 +24,7 @@ public final class WeaponDamageProfile {
             Codec.DOUBLE.optionalFieldOf("spell_shield", 0.0).forGetter(WeaponDamageProfile::getSpellShieldHitRatio),
             Codec.DOUBLE.optionalFieldOf("hard_armor", 1.0).forGetter(WeaponDamageProfile::getHardArmorActionRatio),
             Codec.DOUBLE.optionalFieldOf("soft_armor", 1.0).forGetter(WeaponDamageProfile::getSoftArmorActionRatio),
-            Codec.INT.optionalFieldOf("inv_ticks", 0).forGetter(WeaponDamageProfile::getInvulnerabilityTicks)
-    ).apply(instance, WeaponDamageProfile::new));
+            Codec.INT.optionalFieldOf("inv_ticks", 0).forGetter(WeaponDamageProfile::getInvulnerabilityTicks)).apply(instance, WeaponDamageProfile::new));
 
     private Element element;
     private double spellShieldHitRatio;
@@ -33,12 +33,11 @@ public final class WeaponDamageProfile {
     private int invulnerabilityTicks;
 
     public WeaponDamageProfile(
-            Element element,
-            double spellShieldHitRatio,
-            double hardArmorActionRatio,
-            double softArmorActionRatio,
-            int invulnerabilityTicks
-    ) {
+                               Element element,
+                               double spellShieldHitRatio,
+                               double hardArmorActionRatio,
+                               double softArmorActionRatio,
+                               int invulnerabilityTicks) {
         this.element = element == null ? Element.NONE : element;
         this.spellShieldHitRatio = clampRatio(spellShieldHitRatio);
         this.hardArmorActionRatio = clampRatio(hardArmorActionRatio);
@@ -52,8 +51,7 @@ public final class WeaponDamageProfile {
                 this.spellShieldHitRatio,
                 this.hardArmorActionRatio,
                 this.softArmorActionRatio,
-                this.invulnerabilityTicks
-        );
+                this.invulnerabilityTicks);
     }
 
     public void setElement(Element element) {

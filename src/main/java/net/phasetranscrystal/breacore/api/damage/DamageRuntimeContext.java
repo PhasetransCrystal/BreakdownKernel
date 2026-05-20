@@ -1,7 +1,8 @@
 package net.phasetranscrystal.breacore.api.damage;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
+
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -10,18 +11,16 @@ public final class DamageRuntimeContext {
 
     private static final ThreadLocal<Deque<RuntimeEntry>> RUNTIME_STACK = ThreadLocal.withInitial(ArrayDeque::new);
 
-    private DamageRuntimeContext() {
-    }
+    private DamageRuntimeContext() {}
 
     public static void pushCalculation(
-            LivingEntity victim,
-            BreaDamageSource source,
-            DamageArmorContext armorContext,
-            DamageCalculationEvent.Pre preEvent,
-            double durabilityLoss,
-            double armorReductionForContainer,
-            double shieldReductionForContainer
-    ) {
+                                       LivingEntity victim,
+                                       BreaDamageSource source,
+                                       DamageArmorContext armorContext,
+                                       DamageCalculationEvent.Pre preEvent,
+                                       double durabilityLoss,
+                                       double armorReductionForContainer,
+                                       double shieldReductionForContainer) {
         RUNTIME_STACK.get().push(
                 new RuntimeEntry(
                         victim,
@@ -30,9 +29,7 @@ public final class DamageRuntimeContext {
                         preEvent,
                         Math.max(0.0, durabilityLoss),
                         Math.max(0.0, armorReductionForContainer),
-                        Math.max(0.0, shieldReductionForContainer)
-                )
-        );
+                        Math.max(0.0, shieldReductionForContainer)));
     }
 
     public static double consumeArmorDurability(LivingEntity victim, BreaDamageSource source) {
@@ -110,6 +107,7 @@ public final class DamageRuntimeContext {
     }
 
     public static final class RuntimeEntry {
+
         private final LivingEntity victim;
         private final BreaDamageSource source;
         private final DamageArmorContext armorContext;
@@ -120,14 +118,13 @@ public final class DamageRuntimeContext {
         private double appliedDurabilityLoss;
 
         private RuntimeEntry(
-                LivingEntity victim,
-                BreaDamageSource source,
-                DamageArmorContext armorContext,
-                DamageCalculationEvent.Pre preEvent,
-                double pendingDurabilityLoss,
-                double armorReductionForContainer,
-                double shieldReductionForContainer
-        ) {
+                             LivingEntity victim,
+                             BreaDamageSource source,
+                             DamageArmorContext armorContext,
+                             DamageCalculationEvent.Pre preEvent,
+                             double pendingDurabilityLoss,
+                             double armorReductionForContainer,
+                             double shieldReductionForContainer) {
             this.victim = victim;
             this.source = source;
             this.armorContext = armorContext;

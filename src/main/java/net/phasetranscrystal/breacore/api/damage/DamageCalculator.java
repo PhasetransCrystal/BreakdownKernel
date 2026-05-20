@@ -1,15 +1,17 @@
 package net.phasetranscrystal.breacore.api.damage;
 
-import net.neoforged.neoforge.common.NeoForge;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.tags.DamageTypeTags;
 import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
-import net.phasetranscrystal.breacore.api.magic.Element;
+
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
  * 分层伤害计算器。
  *
- * <p>执行顺序：法术护盾层 -> 硬甲层 -> 软甲层 -> Pre 事件 -> 应用结果 -> Post 事件。</p>
+ * <p>
+ * 执行顺序：法术护盾层 -> 硬甲层 -> 软甲层 -> Pre 事件 -> 应用结果 -> Post 事件。
+ * </p>
  */
 public final class DamageCalculator {
 
@@ -17,10 +19,9 @@ public final class DamageCalculator {
     private static final double PENETRATION_RATIO_THRESHOLD = 1.0;
 
     public static DamageCalculationEvent.Pre calculatePre(
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext,
-            double rawDamage
-    ) {
+                                                          BreaDamageSource damageSource,
+                                                          DamageArmorContext armorContext,
+                                                          double rawDamage) {
         double sourceDamage = Math.max(0.0, rawDamage);
 
         if (damageSource.is(DamageTypeTags.BYPASSES_ARMOR)) {
@@ -45,8 +46,7 @@ public final class DamageCalculator {
                     0.0,
                     0.0,
                     1.0,
-                    false
-            );
+                    false);
             NeoForge.EVENT_BUS.post(preEvent);
             return preEvent;
         }
@@ -57,16 +57,11 @@ public final class DamageCalculator {
         double resistance = armorContext.getElementResistance(damageSource.getElement());
         double spellAmplification = damageSource.getSpellDamageAmplification();
 
-        double spellWeightedDamage = spellRawDamage
-                * Math.max(0.0, 1.0 + spellAmplification)
-                * Math.max(0.0, 1 - resistance);
-        boolean critical = damageSource.hasCriticalDecision()
-                ? damageSource.isCriticalResolved() && physicalRawDamage > 0.0
-                : physicalRawDamage > 0.0 && armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
-        double criticalMultiplier = critical ?  Math.max(
+        double spellWeightedDamage = spellRawDamage * Math.max(0.0, 1.0 + spellAmplification) * Math.max(0.0, 1 - resistance);
+        boolean critical = damageSource.hasCriticalDecision() ? damageSource.isCriticalResolved() && physicalRawDamage > 0.0 : physicalRawDamage > 0.0 && armorContext.getVictim().getRandom().nextDouble() < clamp01(damageSource.getCriticalChance());
+        double criticalMultiplier = critical ? Math.max(
                 1.0,
-                1.0 + damageSource.getCriticalDamage() + damageSource.getCriticalBonusMultiplier() - armorContext.getCriticalDamageReduction()
-        ) : 1.0;
+                1.0 + damageSource.getCriticalDamage() + damageSource.getCriticalBonusMultiplier() - armorContext.getCriticalDamageReduction()) : 1.0;
         double physicalWeightedDamage = physicalRawDamage * criticalMultiplier;
         double weightedDamage = spellWeightedDamage + physicalWeightedDamage;
 
@@ -77,12 +72,10 @@ public final class DamageCalculator {
 
         ArmorPenetrationOutcome hardOutcome = evaluatePenetration(
                 damageSource.getHardArmorPenetrationValue(),
-                armorContext.getHardArmorValue()
-        );
+                armorContext.getHardArmorValue());
         double hardPenetrationComparisonRatio = penetrationComparisonRatio(
                 damageSource.getHardArmorPenetrationValue(),
-                armorContext.getHardArmorValue()
-        );
+                armorContext.getHardArmorValue());
         double hardArmorActionRatio = adjustedActionRatio(damageSource.getHardArmorActionRatio(), hardOutcome);
         double hardArmorDurabilityLoss = hardArmorActionRatio <= 0.0 ? 0.0 : physicalWeightedDamage * hardArmorActionRatio;
         double hardPenetrationRatio = penetrationRatioFor(hardOutcome, hardPenetrationComparisonRatio);
@@ -91,12 +84,10 @@ public final class DamageCalculator {
 
         ArmorPenetrationOutcome softOutcome = evaluatePenetration(
                 damageSource.getSoftArmorPenetrationValue(),
-                armorContext.getSoftArmorValue()
-        );
+                armorContext.getSoftArmorValue());
         double softPenetrationComparisonRatio = penetrationComparisonRatio(
                 damageSource.getSoftArmorPenetrationValue(),
-                armorContext.getSoftArmorValue()
-        );
+                armorContext.getSoftArmorValue());
         double softArmorActionRatio = adjustedActionRatio(damageSource.getSoftArmorActionRatio(), softOutcome);
         double softArmorDurabilityLoss = softArmorActionRatio <= 0.0 ? 0.0 : remainingAfterHard * softArmorActionRatio;
         double softPenetrationRatio = penetrationRatioFor(softOutcome, softPenetrationComparisonRatio);
@@ -129,18 +120,16 @@ public final class DamageCalculator {
                 hardArmorDurabilityLoss,
                 softArmorDurabilityLoss,
                 criticalMultiplier,
-                critical
-        );
+                critical);
 
         NeoForge.EVENT_BUS.post(preEvent);
         return preEvent;
     }
 
     public static DamageCalculationEvent.Post finalizePendingForVanillaApply(
-            LivingEntity victim,
-            BreaDamageSource source,
-            boolean damageApplied
-    ) {
+                                                                             LivingEntity victim,
+                                                                             BreaDamageSource source,
+                                                                             boolean damageApplied) {
         DamageRuntimeContext.RuntimeEntry pending = DamageRuntimeContext.peekCalculation(victim, source);
         if (pending == null) {
             return null;
@@ -194,7 +183,9 @@ public final class DamageCalculator {
     /**
      * 计算有效护甲作用比。
      *
-     * <p>输入值会被限制在 [0,1]；若结果为跳弹，则再乘 0.1。</p>
+     * <p>
+     * 输入值会被限制在 [0,1]；若结果为跳弹，则再乘 0.1。
+     * </p>
      */
     private static double adjustedActionRatio(double baseActionRatio, ArmorPenetrationOutcome outcome) {
         double ratio = clamp01(baseActionRatio);
@@ -210,7 +201,9 @@ public final class DamageCalculator {
     /**
      * 未穿透时的伤害通过比（占位实现）。
      *
-     * <p>TODO: 用正式公式替换当前占位实现。</p>
+     * <p>
+     * TODO: 用正式公式替换当前占位实现。
+     * </p>
      */
     private static double notPenetrationDamageFactor(double penetrationComparisonRatio) {
         return Math.clamp(penetrationComparisonRatio, 0.0, 1.0);

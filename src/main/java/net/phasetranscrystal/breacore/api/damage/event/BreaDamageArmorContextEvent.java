@@ -1,11 +1,12 @@
 package net.phasetranscrystal.breacore.api.damage.event;
 
-import lombok.Getter;
-import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.event.entity.EntityEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
 import net.phasetranscrystal.breacore.api.damage.DamageArmorContext;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+
+import lombok.Getter;
 
 import java.util.Objects;
 
@@ -19,10 +20,9 @@ public class BreaDamageArmorContextEvent extends LivingEvent {
     private DamageArmorContext armorContext;
 
     public BreaDamageArmorContextEvent(
-            LivingEntity victim,
-            BreaDamageSource damageSource,
-            DamageArmorContext armorContext
-    ) {
+                                       LivingEntity victim,
+                                       BreaDamageSource damageSource,
+                                       DamageArmorContext armorContext) {
         super(victim);
         this.damageSource = Objects.requireNonNull(damageSource, "damageSource");
         this.armorContext = Objects.requireNonNull(armorContext, "armorContext");

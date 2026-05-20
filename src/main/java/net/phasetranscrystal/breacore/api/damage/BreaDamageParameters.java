@@ -1,23 +1,23 @@
 package net.phasetranscrystal.breacore.api.damage;
 
+import net.phasetranscrystal.breacore.api.magic.Element;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.phasetranscrystal.breacore.api.magic.Element;
 
 /**
  * {@link BreaDamageSource} 的附加参数模型。
  */
 public record BreaDamageParameters(
-        Element element,
-        int invulnerabilityTicks,
-        double spellShieldHitRatio,
-        double hardArmorPenetrationValue,
-        double softArmorPenetrationValue,
-        double hardArmorActionRatio,
-        double softArmorActionRatio,
-        double criticalChance,
-        double criticalDamage
-) {
+                                   Element element,
+                                   int invulnerabilityTicks,
+                                   double spellShieldHitRatio,
+                                   double hardArmorPenetrationValue,
+                                   double softArmorPenetrationValue,
+                                   double hardArmorActionRatio,
+                                   double softArmorActionRatio,
+                                   double criticalChance,
+                                   double criticalDamage) {
 
     public static final BreaDamageParameters DEFAULT = new BreaDamageParameters(
             Element.NONE,
@@ -28,8 +28,7 @@ public record BreaDamageParameters(
             1.0,
             1.0,
             0.0,
-            0.0
-    );
+            0.0);
 
     public static final Codec<BreaDamageParameters> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Element.CODEC.optionalFieldOf("element", Element.NONE).forGetter(BreaDamageParameters::element),
@@ -40,8 +39,7 @@ public record BreaDamageParameters(
             Codec.DOUBLE.optionalFieldOf("hard_armor_action_ratio", 1.0).forGetter(BreaDamageParameters::hardArmorActionRatio),
             Codec.DOUBLE.optionalFieldOf("soft_armor_action_ratio", 1.0).forGetter(BreaDamageParameters::softArmorActionRatio),
             Codec.DOUBLE.optionalFieldOf("critical_chance", 0.0).forGetter(BreaDamageParameters::criticalChance),
-            Codec.DOUBLE.optionalFieldOf("critical_damage", 0.0).forGetter(BreaDamageParameters::criticalDamage)
-    ).apply(instance, BreaDamageParameters::new));
+            Codec.DOUBLE.optionalFieldOf("critical_damage", 0.0).forGetter(BreaDamageParameters::criticalDamage)).apply(instance, BreaDamageParameters::new));
 
     public BreaDamageParameters {
         element = element == null ? Element.NONE : element;

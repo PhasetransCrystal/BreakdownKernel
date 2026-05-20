@@ -1,6 +1,9 @@
 package net.phasetranscrystal.breacore.api.damage;
 
-import lombok.Getter;
+import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
+
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -8,12 +11,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.phys.Vec3;
-import net.phasetranscrystal.breacore.api.magic.Element;
-import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
-import net.phasetranscrystal.breacore.utils.AttributeHelper;
-import org.jetbrains.annotations.Nullable;
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 带有 breacore 伤害计算附加参数的 {@link DamageSource}。
@@ -29,20 +30,19 @@ public class BreaDamageSource extends DamageSource {
     private double criticalBonusMultiplier;
 
     public BreaDamageSource(
-            Holder<DamageType> type,
-            @Nullable Entity directEntity,
-            @Nullable Entity causingEntity,
-            @Nullable Vec3 damageSourcePosition,
-            Element element,
-            int invulnerabilityTicks,
-            double spellShieldHitRatio,
-            double hardArmorPenetrationValue,
-            double softArmorPenetrationValue,
-            double hardArmorActionRatio,
-            double softArmorActionRatio,
-            double criticalChance,
-            double criticalDamage
-    ) {
+                            Holder<DamageType> type,
+                            @Nullable Entity directEntity,
+                            @Nullable Entity causingEntity,
+                            @Nullable Vec3 damageSourcePosition,
+                            Element element,
+                            int invulnerabilityTicks,
+                            double spellShieldHitRatio,
+                            double hardArmorPenetrationValue,
+                            double softArmorPenetrationValue,
+                            double hardArmorActionRatio,
+                            double softArmorActionRatio,
+                            double criticalChance,
+                            double criticalDamage) {
         this(
                 type,
                 directEntity,
@@ -57,25 +57,21 @@ public class BreaDamageSource extends DamageSource {
                         hardArmorActionRatio,
                         softArmorActionRatio,
                         criticalChance,
-                        criticalDamage
-                )
-        );
+                        criticalDamage));
     }
 
     public BreaDamageSource(
-            Holder<DamageType> type,
-            @Nullable Entity directEntity,
-            @Nullable Entity causingEntity,
-            @Nullable Vec3 damageSourcePosition,
-            BreaDamageParameters parameters
-    ) {
+                            Holder<DamageType> type,
+                            @Nullable Entity directEntity,
+                            @Nullable Entity causingEntity,
+                            @Nullable Vec3 damageSourcePosition,
+                            BreaDamageParameters parameters) {
         super(type, directEntity, causingEntity, damageSourcePosition);
         this.parameters = parameters == null ? BreaDamageParameters.DEFAULT : parameters;
         this.hasCriticalDecision = false;
         this.criticalResolved = false;
         this.criticalBonusMultiplier = 0.0;
     }
-
 
     public Element getElement() {
         return parameters.element();

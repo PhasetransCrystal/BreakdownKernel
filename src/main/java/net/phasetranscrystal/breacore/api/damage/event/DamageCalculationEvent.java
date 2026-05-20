@@ -1,12 +1,14 @@
 package net.phasetranscrystal.breacore.api.damage.event;
 
-import lombok.Setter;
+import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
+
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tags.DamageTypeTags;
 import net.neoforged.neoforge.event.entity.EntityEvent;
-import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
+
+import lombok.Setter;
 
 /**
  * 伤害分层计算事件。
@@ -51,25 +53,24 @@ public abstract class DamageCalculationEvent extends EntityEvent {
     private final double criticalMultiplier;
 
     protected DamageCalculationEvent(
-            LivingEntity victim,
-            BreaDamageSource damageSource,
-            double rawDamage,
-            double weightedDamage,
-            double spellRawDamage,
-            double spellWeightedDamage,
-            double spellAbsorbedByShield,
-            double spellFinalDamage,
-            double physicalRawDamage,
-            double physicalWeightedDamage,
-            double hardArmorAbsorbedDamage,
-            double softArmorAbsorbedDamage,
-            double physicalFinalDamage,
-            double totalAbsorbedDamage,
-            double totalFinalDamage,
-            double hardArmorDurabilityLoss,
-            double softArmorDurabilityLoss,
-            double criticalMultiplier
-    ) {
+                                     LivingEntity victim,
+                                     BreaDamageSource damageSource,
+                                     double rawDamage,
+                                     double weightedDamage,
+                                     double spellRawDamage,
+                                     double spellWeightedDamage,
+                                     double spellAbsorbedByShield,
+                                     double spellFinalDamage,
+                                     double physicalRawDamage,
+                                     double physicalWeightedDamage,
+                                     double hardArmorAbsorbedDamage,
+                                     double softArmorAbsorbedDamage,
+                                     double physicalFinalDamage,
+                                     double totalAbsorbedDamage,
+                                     double totalFinalDamage,
+                                     double hardArmorDurabilityLoss,
+                                     double softArmorDurabilityLoss,
+                                     double criticalMultiplier) {
         super(victim);
         this.damageSource = damageSource;
         this.rawDamage = Math.max(0.0, rawDamage);
@@ -204,28 +205,27 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         private boolean critical;
 
         public Pre(
-                LivingEntity victim,
-                BreaDamageSource damageSource,
-                double rawDamage,
-                double weightedDamage,
-                double spellRawDamage,
-                double spellWeightedDamage,
-                double spellAbsorbedByShield,
-                double spellFinalDamage,
-                double physicalRawDamage,
-                double physicalWeightedDamage,
-                double hardArmorAbsorbedDamage,
-                double softArmorAbsorbedDamage,
-                double physicalFinalDamage,
-                double totalAbsorbedDamage,
-                double totalFinalDamage,
-                double shieldHealthLoss,
-                double shieldDurabilityLoss,
-                double hardArmorDurabilityLoss,
-                double softArmorDurabilityLoss,
-                double criticalMultiplier,
-                boolean critical
-        ) {
+                   LivingEntity victim,
+                   BreaDamageSource damageSource,
+                   double rawDamage,
+                   double weightedDamage,
+                   double spellRawDamage,
+                   double spellWeightedDamage,
+                   double spellAbsorbedByShield,
+                   double spellFinalDamage,
+                   double physicalRawDamage,
+                   double physicalWeightedDamage,
+                   double hardArmorAbsorbedDamage,
+                   double softArmorAbsorbedDamage,
+                   double physicalFinalDamage,
+                   double totalAbsorbedDamage,
+                   double totalFinalDamage,
+                   double shieldHealthLoss,
+                   double shieldDurabilityLoss,
+                   double hardArmorDurabilityLoss,
+                   double softArmorDurabilityLoss,
+                   double criticalMultiplier,
+                   boolean critical) {
             super(
                     victim,
                     damageSource,
@@ -244,8 +244,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
                     totalFinalDamage,
                     hardArmorDurabilityLoss,
                     softArmorDurabilityLoss,
-                    criticalMultiplier
-            );
+                    criticalMultiplier);
             this.shieldHealthLoss = Math.max(0.0, shieldHealthLoss);
             this.shieldDurabilityLoss = Math.max(0.0, shieldDurabilityLoss);
             this.armorDurabilityLoss = Math.max(0.0, hardArmorDurabilityLoss + softArmorDurabilityLoss);
@@ -288,7 +287,6 @@ public abstract class DamageCalculationEvent extends EntityEvent {
         public boolean isCritical() {
             return critical;
         }
-
     }
 
     /**
@@ -330,8 +328,7 @@ public abstract class DamageCalculationEvent extends EntityEvent {
                     pre.getTotalFinalDamage(),
                     pre.getHardArmorDurabilityLoss(),
                     pre.getSoftArmorDurabilityLoss(),
-                    pre.getCriticalMultiplier()
-            );
+                    pre.getCriticalMultiplier());
             this.shieldHealthLoss = Math.max(0.0, pre.getShieldHealthLoss());
             this.shieldDurabilityLoss = Math.max(0.0, pre.getShieldDurabilityLoss());
             this.armorDurabilityLoss = Math.max(0.0, pre.getArmorDurabilityLoss());

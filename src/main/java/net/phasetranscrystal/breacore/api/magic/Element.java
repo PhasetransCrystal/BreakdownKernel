@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import java.util.Map;
 
 public enum Element {
+
     METAL("metal"),
     PLANT("plant"),
     WATER("water"),
@@ -32,13 +33,10 @@ public enum Element {
         MAP = builder.build();
         CODEC = Codec.STRING.xmap(
                 id -> MAP.getOrDefault(id == null ? "none" : id.toLowerCase(), NONE),
-                element -> (element == null ? NONE : element).id
-        );
+                element -> (element == null ? NONE : element).id);
     }
 
     public final String id;
-
-
 
     Element(String id) {
         this.id = id;

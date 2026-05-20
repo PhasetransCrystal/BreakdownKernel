@@ -1,6 +1,10 @@
 package net.phasetranscrystal.breacore.api.damage;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.phasetranscrystal.breacore.api.equipment.EntityShieldAttachment;
+import net.phasetranscrystal.breacore.api.magic.Element;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,10 +12,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.phasetranscrystal.breacore.api.equipment.EntityShieldAttachment;
-import net.phasetranscrystal.breacore.api.magic.Element;
-import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
-import net.phasetranscrystal.breacore.utils.AttributeHelper;
+
+import com.tterrag.registrate.util.entry.RegistryEntry;
 
 import java.util.List;
 
@@ -38,17 +40,16 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
     private final double criticalDamageReduction;
 
     /**
-     * @param rootAttacker 根源攻击实体（如发射者）
+     * @param rootAttacker   根源攻击实体（如发射者）
      * @param directAttacker 直接攻击实体（如弹射物本体）
-     * @param victim 受击实体
-     * @param weapon 使用的武器物品
+     * @param victim         受击实体
+     * @param weapon         使用的武器物品
      */
     public SimpleDamageArmorContext(
-            Entity rootAttacker,
-            Entity directAttacker,
-            LivingEntity victim,
-            ItemStack weapon
-    ) {
+                                    Entity rootAttacker,
+                                    Entity directAttacker,
+                                    LivingEntity victim,
+                                    ItemStack weapon) {
         this.rootAttacker = rootAttacker;
         this.directAttacker = directAttacker;
         this.victim = victim;
@@ -160,8 +161,7 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
                 damageSource,
                 effectiveArmorSlots.toArray(EquipmentSlot[]::new),
                 (float) splitLoss,
-                victim
-        );
+                victim);
         return remaining;
     }
 
@@ -183,5 +183,4 @@ public final class SimpleDamageArmorContext implements DamageArmorContext {
         // TODO 对接你的护甲损坏状态系统：为 true 时该护甲不再损耗耐久，也不计入有效护甲件数。
         return false;
     }
-
 }

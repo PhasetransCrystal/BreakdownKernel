@@ -4,10 +4,10 @@ import net.phasetranscrystal.breacore.BreakdownCore;
 import net.phasetranscrystal.breacore.api.damage.event.BreaDamageArmorContextEvent;
 import net.phasetranscrystal.breacore.api.damage.event.BreaDamageSourceResolveEvent;
 import net.phasetranscrystal.breacore.api.damage.event.DamageCalculationEvent;
+import net.phasetranscrystal.breacore.api.damage.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.event.EntityAttackEvent;
 import net.phasetranscrystal.breacore.api.event.EntityKillEvent;
 import net.phasetranscrystal.breacore.api.event.GatherEntityDistributeEvent;
-import net.phasetranscrystal.breacore.api.damage.event.SpellShieldHurtEvent;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
 import net.phasetranscrystal.breacore.api.eventdispatch.IEntityAboutEvent;
 

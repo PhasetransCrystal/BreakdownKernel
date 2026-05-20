@@ -1,10 +1,12 @@
 package net.phasetranscrystal.breacore.api.equipment;
 
-import lombok.Getter;
+import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
+
+import lombok.Getter;
 
 /**
  * 实体护盾附件：用于存储护盾物品、当前护盾值与法术抗性。
@@ -44,15 +46,15 @@ public class EntityShieldAttachment {
 
     public void setShieldHealth(double currentShieldHealth) {
         this.currentShieldHealth = Math.max(0.0, currentShieldHealth);
-        //TODO 护盾掉血事件
+        // TODO 护盾掉血事件
     }
 
     public double getSpellSturdiness() {
-        return 0; //TODO get from shield item
+        return 0; // TODO get from shield item
     }
 
     public double getSpellDurability() {
-        return 0; //TODO
+        return 0; // TODO
     }
 
     public void setShieldDurability(double shieldDurability) {

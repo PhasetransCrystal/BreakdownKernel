@@ -1,5 +1,10 @@
 package net.phasetranscrystal.breacore.common.event;
 
+import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.damage.CriticalDecisionRuntime;
+import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
+import net.phasetranscrystal.breacore.utils.AttributeHelper;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
@@ -7,10 +12,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
-import net.phasetranscrystal.breacore.BreakdownCore;
-import net.phasetranscrystal.breacore.api.damage.CriticalDecisionRuntime;
-import net.phasetranscrystal.breacore.common.registry.AttributeRegistry;
-import net.phasetranscrystal.breacore.utils.AttributeHelper;
 
 @EventBusSubscriber(modid = BreakdownCore.MOD_ID)
 public final class CriticalDecisionEventHandler {

@@ -1,9 +1,10 @@
 package net.phasetranscrystal.breacore.api.damage.event;
 
+import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
-import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
 
 /**
  * 护盾耐久受损事件，可取消或修改损耗值。

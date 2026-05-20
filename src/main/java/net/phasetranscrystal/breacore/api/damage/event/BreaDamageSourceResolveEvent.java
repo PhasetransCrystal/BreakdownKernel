@@ -1,10 +1,12 @@
 package net.phasetranscrystal.breacore.api.damage.event;
 
-import lombok.Getter;
+import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
+
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
-import net.phasetranscrystal.breacore.api.damage.BreaDamageSource;
+
+import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,10 +21,9 @@ public class BreaDamageSourceResolveEvent extends LivingEvent {
     private @Nullable BreaDamageSource damageSource;
 
     public BreaDamageSourceResolveEvent(
-            LivingEntity victim,
-            @Nullable DamageSource originalSource,
-            @Nullable BreaDamageSource damageSource
-    ) {
+                                        LivingEntity victim,
+                                        @Nullable DamageSource originalSource,
+                                        @Nullable BreaDamageSource damageSource) {
         super(victim);
         this.originalSource = originalSource;
         this.damageSource = damageSource;
