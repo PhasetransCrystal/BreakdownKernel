@@ -1,11 +1,17 @@
 package net.phasetranscrystal.breacore.api.material.attributes;
 
+import net.phasetranscrystal.brealib.BreaLib;
+
+import net.phasetranscrystal.breacore.BreakdownCore;
 import net.phasetranscrystal.breacore.api.material.Material;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class MaterialAttributeSet {
 
@@ -20,34 +26,51 @@ public class MaterialAttributeSet {
     }
 
     public boolean isEmpty() {
-        return attributeMap.isEmpty();
+        return attributeMap.containsKey(AttributeType.EMPTY);
     }
 
     public <T extends MaterialAttribute> T getAttribute(AttributeType<T> key) {
-        return key.cast(attributeMap.get(key));
+        if (attributeMap.containsKey(key)) {
+            return key.cast(attributeMap.get(key));
+        }
+        throw new IllegalArgumentException("Attribute " + key + " not found");
     }
 
     public <T extends MaterialAttribute> boolean hasAttribute(AttributeType<T> key) {
-        return attributeMap.get(key) != null;
+        return attributeMap.containsKey(key);
     }
 
     public <T extends MaterialAttribute> void setAttribute(AttributeType<T> key, T value) {
-        if (value == null)
-            throw new IllegalArgumentException("Material Attribute cannot be null");
-        if (attributeMap.containsKey(key))
-            throw new IllegalArgumentException("Material Attribute " + key.toString() + " already registered!");
-        if (!value.canBeAddedTo(this))
-            throw new IllegalArgumentException("Material Attribute " + key.toString() + " cannot be added to!");
-        for (var type : value.getRequiredTypes()) {
-            if (attributeMap.containsKey(type)) continue;
-            var def = type.constructDefault();
-            if (def.isEmpty())
-                def = value.createDependency(type);
-            var dep = def.orElseThrow(() -> new IllegalArgumentException("Material Attribute " + key.toString() + " cannot be constructed!"));
-            attributeMap.put(type, dep);
-            attributeMap.remove(AttributeType.EMPTY);
+        setAttributeInternal(key, value, new HashSet<>());
+    }
+
+    private <T extends MaterialAttribute> void setAttributeInternal(AttributeType<T> key, T value, Set<AttributeType<?>> stack) {
+        if (attributeMap.containsKey(key)) {
+            throw new IllegalArgumentException("Already registered: " + key.getKey());
+        }
+        if (!value.canBeAddedTo(this)) {
+            throw new IllegalArgumentException("Conflicts: " + key.getKey());
+        }
+        if (stack.contains(key)) {
+            throw new IllegalStateException("Circular dependency: " + stack + " -> " + key);
+        }
+        stack.add(key);
+        for (AttributeType<?> depType : value.getRequiredTypes()) {
+            if (attributeMap.containsKey(depType)) continue;
+            var dep = depType.constructDefault();
+            if (dep.isEmpty()) {
+                if (BreaLib.isProd()) {
+                    BreakdownCore.LOGGER.warn("Empty dependency found for {}", key.getKey());
+                    return;
+                }
+                throw new IllegalStateException("Empty dependency found for " + key.getKey());
+            }
+            // 递归添加依赖（注意：递归调用时类型是安全的，因为 depType 与 dep 匹配）
+            setAttributeInternal((AttributeType) depType, dep.get(), stack);
         }
         attributeMap.put(key, value);
+        attributeMap.remove(AttributeType.EMPTY);
+        stack.remove(key);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.phasetranscrystal.breacore.data.blocks;
 
-import net.phasetranscrystal.breacore.api.block.debug.CheckMatBlock;
-import net.phasetranscrystal.breacore.api.block.debug.FluidFurnaceBlock;
+import net.phasetranscrystal.breacore.common.block.debug.CheckMatBlock;
+import net.phasetranscrystal.breacore.common.block.debug.FluidFurnaceBlock;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 

@@ -1,9 +1,12 @@
-package net.phasetranscrystal.breacore.api.blockentity.debug;
+package net.phasetranscrystal.breacore.common.blockentity.debug;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,10 +40,19 @@ import dev.vfyjxf.taffy.style.FlexDirection;
 
 public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersistRPCBlockEntity, ResourceHandler<FluidResource> {
 
-    private final FieldManagedStorage syncStorage = new FieldManagedStorage(this);
+    /**
+     * 烧制时间 (原版熔炉200tick)
+     */
+    public static final int SMELT_TIME = 200;
+    /**
+     * 每烧制一个物品需要的基础流体量 (原版岩浆1000mb烧100个物品，每个10mb)
+     */
+    private static final int FLUID_PER_ITEM = 10;
+    private static final int FLUID_CAPACITY = 10000;
     @Persisted
     @DescSynced
     public final ItemStacksResourceHandler inventory = new ItemStacksResourceHandler(2);
+    private final FieldManagedStorage syncStorage = new FieldManagedStorage(this);
     @Persisted
     @DescSynced
     private final FluidStacksResourceHandler fluidStack = new FluidStacksResourceHandler(1, FLUID_CAPACITY);
@@ -56,15 +68,6 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
     @Persisted
     @DescSynced
     private boolean isWorking = false;
-    /**
-     * 每烧制一个物品需要的基础流体量 (原版岩浆1000mb烧100个物品，每个10mb)
-     */
-    private static final int FLUID_PER_ITEM = 10;
-    /**
-     * 烧制时间 (原版熔炉200tick)
-     */
-    public static final int SMELT_TIME = 200;
-    private static final int FLUID_CAPACITY = 10000;
     /**
      * 当前剩余可烧制次数 (根据剩余流体计算)
      */
@@ -205,21 +208,21 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
             if (element instanceof FluidSlot fluidSlot) {
                 fluidSlot.setCapacity(FLUID_CAPACITY)
                         .slotStyle(style -> style.fillDirection(FillDirection.UP_TO_DOWN));
-                // fluidSlot.bind(this, 0);
+                fluidSlot.bind(this, 0);
             }
         });
 
         // 绑定输入槽
         ui.select("#input_slot").findFirst().ifPresent(element -> {
             if (element instanceof ItemSlot itemSlot) {
-                // itemSlot.bind(inventory, 0);
+                itemSlot.bind(inventory, 0);
             }
         });
 
         // 绑定输出槽
         ui.select("#output_slot").findFirst().ifPresent(element -> {
             if (element instanceof ItemSlot itemSlot) {
-                // itemSlot.bind(inventory, 1);
+                itemSlot.bind(inventory, 1);
             }
         });
 

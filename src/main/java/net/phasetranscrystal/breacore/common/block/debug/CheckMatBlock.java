@@ -1,4 +1,4 @@
-package net.phasetranscrystal.breacore.api.block.debug;
+package net.phasetranscrystal.breacore.common.block.debug;
 
 import net.phasetranscrystal.breacore.api.material.Material;
 

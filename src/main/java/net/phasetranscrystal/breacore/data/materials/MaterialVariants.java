@@ -41,17 +41,23 @@ public class MaterialVariants {
     public static final MaterialVariant block = new MaterialVariant("block")
             .itemCreativeTab(() -> MATERIAL_BLOCK)
             .langValue("Block of %s")
-            .materialAmount(BreaApi.M * 9);
+            .materialAmount(BreaApi.M * 9)
+            .addCondition(material -> GenerateGem.validate(material) || GenerateIngot.validate(material))
+            .addAction(GeneralBlock);
 
     public static final MaterialVariant liquid = new MaterialVariant("liquid")
             .itemCreativeTab(() -> MATERIAL_FLUID)
             .langValue("Liquid of %s")
-            .materialAmount(BreaApi.M);
+            .materialAmount(BreaApi.M)
+            .addCondition(GenerateFluid)
+            .addAction(GeneralFluid);
 
     public static final MaterialVariant melt = new MaterialVariant("melt")
             .itemCreativeTab(() -> MATERIAL_FLUID)
             .langValue("Melt of %s")
-            .materialAmount(BreaApi.M);
+            .materialAmount(BreaApi.M)
+            .addCondition(GenerateFluid)
+            .addAction(GeneralFluid);
 
     public static void init() {
         AddonFinder.getAddonList().forEach(IBreaAddon::addMaterialVariant);

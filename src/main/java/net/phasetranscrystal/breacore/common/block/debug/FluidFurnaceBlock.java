@@ -1,6 +1,6 @@
-package net.phasetranscrystal.breacore.api.block.debug;
+package net.phasetranscrystal.breacore.common.block.debug;
 
-import net.phasetranscrystal.breacore.api.blockentity.debug.FluidFurnaceBlockEntity;
+import net.phasetranscrystal.breacore.common.blockentity.debug.FluidFurnaceBlockEntity;
 import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
 
 import net.minecraft.core.BlockPos;

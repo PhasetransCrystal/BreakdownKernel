@@ -17,14 +17,16 @@ public class FluidAttribute implements MaterialAttribute {
     }
 
     @Getter
-    private boolean withBucket = true;
+    private final boolean withBucket;
     @Getter
-    private boolean withBlock = false;
+    private final boolean withFlowing;
 
-    public FluidAttribute(boolean withBucket, boolean withBlock) {
+    public FluidAttribute(boolean withBucket, boolean withFlowing) {
         this.withBucket = withBucket;
-        this.withBlock = withBlock;
+        this.withFlowing = withFlowing;
     }
 
-    public FluidAttribute() {}
+    public FluidAttribute() {
+        this(true, false);
+    }
 }

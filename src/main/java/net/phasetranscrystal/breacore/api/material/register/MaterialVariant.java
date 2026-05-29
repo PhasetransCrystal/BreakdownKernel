@@ -53,7 +53,7 @@ public class MaterialVariant {
     private int maxStackSize = 64;
     @Getter
     @Setter
-    private Supplier<RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> itemCreativeTab;
+    private Supplier<RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> itemCreativeTab = () -> null;
     private final List<RegisterAction> registerActionList = new ArrayList<>();
     private final List<RegisterCondition> registerConditionList = new ArrayList<>();
 
@@ -108,10 +108,10 @@ public class MaterialVariant {
     public void register(BreaRegistrate registrate, Material material) throws IllegalArgumentException {
         if (!registerConditionList.isEmpty()) {
             for (RegisterCondition condition : registerConditionList) {
-                condition.validate(material);
+                if (!condition.validate(material)) return;
             }
         }
-        registrate.creativeModeTab(itemCreativeTab.get());
+        registrate.creativeModeTab(itemCreativeTab);
         for (RegisterAction action : registerActionList) {
             action.register(registrate, this, material);
         }

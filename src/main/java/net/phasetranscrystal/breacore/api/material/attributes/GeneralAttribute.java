@@ -13,7 +13,7 @@ public class GeneralAttribute implements MaterialAttribute {
     private int harvestLevel;
     /**
      * 此材料作为熔炉燃料时的燃烧时间。
-     * 零或负值表示此材料不能用作燃料。
+     * 零表示此材料不能用作燃料。
      * <p>
      * 默认值：0。
      */

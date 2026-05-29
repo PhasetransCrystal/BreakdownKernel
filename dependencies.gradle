@@ -4,7 +4,7 @@ dependencies {
     implementation('org.jetbrains.kotlin:kotlin-stdlib:2.1.20')
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.20")
 
-    jarJar(api("dev:registrate:1.5.0-beta"))
+    jarJar(api("dev:registrate:1.5.1-beta"))
     jarJar(api(project(":BreaLib")))
     implementation("dev:ldlib2-neoforge:26.1-26.1.2.10")
     // Source: https://mvnrepository.com/artifact/dev.vfyjxf/taffy

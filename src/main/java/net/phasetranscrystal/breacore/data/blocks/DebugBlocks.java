@@ -1,8 +1,8 @@
 package net.phasetranscrystal.breacore.data.blocks;
 
-import net.phasetranscrystal.breacore.api.block.debug.CheckMatBlock;
-import net.phasetranscrystal.breacore.api.block.debug.FluidFurnaceBlock;
-import net.phasetranscrystal.breacore.api.blockentity.debug.FluidFurnaceBlockEntity;
+import net.phasetranscrystal.breacore.common.block.debug.CheckMatBlock;
+import net.phasetranscrystal.breacore.common.block.debug.FluidFurnaceBlock;
+import net.phasetranscrystal.breacore.common.blockentity.debug.FluidFurnaceBlockEntity;
 import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
 
 import static net.phasetranscrystal.breacore.common.registry.BreaRegistration.REGISTRATE;
