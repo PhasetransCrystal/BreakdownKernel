@@ -4,6 +4,18 @@ repositories {
         dir "libs"
     }
     mavenCentral()
+    maven {
+        name = "reposilite"
+        url = 'https://maven.nilarea.cn/releases'
+    }
+    maven {
+        name = "reposilite"
+        url = 'https://maven.nilarea.cn/private'
+        credentials {
+            username = project.findProperty('reposiliteUsername')
+            password = project.findProperty('reposilitePassword')
+        }
+    }
 
     exclusiveContent { // Modrinth Maven
         forRepository { maven { url = "https://api.modrinth.com/maven/" } }
