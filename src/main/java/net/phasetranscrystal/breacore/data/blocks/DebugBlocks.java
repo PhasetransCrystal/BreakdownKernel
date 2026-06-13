@@ -1,30 +1,23 @@
 package net.phasetranscrystal.breacore.data.blocks;
 
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 import net.phasetranscrystal.breacore.common.block.debug.CheckMatBlock;
-import net.phasetranscrystal.breacore.common.block.debug.FluidFurnaceBlock;
-import net.phasetranscrystal.breacore.common.blockentity.debug.FluidFurnaceBlockEntity;
-import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
+import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
 
-import static net.phasetranscrystal.breacore.common.registry.BreaRegistration.REGISTRATE;
-import static net.phasetranscrystal.breacore.data.blocks.BreaBlocks.*;
+import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
+import static net.phasetranscrystal.breacore.common.data.BreaBlocks.MatCheckBlock;
 
 public class DebugBlocks {
 
     static {
-        REGISTRATE.creativeModeTab(() -> BreaCreativeModeTabs.DEBUG_ITEMS);
+        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.DEBUG_ITEMS.getKey());
     }
 
     public static void init() {
         MatCheckBlock = REGISTRATE.block("mat_check", CheckMatBlock::new)
-                .item()
-                .build()
+                .simpleItem()
                 .lang("Material Check Block")
-                .register();
-        FluidFurnaceBlock = REGISTRATE.block("fluid_furnace", FluidFurnaceBlock::new)
-                .simpleBlockEntity(FluidFurnaceBlockEntity::new)
-                .item()
-                .build()
-                .lang("Fluid Furnace")
+                .lang(BreaRegistryCore.LANG_ZH_CN, "材料检测方块")
                 .register();
     }
 }

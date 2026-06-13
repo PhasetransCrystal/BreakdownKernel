@@ -1,18 +1,25 @@
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-
-    implementation('org.jetbrains.kotlin:kotlin-stdlib:2.1.20')
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.20")
-
-    jarJar(api("net.phasetranscrystal:BreaLib:0.1.0"))
-    jarJar(api("net.phasetranscrystal:RegistryLib:8.0.14"))
-
-    // 等待移除
-    jarJar(api("dev:registrate:1.5.1-beta"))
-
-    implementation("dev:ldlib2-neoforge:26.1-26.1.2.10")
-    // Source: https://mvnrepository.com/artifact/dev.vfyjxf/taffy
-    compileOnly("dev.vfyjxf:taffy:1.1.4")
+    // Kt依赖
+    implementation('org.jetbrains.kotlin:kotlin-stdlib:2.3.0')
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
+    // Jar内嵌
+    jarJar(api(project(":BreaLib")))
+    jarJar(api("net.phasetranscrystal:RegistryLib:${registry_lib_version}"))
+    jarJar(api("com.lowdragmc.ldlib2:ldlib2-neoforge-26.1:${ldlib2_version}"))
+    // 编译时
+    compileOnly("dev.vfyjxf:taffy:1.1.4")// Source: https://mvnrepository.com/artifact/dev.vfyjxf/taffy
+    compileOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}:api")
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+26.1.2:api")
+    compileOnly("mezz.jei:jei-26.1.2-neoforge-api:${jei_version}")
+    //
+    implementation("curse.maven:jade-324717:8068368")
+    // 运行时
+    runtimeOnly("org.appliedenergistics:guideme:${guideme_version}")
+    runtimeOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+26.1.2")
+    runtimeOnly("mezz.jei:jei-26.1.2-neoforge:${jei_version}")
+    // runtimeOnly("icyllis.modernui:ModernUI-NeoForge:26.1.2-${modern_ui_version}")
 
     // JUnit 5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'

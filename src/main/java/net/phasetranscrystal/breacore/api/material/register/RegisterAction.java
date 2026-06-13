@@ -1,11 +1,10 @@
 package net.phasetranscrystal.breacore.api.material.register;
 
 import net.phasetranscrystal.breacore.api.material.Material;
-
-import com.tterrag.registrate.AbstractRegistrate;
+import net.phasetranscrystal.registrylib.RegistryCore;
 
 @FunctionalInterface
 public interface RegisterAction {
 
-    void register(AbstractRegistrate<?> registrate, MaterialVariant variant, Material material);
+    void register(RegistryCore registrate, MaterialVariant variant, Material material);
 }

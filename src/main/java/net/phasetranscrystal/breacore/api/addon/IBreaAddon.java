@@ -1,11 +1,11 @@
 package net.phasetranscrystal.breacore.api.addon;
 
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 
 @SuppressWarnings("unused")
 public interface IBreaAddon {
 
-    BreaRegistrate getRegistrate();
+    BreaRegistryCore getRegistrate();
 
     void initComplete();
 

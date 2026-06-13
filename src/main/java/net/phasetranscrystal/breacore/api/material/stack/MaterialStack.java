@@ -28,13 +28,13 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
             c -> RecordCodecBuilder.mapCodec(
                     instance -> instance.group(
                             MATERIAL_HOLDER_CODEC_WITH_BOUND_COMPONENTS.fieldOf(MATERIAL_ID).forGetter(MaterialStack::typeHolder),
-                            ExtraCodecs.POSITIVE_INT.fieldOf(MATERIAL_AMOUNT).forGetter(MaterialStack::getAmount),
+                            ExtraCodecs.POSITIVE_LONG.fieldOf(MATERIAL_AMOUNT).forGetter(MaterialStack::getAmount),
                             DataComponentPatch.CODEC.optionalFieldOf(FIELD_COMPONENTS, DataComponentPatch.EMPTY)
                                     .forGetter(stack -> stack.components.asPatch()))
                             .apply(instance, MaterialStack::new)));
     public static final Codec<MaterialStack> CODEC = Codec.lazyInitialized(MAP_CODEC::codec);
 
-    public static Codec<MaterialStack> fixedAmountCodec(int amount) {
+    public static Codec<MaterialStack> fixedAmountCodec(long amount) {
         return Codec.lazyInitialized(
                 () -> RecordCodecBuilder.create(
                         instance -> instance.group(
@@ -51,7 +51,7 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
 
         @Override
         public MaterialStack decode(RegistryFriendlyByteBuf buf) {
-            var amount = buf.readVarInt();
+            var amount = buf.readVarLong();
             if (amount <= 0)
                 return MaterialStack.EMPTY;
             else {
@@ -64,9 +64,9 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         @Override
         public void encode(RegistryFriendlyByteBuf buf, MaterialStack stack) {
             if (stack.isEmpty())
-                buf.writeVarInt(0);
+                buf.writeVarLong(0);
             else {
-                buf.writeVarInt(stack.getAmount());
+                buf.writeVarLong(stack.getAmount());
                 MATERIAL_HOLDER_STREAM_CODEC.encode(buf, stack.typeHolder());
                 DataComponentPatch.STREAM_CODEC.encode(buf, stack.components.asPatch());
             }
@@ -92,7 +92,7 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
 
     public static final MaterialStack EMPTY = new MaterialStack(null);
     @Setter
-    private int amount;
+    private long amount;
     private final @Nullable Holder<Material> material;
     private final PatchedDataComponentMap components;
 
@@ -117,23 +117,23 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         return this.isEmpty() || this.components.isPatchEmpty();
     }
 
-    public MaterialStack(Material material, int amount, DataComponentPatch patch) {
+    public MaterialStack(Material material, long amount, DataComponentPatch patch) {
         this(material.builtInRegistryHolder(), amount, patch);
     }
 
-    public MaterialStack(Material material, int amount) {
+    public MaterialStack(Material material, long amount) {
         this(material.builtInRegistryHolder(), amount, DataComponentPatch.EMPTY);
     }
 
-    public MaterialStack(Holder<Material> material, int amount, DataComponentPatch patch) {
+    public MaterialStack(Holder<Material> material, long amount, DataComponentPatch patch) {
         this(material, amount, PatchedDataComponentMap.fromPatch(material.components(), patch));
     }
 
-    public MaterialStack(Holder<Material> material, int amount) {
+    public MaterialStack(Holder<Material> material, long amount) {
         this(material, amount, DataComponentPatch.EMPTY);
     }
 
-    public MaterialStack(Holder<Material> material, int amount, PatchedDataComponentMap components) {
+    public MaterialStack(Holder<Material> material, long amount, PatchedDataComponentMap components) {
         this.material = material;
         this.amount = amount;
         this.components = components;
@@ -148,8 +148,8 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         return this == EMPTY || material.value().isSame(MarkerMaterial.NULL) || this.amount <= 0;
     }
 
-    public MaterialStack split(int amount) {
-        int i = Math.min(amount, getAmount());
+    public MaterialStack split(long amount) {
+        long i = Math.min(amount, getAmount());
         MaterialStack materialStack = this.copyWithAmount(i);
         this.shrink(i);
         return materialStack;
@@ -186,7 +186,7 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         }
     }
 
-    public MaterialStack copyWithAmount(int amount) {
+    public MaterialStack copyWithAmount(long amount) {
         if (this.isEmpty()) {
             return EMPTY;
         } else {
@@ -200,11 +200,11 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
         return transmuteCopy(newMaterial, amount());
     }
 
-    public MaterialStack transmuteCopy(Material newMaterial, int newAmount) {
+    public MaterialStack transmuteCopy(Material newMaterial, long newAmount) {
         return isEmpty() ? EMPTY : transmuteCopyIgnoreEmpty(newMaterial, newAmount);
     }
 
-    private MaterialStack transmuteCopyIgnoreEmpty(Material newMaterial, int newAmount) {
+    private MaterialStack transmuteCopyIgnoreEmpty(Material newMaterial, long newAmount) {
         return new MaterialStack(newMaterial, newAmount, components.asPatch());
     }
 
@@ -238,19 +238,19 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
     }
 
     @Override
-    public int amount() {
+    public long amount() {
         return this.isEmpty() ? 0 : this.amount;
     }
 
-    public int getAmount() {
+    public long getAmount() {
         return amount();
     }
 
-    public void grow(int addedAmount) {
+    public void grow(long addedAmount) {
         this.setAmount(this.getAmount() + addedAmount);
     }
 
-    public void shrink(int removedAmount) {
+    public void shrink(long removedAmount) {
         this.grow(-removedAmount);
     }
 
@@ -307,9 +307,9 @@ public final class MaterialStack implements MutableDataComponentHolder, Material
     /**
      * Hashes the fluid and components of this stack, ignoring the amount.
      */
-    public static int hashMaterialAndComponents(@Nullable MaterialStack stack) {
+    public static long hashMaterialAndComponents(@Nullable MaterialStack stack) {
         if (stack != null) {
-            int i = 31 + stack.getMaterial().hashCode();
+            long i = 31 + stack.getMaterial().hashCode();
             return 31 * i + stack.getComponents().hashCode();
         } else {
             return 0;

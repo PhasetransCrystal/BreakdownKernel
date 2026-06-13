@@ -3,6 +3,7 @@ package net.phasetranscrystal.breacore.common.block.debug;
 import net.phasetranscrystal.breacore.api.material.Material;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -29,6 +30,6 @@ public class CheckMatBlock extends Block {
     }
 
     private void displayMaterial(Player player, Material material, String format) {
-        // player.displayClientMessage(Component.literal(format.formatted(oldmaterial.getName())), true);
+        player.sendOverlayMessage(Component.literal(format.formatted(material.getName())));
     }
 }

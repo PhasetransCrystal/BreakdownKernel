@@ -1,10 +1,9 @@
 package net.phasetranscrystal.breacore.common.block.debug;
 
 import net.phasetranscrystal.breacore.common.blockentity.debug.FluidFurnaceBlockEntity;
-import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
+import net.phasetranscrystal.breacore.common.data.BreaBlockEntities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -49,19 +48,14 @@ public class FluidFurnaceBlock extends Block implements EntityBlock, BlockUIMenu
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NonNull BlockState blockState, @NonNull BlockEntityType<T> type) {
-        if (level.isClientSide()) {
-            return null;
-        } else {
-            return (_, _, _, blockEntity) -> {
-                if (blockEntity instanceof FluidFurnaceBlockEntity furnaceBE) {
-                    furnaceBE.serverTick();
-                }
-            };
-        }
+        if (level.isClientSide()) return null;
+        @SuppressWarnings("unchecked")
+        BlockEntityTicker<T> ticker = (BlockEntityTicker<T>) (BlockEntityTicker<FluidFurnaceBlockEntity>) FluidFurnaceBlockEntity::serverTick;
+        return ticker;
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
-        return new FluidFurnaceBlockEntity(BreaBlocks.FluidFurnaceBlock.getSibling(Registries.BLOCK_ENTITY_TYPE).value(), blockPos, blockState);
+        return BreaBlockEntities.FurnaceBlockEntity.create(blockPos, blockState);
     }
 }

@@ -2,20 +2,28 @@ package net.phasetranscrystal.breacore.api.material.register;
 
 import net.phasetranscrystal.brealib.util.FormattingUtil;
 
+import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
+import net.phasetranscrystal.breacore.api.tag.BreaTag;
+import net.phasetranscrystal.registrylib.util.entry.RegistryEntry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 
 import com.lowdragmc.lowdraglib2.utils.LocalizationUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.tterrag.registrate.util.entry.RegistryEntry;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -43,6 +51,9 @@ public class MaterialVariant {
     @Getter
     @Setter
     private String idPattern;
+
+    protected final List<BreaTag> tags = new ArrayList<>();
+
     /// 变体材料量
     @Getter
     @Setter
@@ -56,6 +67,9 @@ public class MaterialVariant {
     private Supplier<RegistryEntry<CreativeModeTab, ? extends CreativeModeTab>> itemCreativeTab = () -> null;
     private final List<RegisterAction> registerActionList = new ArrayList<>();
     private final List<RegisterCondition> registerConditionList = new ArrayList<>();
+
+    private final Map<Material, Supplier<? extends ItemLike>[]> ignoredMaterials = new HashMap<>();
+    private final Object2FloatMap<Material> materialAmounts = new Object2FloatOpenHashMap<>();
 
     public MaterialVariant(String id) {
         this.id = id;
@@ -105,13 +119,14 @@ public class MaterialVariant {
         return this;
     }
 
-    public void register(BreaRegistrate registrate, Material material) throws IllegalArgumentException {
+    public void register(BreaRegistryCore registrate, Material material) throws IllegalArgumentException {
         if (!registerConditionList.isEmpty()) {
             for (RegisterCondition condition : registerConditionList) {
                 if (!condition.validate(material)) return;
             }
         }
-        registrate.creativeModeTab(itemCreativeTab);
+        if (itemCreativeTab.get() != null)
+            registrate.defaultCreativeTab(itemCreativeTab.get().getKey());
         for (RegisterAction action : registerActionList) {
             action.register(registrate, this, material);
         }
@@ -150,5 +165,23 @@ public class MaterialVariant {
     @Override
     public String toString() {
         return id;
+    }
+
+    @SuppressWarnings("unchecked")
+    public TagKey<Item>[] getItemTags(@NotNull Material mat) {
+        return tags.stream().filter(type -> !type.isParentTag()).map(type -> type.getTag(this, mat))
+                .filter(Objects::nonNull)
+                .toArray(TagKey[]::new);
+    }
+
+    public boolean isAmountModified(Material material) {
+        return materialAmounts.containsKey(material);
+    }
+
+    public long getMaterialAmount(@NotNull Material material) {
+        if (material.isNull() || !isAmountModified(material)) {
+            return this.materialAmount;
+        }
+        return (long) (BreaApi.M * materialAmounts.getFloat(material));
     }
 }

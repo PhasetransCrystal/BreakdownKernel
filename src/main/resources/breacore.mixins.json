@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_25",
   "plugin": "net.phasetranscrystal.breacore.mixins.BreaMixinPlugin",
   "mixins": [
-    "AbstractRegistrateAccessor",
     "BlockPropertiesAccessor",
     "MappedRegistryAccess",
     "RegisterEventAccessor",

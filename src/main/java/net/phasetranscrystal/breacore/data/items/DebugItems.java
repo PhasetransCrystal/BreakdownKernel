@@ -1,13 +1,13 @@
 package net.phasetranscrystal.breacore.data.items;
 
-import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
+import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
 
-import static net.phasetranscrystal.breacore.common.registry.BreaRegistration.REGISTRATE;
+import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
 
 public class DebugItems {
 
     static {
-        REGISTRATE.creativeModeTab(() -> BreaCreativeModeTabs.DEBUG_ITEMS);
+        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.DEBUG_ITEMS.getKey());
     }
 
     public static void init() {}

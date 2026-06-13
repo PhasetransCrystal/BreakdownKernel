@@ -2,8 +2,7 @@ package net.phasetranscrystal.breacore;
 
 import net.phasetranscrystal.breacore.api.addon.BreaAddon;
 import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
-import net.phasetranscrystal.breacore.common.registry.BreaRegistration;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -12,8 +11,8 @@ import lombok.extern.log4j.Log4j2;
 public class BreakdownAddon implements IBreaAddon {
 
     @Override
-    public BreaRegistrate getRegistrate() {
-        return BreaRegistration.REGISTRATE;
+    public BreaRegistryCore getRegistrate() {
+        return BreakdownCore.REGISTRATE;
     }
 
     @Override

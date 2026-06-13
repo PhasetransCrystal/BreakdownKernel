@@ -1,6 +1,6 @@
 package net.phasetranscrystal.breacore.api.eventdispatch;
 
-import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
+import net.phasetranscrystal.breacore.common.data.BreaAttachmentTypes;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +23,7 @@ import java.util.function.BiConsumer;
  */
 public final class EventDispatcher {
 
-    public static final AttachmentType<EventDistributor> TYPE = AttachmentTypeRegistry.EVENT_DISTRIBUTOR.get();
+    public static final AttachmentType<EventDistributor> TYPE = BreaAttachmentTypes.EVENT_DISTRIBUTOR.get();
 
     /**
      * 获取实体的 {@link EventDistributor}，若不存在则返回 null。

@@ -14,7 +14,7 @@ import net.phasetranscrystal.breacore.api.material.registry.IMaterialBuilderExte
 import net.phasetranscrystal.breacore.api.material.stack.MaterialResource;
 import net.phasetranscrystal.breacore.api.material.stack.MaterialStack;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
+import net.phasetranscrystal.breacore.common.data.BreaMaterials;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;

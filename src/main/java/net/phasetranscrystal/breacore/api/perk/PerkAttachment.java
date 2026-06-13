@@ -5,7 +5,7 @@ import net.phasetranscrystal.brealib.BreaLib;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventConsumer;
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDispatcher;
 import net.phasetranscrystal.breacore.api.perk.event.PerkChangeEvent;
-import net.phasetranscrystal.breacore.common.registry.AttachmentTypeRegistry;
+import net.phasetranscrystal.breacore.common.data.BreaAttachmentTypes;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class PerkAttachment {
 
-    public static final AttachmentType<PerkAttachment> TYPE = AttachmentTypeRegistry.PERK_CONTROLLER.get();
+    public static final AttachmentType<PerkAttachment> TYPE = BreaAttachmentTypes.PERK_CONTROLLER.get();
     public static final Identifier SYSTEM_ID = BreaLib.id("perk_system");
 
     private final Map<Perk, PerkInfo> perkInfos = new HashMap<>();

@@ -29,5 +29,5 @@ public interface MaterialInstance extends TypedInstance<Material>, DataComponent
     Codec<Holder<Material>> MATERIAL_HOLDER_CODEC_WITH_BOUND_COMPONENTS = MATERIAL_HOLDER_CODEC.validate(
             material -> !material.areComponentsBound() ? DataResult.error(() -> "Material " + material.getRegisteredName() + " does not have components yet") : DataResult.success(material));
 
-    int amount();
+    long amount();
 }

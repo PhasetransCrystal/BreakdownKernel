@@ -156,7 +156,7 @@ public class MaterialResource implements DataComponentHolderResource<Material> {
 
     @Override
     public int hashCode() {
-        return MaterialStack.hashMaterialAndComponents(innerStack);
+        return Math.toIntExact(MaterialStack.hashMaterialAndComponents(innerStack));
     }
 
     @Override

@@ -8,22 +8,19 @@ import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistrate;
-import net.phasetranscrystal.breacore.data.blockentity.BreaBlockEntities;
-import net.phasetranscrystal.breacore.data.blocks.BreaBlocks;
-import net.phasetranscrystal.breacore.data.datagen.BreaRegistrateDatagen;
-import net.phasetranscrystal.breacore.data.entity.BreaEntityTypes;
-import net.phasetranscrystal.breacore.data.fluids.BreaFluids;
-import net.phasetranscrystal.breacore.data.items.BreaItems;
-import net.phasetranscrystal.breacore.data.machine.BreaMachines;
-import net.phasetranscrystal.breacore.data.materials.BreaElements;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
-import net.phasetranscrystal.breacore.data.materials.MaterialVariants;
-import net.phasetranscrystal.breacore.data.misc.BreaCreativeModeTabs;
+import net.phasetranscrystal.breacore.common.data.BreaBlockEntities;
+import net.phasetranscrystal.breacore.common.data.BreaBlocks;
+import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
+import net.phasetranscrystal.breacore.common.data.BreaElements;
+import net.phasetranscrystal.breacore.common.data.BreaEntityTypes;
+import net.phasetranscrystal.breacore.common.data.BreaFluids;
+import net.phasetranscrystal.breacore.common.data.BreaItems;
+import net.phasetranscrystal.breacore.common.data.BreaMachines;
+import net.phasetranscrystal.breacore.common.data.BreaMaterials;
+import net.phasetranscrystal.breacore.common.data.BreaRegistrateDatagen;
+import net.phasetranscrystal.breacore.common.data.MaterialVariants;
 
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -31,7 +28,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
-import static net.phasetranscrystal.breacore.common.registry.BreaRegistration.REGISTRATE;
+import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
 
 public class CommonProxy {
 
@@ -51,8 +48,8 @@ public class CommonProxy {
 
         BreaFluids.init();
         BreaBlocks.init();
-        BreaEntityTypes.init();
         BreaBlockEntities.init();
+        BreaEntityTypes.init();
         BreaMachines.init();
 
         BreaItems.init();
@@ -60,12 +57,6 @@ public class CommonProxy {
         AddonFinder.getAddonList().forEach(IBreaAddon::initComplete);
 
         BreaRegistrateDatagen.init();
-        // Register all oldmaterial manager registries, for materials with mod ids.
-        BreaApi.materialManager.getUsedNamespaces().forEach(namespace -> {
-            // Force the oldmaterial lang generator to be at index 0, so that addons' lang generators can override it.
-            BreaRegistrate registrate = BreaRegistrate.createIgnoringListenerErrors(namespace);
-            ModList.get().getModContainerById(namespace).map(ModContainer::getEventBus).ifPresent(registrate::registerEventListeners);
-        });
     }
 
     private static void initMaterials() {
@@ -86,7 +77,7 @@ public class CommonProxy {
         managerInternal.freezeRegistries();
         /* End Material Registration */
         MaterialVariants.init();
-        REGISTRATE.creativeModeTab(() -> BreaCreativeModeTabs.MATERIAL_ITEM);
+        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.MATERIAL_ITEM.getKey());
         for (var material : managerInternal) {
             for (var variant : MaterialVariant.values()) {
                 variant.register(REGISTRATE, material);

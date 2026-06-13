@@ -2,15 +2,15 @@ package net.phasetranscrystal.breacore.common.blockentity.debug;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
@@ -38,6 +38,8 @@ import dev.vfyjxf.taffy.style.AlignContent;
 import dev.vfyjxf.taffy.style.AlignItems;
 import dev.vfyjxf.taffy.style.FlexDirection;
 
+import java.util.Optional;
+
 public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersistRPCBlockEntity, ResourceHandler<FluidResource> {
 
     /**
@@ -51,7 +53,10 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
     private static final int FLUID_CAPACITY = 10000;
     @Persisted
     @DescSynced
-    public final ItemStacksResourceHandler inventory = new ItemStacksResourceHandler(2);
+    public final ItemStacksResourceHandler input = new ItemStacksResourceHandler(1);
+    @Persisted
+    @DescSynced
+    public final ItemStacksResourceHandler output = new ItemStacksResourceHandler(1);
     private final FieldManagedStorage syncStorage = new FieldManagedStorage(this);
     @Persisted
     @DescSynced
@@ -63,21 +68,9 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
     @DescSynced
     private float progress = 0f;
     /**
-     * 是否正在工作
-     */
-    @Persisted
-    @DescSynced
-    private boolean isWorking = false;
-    /**
-     * 当前剩余可烧制次数 (根据剩余流体计算)
-     */
-    @Persisted
-    @DescSynced
-    private int remainingSmelts = 0;
-    /**
      * 当前配方
      */
-    private RecipeHolder<?> currentRecipe;
+    private AbstractCookingRecipe currentRecipe;
     /**
      * 配方缓存的输入物品
      */
@@ -90,89 +83,55 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
     /**
      * 服务端每tick调用 - 处理烧制逻辑
      */
-    public void serverTick() {
-        var inputResource = inventory.getResource(0);
-        var outputResource = inventory.getResource(1);
+    public static void serverTick(Level level, BlockPos pos, BlockState state, FluidFurnaceBlockEntity be) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (be.fluidStack.getAmountAsInt(0) < FLUID_PER_ITEM) return;
 
-        // 检查输入物品是否改变
+        // 获取当前输入输出
+        var inputResource = be.input.getResource(0);
+        ItemStack inputStack = inputResource.toStack();
+        SingleRecipeInput input = new SingleRecipeInput(inputStack);
 
-        if (!inputResource.matches(cachedInput)) {
-            currentRecipe = null;
-            cachedInput = inputResource.toStack();
-        }
-
-        // 检查是否有有效的配方
-        if (currentRecipe == null && !inputResource.isEmpty() && level != null) {
-            currentRecipe = findSmeltingRecipe(inputResource.toStack());
-        }
-
-        // 如果有配方且有剩余烧制次数，开始烧制
-        if (currentRecipe != null && remainingSmelts > 0) {
-            var resultItem = ((AbstractCookingRecipe) currentRecipe.value()).assemble(new SingleRecipeInput(cachedInput));
-
-            if (outputResource.isEmpty() || canMergeOutput(outputResource.toStack(inventory.getAmountAsInt(1)), resultItem)) {
-                // 增加进度
-                progress++;
-
-                if (progress >= SMELT_TIME) {
-                    // 烧制完成
-                    completeSmelting(resultItem);
-                }
-                isWorking = true;
+        // 如果有当前配方，但输入不再匹配，则清空
+        if (be.currentRecipe == null || !be.currentRecipe.matches(input, level)) {
+            Optional<RecipeHolder<SmeltingRecipe>> smelting = serverLevel
+                    .recipeAccess()
+                    .getRecipeFor(RecipeType.SMELTING, input, serverLevel);
+            if (smelting.isPresent()) {
+                be.currentRecipe = smelting.get().value();
+                be.progress = 0;
             } else {
-                isWorking = false;
-            }
-        } else {
-            isWorking = false;
-            if (progress > 0) {
-                progress = 0;
+                Optional<RecipeHolder<BlastingRecipe>> blasting = serverLevel
+                        .recipeAccess()
+                        .getRecipeFor(RecipeType.BLASTING, input, serverLevel);
+                if (blasting.isEmpty()) {
+                    be.progress = 0;
+                    be.currentRecipe = null;
+                    return;
+                } else {
+                    be.currentRecipe = blasting.get().value();
+                    be.progress = 0;
+                }
             }
         }
-    }
 
-    /**
-     * 完成烧制
-     */
-    private void completeSmelting(ItemStack resultItem) {
-        var inputResource = inventory.getResource(0);
-
-        try (Transaction tx = Transaction.openRoot()) {
-            inventory.insert(1, ItemResource.of(resultItem), resultItem.count(), tx);
-            inventory.extract(0, inputResource, 1, tx);
-            remainingSmelts--;
-            fluidStack.extract(0, fluidStack.getResource(0), FLUID_PER_ITEM, tx);
-            tx.commit();
+        be.progress += 2;
+        if (be.progress >= be.currentRecipe.cookingTime()) {
+            ItemStack result = be.currentRecipe.assemble(input);
+            var outputResource = be.output.getResource(0);
+            if (outputResource.isEmpty() || outputResource.matches(result)) {
+                try (Transaction tx = Transaction.openRoot()) {
+                    be.input.extract(inputResource, 1, tx);
+                    ResourceHandlerUtil.insertStacking(be.output, ItemResource.of(result), result.count(), tx);
+                    be.fluidStack.extract(0, be.fluidStack.getResource(0), FLUID_PER_ITEM, tx);
+                    tx.commit();
+                }
+                be.progress = 0;
+                be.currentRecipe = null;
+                be.cachedInput = ItemStack.EMPTY;
+            }
         }
-        progress = 0;
-        currentRecipe = null;
-        cachedInput = ItemStack.EMPTY;
-    }
-
-    /**
-     * 查找烧制配方
-     * 同时支持普通熔炉和高炉配方 (RAW IRON 等需要 BLASTING)
-     */
-    private RecipeHolder<?> findSmeltingRecipe(ItemStack stack) {
-        if (level == null) return null;
-
-        var recipeManager = getServerLevel().recipeAccess();
-        var input = new SingleRecipeInput(stack);
-
-        // 优先检查普通熔炉配方
-        var smeltingRecipeHolder = recipeManager.getRecipeFor(RecipeType.SMELTING, input, level);
-        if (smeltingRecipeHolder.isPresent())
-            return smeltingRecipeHolder.get();
-        var blastingRecipeHolder = recipeManager.getRecipeFor(RecipeType.BLASTING, input, level);
-        return blastingRecipeHolder.orElse(null);
-    }
-
-    /**
-     * 检查是否可以合并输出
-     */
-    private boolean canMergeOutput(ItemStack existing, ItemStack adding) {
-        if (existing.isEmpty()) return true;
-        if (!existing.is(adding.getItem())) return false;
-        return existing.getCount() + adding.getCount() <= existing.getMaxStackSize();
+        be.setChanged();
     }
 
     public ModularUI createUI(BlockUIMenuType.BlockUIHolder holder) {
@@ -191,8 +150,7 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
                                         .addChildren(
                                                 new ItemSlot().layout(layout -> layout.width(18).height(18)).setId("input_slot"),
                                                 new ProgressBar().setMaxValue(200).layout(layout -> layout.width(24).height(17).marginLeft(2).marginRight(2)).setId("progress_bar"),
-                                                new ItemSlot().layout(layout -> layout.width(18).height(18))))
-                        .setId("output_slot"),
+                                                new ItemSlot().layout(layout -> layout.width(18).height(18)).setId("output_slot"))),
                 new UIElement().layout(layout -> layout.height(12).alignItems(AlignItems.CENTER).justifyContent(AlignContent.CENTER).marginBottom(8))
                         .addChild(new Label().textStyle(style -> style.fontSize(10).textColor(0x505050)).setText("Ready").setId("status_label")),
                 /*
@@ -215,22 +173,24 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
         // 绑定输入槽
         ui.select("#input_slot").findFirst().ifPresent(element -> {
             if (element instanceof ItemSlot itemSlot) {
-                itemSlot.bind(inventory, 0);
+                itemSlot.bind(input, 0);
             }
         });
 
         // 绑定输出槽
         ui.select("#output_slot").findFirst().ifPresent(element -> {
             if (element instanceof ItemSlot itemSlot) {
-                itemSlot.bind(inventory, 1);
+                itemSlot.bind(output, 0);
             }
         });
 
         // 绑定进度条
         ui.select("#progress_bar").findFirst().ifPresent(element -> {
             if (element instanceof ProgressBar progressBar) {
-                progressBar.setRange(0, SMELT_TIME)
-                        .progressBarStyle(style -> style.fillDirection(FillDirection.LEFT_TO_RIGHT));
+                if (currentRecipe != null) {
+                    progressBar.setRange(0, currentRecipe.cookingTime())
+                            .progressBarStyle(style -> style.fillDirection(FillDirection.LEFT_TO_RIGHT));
+                }
                 progressBar.bindDataSource(SupplierDataSource.of(() -> progress));
             }
         });
@@ -239,11 +199,9 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
         ui.select("#status_label").findFirst().ifPresent(element -> {
             if (element instanceof Label label) {
                 label.bindDataSource(SupplierDataSource.of(() -> {
-                    if (isWorking) {
-                        return Component.literal("Smelting... " + (int) (progress / SMELT_TIME * 100) + "%");
-                    } else if (fluidStack.getResource(0).isEmpty()) {
+                    if (fluidStack.getResource(0).isEmpty()) {
                         return Component.literal("Need Fluid!");
-                    } else if (inventory.getResource(0).isEmpty()) {
+                    } else if (input.getResource(0).isEmpty()) {
                         return Component.literal("Place items to smelt");
                     } else if (currentRecipe == null) {
                         return Component.literal("No recipe for this item");
@@ -301,7 +259,6 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
         int space = fluidStack.getCapacityAsInt(index, fluidResource) - fluidStack.getAmountAsInt(index);
         int toFill = Math.min(amount, space);
         if (toFill <= 0) return 0;
-        remainingSmelts += additionalSmelts;
         return fluidStack.insert(index, resource, amount, transaction);
     }
 
@@ -312,7 +269,6 @@ public class FluidFurnaceBlockEntity extends BlockEntity implements ISyncPersist
         int toDrain = Math.min(amount, fluidStack.getAmountAsInt(index));
         if (toDrain <= 0) return 0;
         int removedSmelts = toDrain / FLUID_PER_ITEM;
-        remainingSmelts = Math.max(0, remainingSmelts - removedSmelts);
         return fluidStack.extract(index, resource, amount, transaction);
     }
 }
