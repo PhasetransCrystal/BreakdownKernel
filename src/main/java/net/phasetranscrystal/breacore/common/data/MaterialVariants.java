@@ -39,7 +39,7 @@ public class MaterialVariants {
             .materialAmount(-1);
 
     public static final MaterialVariant block = new MaterialVariant("block")
-            .itemCreativeTab(() -> MATERIAL_BLOCK)
+            .itemCreativeTab(() -> MATERIAL_ITEM)
             .langValue("Block of %s")
             .materialAmount(BreaApi.M * 9)
             .addCondition(material -> GenerateGem.validate(material) || GenerateIngot.validate(material))

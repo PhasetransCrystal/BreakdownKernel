@@ -2,7 +2,7 @@ package net.phasetranscrystal.breacore.data.items;
 
 import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
 
-import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
+import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 
 public class DebugItems {
 

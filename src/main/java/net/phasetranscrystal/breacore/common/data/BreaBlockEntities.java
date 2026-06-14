@@ -3,7 +3,7 @@ package net.phasetranscrystal.breacore.common.data;
 import net.phasetranscrystal.breacore.common.blockentity.debug.FluidFurnaceBlockEntity;
 import net.phasetranscrystal.registrylib.util.entry.BlockEntityTypeEntry;
 
-import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
+import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 
 public class BreaBlockEntities {
 

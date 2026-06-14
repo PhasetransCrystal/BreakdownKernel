@@ -6,9 +6,13 @@ import net.phasetranscrystal.breacore.common.block.debug.FluidFurnaceBlock;
 import net.phasetranscrystal.breacore.data.blocks.DebugBlocks;
 import net.phasetranscrystal.registrylib.util.entry.BlockEntry;
 
-import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
+import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 
 public class BreaBlocks {
+
+    static {
+        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.DECORATION_BLOCK.getKey());
+    }
 
     public static BlockEntry<CheckMatBlock> MatCheckBlock;
     public static BlockEntry<FluidFurnaceBlock> FluidFurnaceBlock = REGISTRATE.block("fluid_furnace", FluidFurnaceBlock::new)

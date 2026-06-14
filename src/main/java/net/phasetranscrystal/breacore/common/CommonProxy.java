@@ -28,7 +28,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
-import static net.phasetranscrystal.breacore.BreakdownCore.REGISTRATE;
+import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 
 public class CommonProxy {
 
