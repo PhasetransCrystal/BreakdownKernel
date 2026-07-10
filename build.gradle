@@ -13,7 +13,10 @@ allprojects {
     group = 'net.phasetranscrystal'
 }
 
-version = mod_version
+def buildDate = new Date()
+def dynamicVersion = "${String.format('%ty', buildDate)}.${buildDate.month + 1}.${buildDate.date}"
+ext.mod_version = dynamicVersion
+version = dynamicVersion
 group = mod_group_id
 
 tasks.named('wrapper', Wrapper).configure {

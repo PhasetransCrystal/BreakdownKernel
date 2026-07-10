@@ -15,8 +15,7 @@ public interface IAppearance {
      *      IBlockExtension#getAppearance
      */
     @Nullable
-    default BlockState getBlockAppearance(BlockState state, BlockAndLightGetter level, BlockPos pos, Direction side,
-                                          @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
+    default BlockState getBlockAppearance(BlockState state, BlockAndLightGetter level, BlockPos pos, Direction side, @Nullable BlockState sourceState, @Nullable BlockPos sourcePos) {
         return state;
     }
 }

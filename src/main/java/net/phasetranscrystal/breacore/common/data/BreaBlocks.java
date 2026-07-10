@@ -11,7 +11,7 @@ import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 public class BreaBlocks {
 
     static {
-        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.DECORATION_BLOCK.getKey());
+        REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.GENERAL_BLOCK.getKey());
     }
 
     public static BlockEntry<CheckMatBlock> MatCheckBlock;

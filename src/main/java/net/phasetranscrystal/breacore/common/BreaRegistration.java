@@ -15,7 +15,7 @@ public class BreaRegistration {
      */
     public static final BreaRegistryCore REGISTRATE = BreaRegistryCore.create(BreakdownCore.MOD_ID);
     public static final BreaGroup DEBUG_REGISTRATE = (BreaGroup) REGISTRATE.group("debug")
-            .addItemTag(BreaTags.DEBUG)
+            .addItemTag(BreaTags.DEBUG_ITEM)
             .tab(CreativeModeTabs.OP_BLOCKS)
             .build();
 }

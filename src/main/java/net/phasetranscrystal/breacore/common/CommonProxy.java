@@ -8,17 +8,7 @@ import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
-import net.phasetranscrystal.breacore.common.data.BreaBlockEntities;
-import net.phasetranscrystal.breacore.common.data.BreaBlocks;
-import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
-import net.phasetranscrystal.breacore.common.data.BreaElements;
-import net.phasetranscrystal.breacore.common.data.BreaEntityTypes;
-import net.phasetranscrystal.breacore.common.data.BreaFluids;
-import net.phasetranscrystal.breacore.common.data.BreaItems;
-import net.phasetranscrystal.breacore.common.data.BreaMachines;
-import net.phasetranscrystal.breacore.common.data.BreaMaterials;
-import net.phasetranscrystal.breacore.common.data.BreaRegistrateDatagen;
-import net.phasetranscrystal.breacore.common.data.MaterialVariants;
+import net.phasetranscrystal.breacore.common.data.*;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -42,6 +32,7 @@ public class CommonProxy {
     }
 
     public static void init() {
+        BreaTags.init();
         BreaCreativeModeTabs.init();
 
         initMaterials();

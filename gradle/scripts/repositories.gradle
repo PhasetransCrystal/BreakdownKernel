@@ -85,6 +85,8 @@ repositories {
             includeGroup "net.blay09.mods"
         }
     }
-
-
+    maven {
+        name 'Configuration'
+        url 'https://repo.repsy.io/mvn/toma/public/'
+    }
 }

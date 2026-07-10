@@ -4,9 +4,15 @@ dependencies {
     implementation('org.jetbrains.kotlin:kotlin-stdlib:2.3.0')
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
     // Jar内嵌
-    jarJar(api(project(":BreaLib")))
-    jarJar(api("net.phasetranscrystal:RegistryLib:${registry_lib_version}"))
-    jarJar(api("com.lowdragmc.ldlib2:ldlib2-neoforge-26.1:${ldlib2_version}"))
+    if (findProperty('devBuild') == "true") {
+        implementation("net.phasetranscrystal:brealib:${brealib_version}-debug")
+        implementation("net.phasetranscrystal:RegistryLib:${registry_lib_version}")
+        implementation("com.lowdragmc.ldlib2:ldlib2-neoforge-26.1:${ldlib2_version}")
+    } else {
+        jarJar(api("net.phasetranscrystal:brealib:${brealib_version}"))
+        jarJar(api("net.phasetranscrystal:RegistryLib:${registry_lib_version}"))
+        jarJar(api("com.lowdragmc.ldlib2:ldlib2-neoforge-26.1:${ldlib2_version}"))
+    }
     // 编译时
     compileOnly("dev.vfyjxf:taffy:1.1.4")// Source: https://mvnrepository.com/artifact/dev.vfyjxf/taffy
     compileOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}:api")
@@ -14,6 +20,7 @@ dependencies {
     compileOnly("mezz.jei:jei-26.1.2-neoforge-api:${jei_version}")
     //
     implementation("curse.maven:jade-324717:8068368")
+    implementation("dev.toma.configuration:configuration-neoforge:${configuration_version}+26.1.2")
     // 运行时
     runtimeOnly("org.appliedenergistics:guideme:${guideme_version}")
     runtimeOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")

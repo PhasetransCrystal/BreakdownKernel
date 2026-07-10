@@ -17,9 +17,12 @@ sidebar_position: 1
 ## 快速开始
 
 ```groovy
+repositories {
+    maven {url = 'https://maven.nilarea.cn/releases'}
+}
 // build.gradle
 dependencies {
-    implementation "com.phasetranscrystal:breakdownkernel:0.1.0"
+    implementation("net.phasetranscrystal:BreakdownKernal:0.1.0")
 }
 ```
 

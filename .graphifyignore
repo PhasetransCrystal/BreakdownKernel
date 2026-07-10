@@ -1,0 +1,43 @@
+# Graphify Ignore
+
+# IDE & editor
+
+**/.vscode/
+**/.idea/
+.project
+.classpath
+
+# Secrets
+
+**/secrets/
+
+# CI/CD
+
+.github/
+
+# Build & caches (covers both root and BreaLib submodule)
+
+build/
+.gradle/
+.kotlin/
+**/build/
+**/.gradle/
+**/.kotlin/
+
+# Runtime data
+
+run/
+**/run/
+
+# Generated code
+
+src/generated/
+**/src/generated/
+
+# Docs & website (non-code, rendered to pages)
+
+website/
+
+# Graphify self-output
+
+graphify-out/
