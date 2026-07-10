@@ -1,9 +1,10 @@
 package net.phasetranscrystal.breacore.common.data;
 
+import net.phasetranscrystal.registrylib.util.entry.AttachmentTypeEntry;
+
 import net.phasetranscrystal.breacore.api.eventdispatch.EventDistributor;
 import net.phasetranscrystal.breacore.api.perk.PerkAttachment;
 import net.phasetranscrystal.breacore.common.BreaRegistration;
-import net.phasetranscrystal.registrylib.util.entry.AttachmentTypeEntry;
 
 public class BreaAttachmentTypes {
 

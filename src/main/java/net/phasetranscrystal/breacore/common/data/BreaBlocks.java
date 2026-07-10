@@ -1,10 +1,11 @@
 package net.phasetranscrystal.breacore.common.data;
 
+import net.phasetranscrystal.registrylib.util.entry.BlockEntry;
+
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 import net.phasetranscrystal.breacore.common.block.debug.CheckMatBlock;
 import net.phasetranscrystal.breacore.common.block.debug.FluidFurnaceBlock;
 import net.phasetranscrystal.breacore.data.blocks.DebugBlocks;
-import net.phasetranscrystal.registrylib.util.entry.BlockEntry;
 
 import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 

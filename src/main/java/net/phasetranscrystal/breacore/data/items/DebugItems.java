@@ -2,11 +2,12 @@ package net.phasetranscrystal.breacore.data.items;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
-import net.phasetranscrystal.breacore.BreakdownCore;
-import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
 import net.phasetranscrystal.registrylib.tooltip.SubNode;
 import net.phasetranscrystal.registrylib.tooltip.TooltipRegistry;
 import net.phasetranscrystal.registrylib.util.entry.ItemEntry;
+
+import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.common.data.BreaCreativeModeTabs;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;

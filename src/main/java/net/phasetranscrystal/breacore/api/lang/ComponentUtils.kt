@@ -1,12 +1,13 @@
 package net.phasetranscrystal.breacore.api.lang
 
-import net.minecraft.ChatFormatting
-import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
 import net.phasetranscrystal.breacore.api.annotation.NewDataAttributes
 import net.phasetranscrystal.breacore.api.annotation.TranslationKeyProvider
 import net.phasetranscrystal.breacore.utils.StringUtils
 import net.phasetranscrystal.breacore.utils.TooltipHelper
+
+import net.minecraft.ChatFormatting
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 
 import com.google.common.base.Supplier
 

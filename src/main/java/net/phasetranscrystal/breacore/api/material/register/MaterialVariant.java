@@ -2,11 +2,12 @@ package net.phasetranscrystal.breacore.api.material.register;
 
 import net.phasetranscrystal.brealib.util.FormattingUtil;
 
+import net.phasetranscrystal.registrylib.util.entry.RegistryEntry;
+
 import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 import net.phasetranscrystal.breacore.api.tag.BreaTag;
-import net.phasetranscrystal.registrylib.util.entry.RegistryEntry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
