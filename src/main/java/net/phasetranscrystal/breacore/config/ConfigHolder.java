@@ -42,4 +42,18 @@ public class ConfigHolder {
         @Configurable.Range(min = 0, max = 4)
         public int ownerOPBypass = 2;
     }
+
+    @Configurable
+    public ClientConfigs client = new ClientConfigs();
+
+    public static class ClientConfigs {
+
+        @Configurable
+        @Configurable.Comment({ "The default color to overlay onto machines.",
+                "#FFFFFF is no coloring (default).",
+                "#D2DCFF is the classic blue from GT5." })
+        @Configurable.StringPattern(value = "#[0-9a-fA-F]{1,6}")
+        @Configurable.Gui.ColorValue
+        public String defaultPaintingColor = "#FFFFFF";
+    }
 }

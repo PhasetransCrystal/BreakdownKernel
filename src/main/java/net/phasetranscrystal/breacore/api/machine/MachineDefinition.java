@@ -2,10 +2,10 @@ package net.phasetranscrystal.breacore.api.machine;
 
 import net.phasetranscrystal.breacore.api.block.IMachineBlock;
 import net.phasetranscrystal.breacore.api.blockentity.IMachineBlockEntity;
+import net.phasetranscrystal.breacore.api.gui.EditableMachineUI;
 import net.phasetranscrystal.breacore.api.item.MetaMachineItem;
 
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -22,9 +22,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -67,9 +65,10 @@ public class MachineDefinition implements Supplier<IMachineBlock> {
     @Setter
     private boolean renderXEIPreview;
     private final Map<Direction, VoxelShape> cache = new EnumMap<>(Direction.class);
+    @Nullable
     @Getter
     @Setter
-    private BiConsumer<ItemStack, List<Component>> tooltipBuilder;
+    private EditableMachineUI editableUI;
     @Getter
     @Setter
     private Supplier<BlockState> appearance;

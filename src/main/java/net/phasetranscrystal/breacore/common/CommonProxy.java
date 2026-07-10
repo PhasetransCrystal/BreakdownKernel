@@ -9,6 +9,7 @@ import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.common.data.*;
+import net.phasetranscrystal.breacore.config.ConfigHolder;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -25,6 +26,7 @@ public class CommonProxy {
     public CommonProxy() {
         var modBus = BreakdownCore.getModEventBus();
         BreaApi.materialManager = BreaRegistries.MATERIALS;
+        ConfigHolder.init();
         modBus.register(CommonProxy.class);
         init();
 

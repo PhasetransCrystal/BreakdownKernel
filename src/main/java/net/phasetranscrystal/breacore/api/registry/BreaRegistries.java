@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.registry;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.machine.MachineDefinition;
 import net.phasetranscrystal.breacore.api.material.Element;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
@@ -34,6 +35,8 @@ public class BreaRegistries {
 
     public static final ResourceKey<Registry<SoundEntry>> SOUND_KEY = makeRegistryKey(BreaLib.id("sound"));
     public static final BreaRegistry<SoundEntry> SOUNDS = new BreaRegistry<>(SOUND_KEY);
+    public static final ResourceKey<Registry<MachineDefinition>> MACHINE_KEY = makeRegistryKey(BreaLib.id("machine"));
+    public static final BreaRegistry<MachineDefinition> MACHINE = new BreaRegistry<>(MACHINE_KEY);
 
     public static <T> ResourceKey<Registry<T>> makeRegistryKey(Identifier registryId) {
         return ResourceKey.createRegistryKey(registryId);
