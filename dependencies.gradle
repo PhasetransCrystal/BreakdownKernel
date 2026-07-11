@@ -19,7 +19,7 @@ dependencies {
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+26.1.2:api")
     compileOnly("mezz.jei:jei-26.1.2-neoforge-api:${jei_version}")
     //
-    implementation("curse.maven:jade-324717:8068368")
+    implementation("curse.maven:jade-324717:8326300")
     implementation("dev.toma.configuration:configuration-neoforge:${configuration_version}+26.1.2")
     // 运行时
     runtimeOnly("org.appliedenergistics:guideme:${guideme_version}")

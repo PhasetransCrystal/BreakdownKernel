@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 2
 ---
 
 # API 参考
@@ -57,6 +57,6 @@ public class YourDLC implements IBreaAddon {
 
 ## 相关页面
 
-- [快速开始](quick-start.md)
+- [快速开始](1-quick-start.md)
 - [通用材料系统](material/index.md)
 - [机器与多方块系统](multiblock.md)
