@@ -1,13 +1,13 @@
 package net.phasetranscrystal.breacore.api.item;
 
+import net.phasetranscrystal.registrylib.composite.ComponentItem;
+
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 
-import net.minecraft.world.item.Item;
-
 import lombok.Getter;
 
-public class MaterialItem extends Item {
+public class MaterialItem extends ComponentItem {
 
     @Getter
     private final MaterialVariant variant;

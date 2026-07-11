@@ -11,7 +11,7 @@ public class RegisterActions {
 
     public static RegisterAction GeneralItem = (registrate, variant, material) -> {
         var attr = material.getAttribute(AttributeType.GENERAL);
-        var builder = registrate.item(variant.idPattern().formatted(material.getName()), prop -> new MaterialItem(variant, material, prop));
+        var builder = registrate.componentItem(variant.idPattern().formatted(material.getName()), prop -> new MaterialItem(variant, material, prop));
         builder.properties(prop -> prop.enchantable(attr.getHarvestLevel()));
         builder.register();
     };

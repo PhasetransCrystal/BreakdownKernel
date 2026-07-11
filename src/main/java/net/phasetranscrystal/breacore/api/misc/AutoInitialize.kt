@@ -7,8 +7,8 @@ import kotlin.reflect.KProperty1
 
 open class AutoInitialize<T> {
     fun originInit() {
-        // ComponentSlang.init()
-        // MachineSlang.init()
+        ComponentSlang.init()
+        MachineSlang.init()
     }
     open fun init() {}
     init {

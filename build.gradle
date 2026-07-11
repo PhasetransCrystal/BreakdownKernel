@@ -75,10 +75,7 @@ publishing {
     repositories {
         maven {
             name = "reposilite"
-            // 根据版本类型选择 URL
-            def releasesRepoUrl = 'https://maven.nilarea.cn/releases'
-            def snapshotsRepoUrl = 'https://maven.nilarea.cn/snapshots'
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            url = 'https://maven.nilarea.cn/releases'
             // 认证信息在此配置
             credentials {
                 username = project.findProperty('reposiliteUsername')

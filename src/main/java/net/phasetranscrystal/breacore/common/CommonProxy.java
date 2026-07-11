@@ -10,10 +10,12 @@ import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
 import net.phasetranscrystal.breacore.common.data.*;
 import net.phasetranscrystal.breacore.config.ConfigHolder;
+import net.phasetranscrystal.breacore.data.Datagen;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
@@ -31,6 +33,7 @@ public class CommonProxy {
         init();
 
         BreaRegistries.init(modBus);
+        modBus.addListener(CommonProxy::modConstruct);
     }
 
     public static void init() {
@@ -76,6 +79,10 @@ public class CommonProxy {
                 variant.register(REGISTRATE, material);
             }
         }
+    }
+
+    private static void modConstruct(FMLConstructModEvent event) {
+        Datagen.init();
     }
 
     @SubscribeEvent

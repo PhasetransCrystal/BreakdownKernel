@@ -31,7 +31,7 @@ public record CNEN(String cn, String en) {
                       en = "Tiered Block")
     public static final String TIER = "breacore.auto_build.tier";
 
-    public static CNEN create(String var0, String var1) {
-        return new CNEN(var0, var1);
+    public static CNEN create(String cn, String en) {
+        return new CNEN(cn, en);
     }
 }

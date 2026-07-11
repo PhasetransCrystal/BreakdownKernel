@@ -19,26 +19,26 @@ public class TooltipHelper {
     public static final UnaryOperator<Style> RAINBOW_HSL = (style) -> style.withColor(rainbowColor(2.5F));
     public static final UnaryOperator<Style> RAINBOW_HSL_SLOW = (style) -> style.withColor(rainbowColor(1.25F));
     public static final UnaryOperator<Style> RAINBOW_HSL_FAST = (style) -> style.withColor(rainbowColor(3.75F));
-    private static final List<GTFormattingCode> CODES = new ArrayList();
+    private static final List<BreaFormattingCode> CODES = new ArrayList();
     private static final ChatFormatting[] ALL_COLORS;
-    public static final GTFormattingCode RAINBOW_FAST;
-    public static final GTFormattingCode RAINBOW;
-    public static final GTFormattingCode RAINBOW_SLOW;
-    public static final GTFormattingCode BLINKING_CYAN;
-    public static final GTFormattingCode BLINKING_RED;
-    public static final GTFormattingCode BLINKING_ORANGE;
-    public static final GTFormattingCode BLINKING_GRAY;
+    public static final BreaFormattingCode RAINBOW_FAST;
+    public static final BreaFormattingCode RAINBOW;
+    public static final BreaFormattingCode RAINBOW_SLOW;
+    public static final BreaFormattingCode BLINKING_CYAN;
+    public static final BreaFormattingCode BLINKING_RED;
+    public static final BreaFormattingCode BLINKING_ORANGE;
+    public static final BreaFormattingCode BLINKING_GRAY;
 
     public static TextColor rainbowColor(float speed) {
         return TextColor.fromRgb(GradientUtil.toRGB((float) (BreaApi.CLIENT_TIME & 1048575) * speed, 95.0F, 60.0F));
     }
 
-    public static GTFormattingCode createNewCode(int rate, ChatFormatting... codes) {
+    public static BreaFormattingCode createNewCode(int rate, ChatFormatting... codes) {
         if (rate <= 0) {
             BreakdownCore.LOGGER.error("Could not create GT Formatting Code with rate {}, must be greater than zero!", rate);
             return null;
         } else if (codes != null && codes.length > 1) {
-            GTFormattingCode code = new GTFormattingCode(rate, codes);
+            BreaFormattingCode code = new BreaFormattingCode(rate, codes);
             CODES.add(code);
             return code;
         } else {
@@ -48,7 +48,7 @@ public class TooltipHelper {
     }
 
     public static void onClientTick() {
-        CODES.forEach(GTFormattingCode::updateIndex);
+        CODES.forEach(BreaFormattingCode::updateIndex);
     }
 
     static {
@@ -62,13 +62,13 @@ public class TooltipHelper {
         BLINKING_GRAY = createNewCode(25, ChatFormatting.GRAY, ChatFormatting.DARK_GRAY);
     }
 
-    public static class GTFormattingCode {
+    public static class BreaFormattingCode {
 
         private final int rate;
         private final ChatFormatting[] codes;
         private int index = 0;
 
-        private GTFormattingCode(int rate, ChatFormatting... codes) {
+        private BreaFormattingCode(int rate, ChatFormatting... codes) {
             this.rate = rate;
             this.codes = codes;
         }
