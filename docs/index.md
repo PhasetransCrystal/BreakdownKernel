@@ -17,20 +17,23 @@ sidebar_position: 1
 ## 快速开始
 
 ```groovy
+repositories {
+    maven { url = 'https://maven.nilarea.cn/releases' }
+}
 // build.gradle
 dependencies {
-    implementation "com.phasetranscrystal:breakdownkernel:0.1.0"
+    implementation("net.phasetranscrystal:BreakdownKernal:0.1.0")
 }
 ```
 
 ```java
 // 定义一个材料
 Material aluminium = new Material.Builder("aluminium")
-    .ingot()          // 标记为锭材料
-    .fluid()          // 标记为流体材料
-    .color(0x7db9d8)
-    .element(Element.AL)
-    .build();
+                .ingot()          // 标记为锭材料
+                .fluid()          // 标记为流体材料
+                .color(0x7db9d8)
+                .element(Element.AL)
+                .build();
 ```
 
 材料注册后，会自动生成：
@@ -41,13 +44,28 @@ Material aluminium = new Material.Builder("aluminium")
 
 ## 模块
 
-| 模块 | 说明 |
-|------|------|
+| 模块                          | 说明                                                    |
+|-----------------------------|-------------------------------------------------------|
 | [通用材料系统](material/index.md) | Material / MaterialAttribute / MaterialVariant 核心 API |
-| BreaLib | 日志、环境检测、线程安全等基础工具库 |
+| [机器与多方块系统](multiblock.md)   | MachineDefinition / MetaMachine / MachineTrait        |
+| [相变能量系统](phase-energy.md)   | 统一能量单位 PE，能量网络与传输                                     |
+| [世界生成](world-gen.md)        | 异步矿石/结构生成与 Biome Modifier                             |
+| BreaLib                     | 日志、环境检测、线程安全等基础工具库                                    |
 
 ## 进行中任务
 
 - [x] [通用材料系统](material/index.md)
+- [x] [机器系统](multiblock.md)
 - [ ] 配方系统
+- [ ] [能量系统](phase-energy.md)
+- [ ] [世界生成](world-gen.md)
 - [ ] 多方块结构
+
+## 文档导航
+
+- [快速开始](quick-start.md) — DLC 开发环境搭建与入门
+- [通用材料系统](material/index.md) — 材料定义与自动生成
+- [机器与多方块系统](multiblock.md) — 机器定义与特性
+- [相变能量系统](phase-energy.md) — 能量 API 设计
+- [世界生成](world-gen.md) — 矿石与结构生成
+- [API 参考](api-reference.md) — 接口速查

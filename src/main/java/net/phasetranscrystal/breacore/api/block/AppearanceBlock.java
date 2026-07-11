@@ -2,7 +2,7 @@ package net.phasetranscrystal.breacore.api.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -16,7 +16,7 @@ public class AppearanceBlock extends Block implements IAppearance {
     }
 
     @Override
-    public @NotNull BlockState getAppearance(@NotNull BlockState state, @NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull Direction side,
+    public @NotNull BlockState getAppearance(@NotNull BlockState state, @NotNull BlockAndLightGetter level, @NotNull BlockPos pos, @NotNull Direction side,
                                              @Nullable BlockState queryState, @Nullable BlockPos queryPos) {
         var appearance = this.getBlockAppearance(state, level, pos, side, queryState, queryPos);
         return appearance == null ? state : appearance;

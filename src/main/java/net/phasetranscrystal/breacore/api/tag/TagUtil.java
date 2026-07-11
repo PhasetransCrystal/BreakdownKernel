@@ -3,7 +3,7 @@ package net.phasetranscrystal.breacore.api.tag;
 import net.phasetranscrystal.brealib.BreaLib;
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -11,93 +11,114 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
-import org.jetbrains.annotations.NotNull;
-
 public class TagUtil {
 
-    /**
-     * 在 {@code c} 或 {@code minecraft} 命名空间下创建标签
-     *
-     * @param vanilla 是否使用原版命名空间替代通用命名空间
-     * @return 标签 {@code #c:path} 或 {@code #minecraft:path}
-     */
-    public static <T> @NotNull TagKey<T> createTag(ResourceKey<? extends Registry<T>> registryKey, String path,
-                                                   boolean vanilla) {
-        if (vanilla) return TagKey.create(registryKey, Identifier.withDefaultNamespace(path));
-        return TagKey.create(registryKey, Identifier.fromNamespaceAndPath("c", path));
+    public static <T> TagKey<T> optionalTag(Registry<T> registry, Identifier id) {
+        return TagKey.create(registry.key(), id);
+    }
+
+    public static <T> TagKey<T> optionalTag(ResourceKey<? extends Registry<T>> registryKey, Identifier id) {
+        return TagKey.create(registryKey, id);
     }
 
     /**
-     * 在 {@code breacore} 命名空间下创建标签
+     * Generates tag under Forge namespace
      *
-     * @return {@code #breacore:path}
+     * @param vanilla Whether to use vanilla namespace instead of Forge
+     * @return optional tag #forge:path or #minecraft:path
      */
-    public static <T> @NotNull TagKey<T> createModTag(ResourceKey<? extends Registry<T>> registryKey, String path) {
+    public static <T> TagKey<T> createTag(Registry<T> registry, String path, boolean vanilla) {
+        if (vanilla) return optionalTag(registry, Identifier.fromNamespaceAndPath("minecraft", path));
+        return optionalTag(registry, Identifier.fromNamespaceAndPath("forge", path));
+    }
+
+    /**
+     * Generates tag under Forge namespace
+     *
+     * @param vanilla Whether to use vanilla namespace instead of Forge
+     * @return optional tag #forge:path or #minecraft:path
+     */
+    public static <T> TagKey<T> createTag(ResourceKey<? extends Registry<T>> registryKey, String path,
+                                          boolean vanilla) {
+        if (vanilla) return optionalTag(registryKey, Identifier.fromNamespaceAndPath("minecraft", path));
+        return optionalTag(registryKey, Identifier.fromNamespaceAndPath("forge", path));
+    }
+
+    /**
+     * Generates tag under GTM namespace
+     *
+     * @return #gtceu:path
+     */
+    public static <T> TagKey<T> createModTag(Registry<T> registry, String path) {
+        return optionalTag(registry, BreaLib.id(path));
+    }
+
+    /**
+     * Generates tag under GTM namespace
+     *
+     * @return #gtceu:path
+     */
+    public static <T> TagKey<T> createModTag(ResourceKey<? extends Registry<T>> registryKey, String path) {
         return TagKey.create(registryKey, BreaLib.id(path));
     }
 
     /**
-     * 在 {@code c} 命名空间下创建方块标签
+     * Generates block tag under Forge namespace
      *
-     * @return 方块标签 {@code #c:path}
+     * @return Block tag #forge:path
      */
-    public static @NotNull TagKey<Block> createBlockTag(String path) {
-        return createTag(Registries.BLOCK, path, false);
+    public static TagKey<Block> createBlockTag(String path) {
+        return createTag(BuiltInRegistries.BLOCK, path, false);
     }
 
     /**
-     * 在 {@code c} 或 {@code minecraft} 命名空间下创建方块标签
+     * Generates block tag under Forge namespace
      *
-     * @param vanilla 是否使用原版命名空间替代通用命名空间
-     * @return 方块标签 {@code #c:path} 或 {@code #minecraft:path}
+     * @param vanilla Whether to use vanilla namespace instead of Forge
+     * @return Block tag #forge:path or #minecraft:path
      */
-    public static @NotNull TagKey<Block> createBlockTag(String path, boolean vanilla) {
-        return createTag(Registries.BLOCK, path, vanilla);
+    public static TagKey<Block> createBlockTag(String path, boolean vanilla) {
+        return createTag(BuiltInRegistries.BLOCK, path, vanilla);
+    }
+
+    public static TagKey<Block> createModBlockTag(String path) {
+        return createModTag(BuiltInRegistries.BLOCK, path);
     }
 
     /**
-     * 在 {@code breacore} 命名空间下创建方块标签
+     * Generates tag under Forge namespace
      *
-     * @return 方块标签 {@code #breacore:path}
+     * @return Tag #forge:path
      */
-    public static @NotNull TagKey<Block> createModBlockTag(String path) {
-        return createModTag(Registries.BLOCK, path);
+    public static TagKey<Item> createItemTag(String path) {
+        return createTag(BuiltInRegistries.ITEM, path, false);
     }
 
     /**
-     * 在 {@code c} 命名空间下创建物品标签
+     * Generates tag under Forge namespace
      *
-     * @return 物品标签 {@code #c:path}
+     * @param vanilla Whether to use vanilla namespace instead of Forge
+     * @return Tag #forge:path or #minecraft:path
      */
-    public static @NotNull TagKey<Item> createItemTag(String path) {
-        return createTag(Registries.ITEM, path, false);
+    public static TagKey<Item> createItemTag(String path, boolean vanilla) {
+        return createTag(BuiltInRegistries.ITEM, path, vanilla);
     }
 
     /**
-     * 在 {@code c} 或 {@code minecraft} 命名空间下创建物品标签
+     * Generates item tag under GTM namespace
      *
-     * @param vanilla 是否使用原版命名空间替代通用命名空间
-     * @return 物品标签 {@code #c:path} 或 {@code #minecraft:path}
+     * @return Item tag #gtceu:path
      */
-    public static @NotNull TagKey<Item> createItemTag(String path, boolean vanilla) {
-        return createTag(Registries.ITEM, path, vanilla);
+    public static TagKey<Item> createModItemTag(String path) {
+        return createModTag(BuiltInRegistries.ITEM, path);
     }
 
     /**
-     * 在 {@code breacore} 命名空间下创建物品标签
+     * Generates fluid tag under Forge namespace
      *
-     * @return 物品标签 {@code #breacore:path}
+     * @return Fluid tag #forge:path
      */
-    public static @NotNull TagKey<Item> createModItemTag(String path) {
-        return createModTag(Registries.ITEM, path);
-    }
-
-    /**
-     * 在 {@code c} 命名空间下创建流体标签
-     *
-     * @return 流体标签 {@code #c:path}
-     */
-    public static @NotNull TagKey<Fluid> createFluidTag(String path) {
-        return createTag(Registries.FLUID, path, false);
+    public static TagKey<Fluid> createFluidTag(String path) {
+        return createTag(BuiltInRegistries.FLUID, path, false);
     }
 }

@@ -2,6 +2,7 @@ package net.phasetranscrystal.breacore.api.registry;
 
 import net.phasetranscrystal.brealib.BreaLib;
 
+import net.phasetranscrystal.breacore.api.machine.MachineDefinition;
 import net.phasetranscrystal.breacore.api.material.Element;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
@@ -31,15 +32,19 @@ public class BreaRegistries {
     public static final ResourceKey<Registry<Element>> ELEMENT_KEY = makeRegistryKey(BreaLib.id("element"));
     public static final BreaRegistry<Element> ELEMENTS = new BreaRegistry<>(ELEMENT_KEY);
     public static final MaterialRegistry MATERIALS = new MaterialRegistry(MATERIAL_KEY);
+
     public static final ResourceKey<Registry<SoundEntry>> SOUND_KEY = makeRegistryKey(BreaLib.id("sound"));
     public static final BreaRegistry<SoundEntry> SOUNDS = new BreaRegistry<>(SOUND_KEY);
-    private static final Table<Registry<?>, Identifier, Object> TO_REGISTER = HashBasedTable.create();
-    private static final RegistryAccess BLANK = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-    private static RegistryAccess FROZEN = BLANK;
+    public static final ResourceKey<Registry<MachineDefinition>> MACHINE_KEY = makeRegistryKey(BreaLib.id("machine"));
+    public static final BreaRegistry<MachineDefinition> MACHINE = new BreaRegistry<>(MACHINE_KEY);
 
     public static <T> ResourceKey<Registry<T>> makeRegistryKey(Identifier registryId) {
         return ResourceKey.createRegistryKey(registryId);
     }
+
+    private static final Table<Registry<?>, Identifier, Object> TO_REGISTER = HashBasedTable.create();
+    private static final RegistryAccess BLANK = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+    private static RegistryAccess FROZEN = BLANK;
 
     public static <V, T extends V> T register(Registry<V> registry, Identifier name, T value) {
         TO_REGISTER.put(registry, name, value);

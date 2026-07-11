@@ -1,14 +1,12 @@
 package net.phasetranscrystal.breacore.api.annotation;
 
-import org.apache.commons.lang3.NotImplementedException;
+public final class TranslationKeyProvider {
 
-public class TranslationKeyProvider {
-
-    public static String getTranslationKey(String var0, String var1) {
-        throw new NotImplementedException();
+    public TranslationKeyProvider() {
+        throw new UnsatisfiedLinkError("Not Impl");
     }
 
-    public static String getTranslationKey(String var0, String var1, String var2) {
-        throw new NotImplementedException();
-    }
+    public static native String getTranslationKey(String var0, String var1);
+
+    public static native String getTranslationKey(String var0, String var1, String var2);
 }

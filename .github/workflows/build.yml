@@ -2,11 +2,20 @@ name: Build on Main Branch
 on:
   pull_request:
     types: [ closed ]
-    branches: [ main, master ]
+    branches:
+      - master
+      - main
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
 jobs:
   build:
     if: |
-      github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+      github.event_name == 'push' 
+      || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+      || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

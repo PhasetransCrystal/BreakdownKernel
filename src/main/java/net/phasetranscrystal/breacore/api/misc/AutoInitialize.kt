@@ -1,16 +1,16 @@
 package net.phasetranscrystal.breacore.api.misc
 
-import net.phasetranscrystal.breacore.data.translation.ComponentSlang
+import net.phasetranscrystal.breacore.common.data.translation.ComponentSlang
+import net.phasetranscrystal.breacore.common.data.translation.MachineSlang
 
 import kotlin.reflect.KProperty1
 
 open class AutoInitialize<T> {
     fun originInit() {
-        ComponentSlang.init()
+        // ComponentSlang.init()
+        // MachineSlang.init()
     }
-
     open fun init() {}
-
     init {
         // 自动初始化所有非 const 的 val 属性
         this::class.members
@@ -25,5 +25,4 @@ open class AutoInitialize<T> {
             }
     }
 }
-
 object AutoInitializeImpl : AutoInitialize<AutoInitializeImpl>()

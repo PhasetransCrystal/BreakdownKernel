@@ -1,9 +1,9 @@
 package net.phasetranscrystal.breacore.api.material.registry;
 
 import net.phasetranscrystal.breacore.BreakdownCore;
+import net.phasetranscrystal.breacore.api.material.MarkerMaterial;
 import net.phasetranscrystal.breacore.api.material.Material;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistry;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistrationInfo;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Stream;
 
-public final class MaterialRegistry extends BreaRegistry<Material> implements IMaterialRegistry {
+public class MaterialRegistry extends BreaRegistry<Material> implements IMaterialRegistry {
 
     private final Set<String> usedNamespaces = new HashSet<>();
     private final Map<String, Material> fallbackMaterials = new HashMap<>();
@@ -42,7 +42,7 @@ public final class MaterialRegistry extends BreaRegistry<Material> implements IM
 
     @Override
     public Material getMaterial(Identifier name) {
-        return getOrDefault(name, BreaMaterials.NULL);
+        return getOrDefault(name, MarkerMaterial.NULL);
     }
 
     @Override

@@ -1,9 +1,13 @@
 package net.phasetranscrystal.breacore.api.lang
 
+import net.phasetranscrystal.breacore.api.annotation.NewDataAttributes
+import net.phasetranscrystal.breacore.api.annotation.TranslationKeyProvider
+import net.phasetranscrystal.breacore.utils.StringUtils
+import net.phasetranscrystal.breacore.utils.TooltipHelper
+
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
-import net.phasetranscrystal.breacore.api.annotation.TranslationKeyProvider
 
 import com.google.common.base.Supplier
 
@@ -27,7 +31,6 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
         val result = list.map { it.get() }
         return result
     }
-
     fun getSupplier(): Supplier<List<Component>> = this
     fun getArray(): Array<Component> = get().toTypedArray()
 
@@ -36,11 +39,9 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
         list.add(styledComponent)
         line += 1
     }
-
     fun add(other: ComponentListSupplier) {
         list.addAll(other.list)
     }
-
     fun add(other: ComponentListSupplier, style: ComponentSupplier.() -> ComponentSupplier = { this }) {
         for (supplier in other.list) {
             add(supplier, style)
@@ -57,8 +58,23 @@ class ComponentListSupplier(var list: MutableList<ComponentSupplier> = mutableLi
     fun setTranslationPrefix(prefix: String) {
         this.translationPrefix = prefix
     }
-}
 
+    infix fun String.translatedTo(other: String): ComponentSupplier {
+        if (this@translatedTo == other) return this.toLiteralSupplier()
+        val prefix = if (translationPrefix.isNotEmpty()) "${NewDataAttributes.PREFIX}.$translationPrefix.$line" else "${NewDataAttributes.PREFIX}.$line"
+        val translationKey = TranslationKeyProvider.getTranslationKey(this@translatedTo, other, prefix)
+        return Component.translatable(translationKey).toComponentSupplier()
+    }
+
+    infix fun String.multiTranslatedToGray(other: String) = ComponentListSupplier {
+        val cns = this@multiTranslatedToGray.lines()
+        val ens = other.lines()
+        require(cns.size == ens.size) { "翻译错误: 中文和英文数量不一致,于 $translationPrefix - $line 行" }
+        for (i in cns.indices) {
+            add(cns[i].translatedTo(ens[i])) { gray() }
+        }
+    }
+}
 fun ComponentListSupplier(op: ComponentListSupplier.() -> Unit): ComponentListSupplier {
     val supplier = ComponentListSupplier()
     supplier.op()
@@ -78,7 +94,6 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         supplier.delayed.forEach { it(result) }
         return result
     }
-
     fun apply(tooltips: MutableList<Component>) {
         tooltips.add(get())
     }
@@ -98,7 +113,6 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         }
         return newSupplier
     }
-
     private fun transformComponent(trans: (ComponentSupplier) -> ComponentSupplier): ComponentSupplier {
         val newSupplier = ComponentSupplier(component, delayed.toMutableList(), transform.toMutableList())
         newSupplier.transform.add(trans)
@@ -148,8 +162,42 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         withStyle { it.withColor(ChatFormatting.BLUE) }
     }
 
+    fun rainbow(): ComponentSupplier = operatorComponent {
+        withStyle { it.withColor(TooltipHelper.RAINBOW.current) }
+    }
+
+    fun rainbowFast(): ComponentSupplier = operatorComponent {
+        withStyle { it.withColor(TooltipHelper.RAINBOW_FAST.current) }
+    }
+
+    fun rainbowSlow(): ComponentSupplier = operatorComponent {
+        withStyle { it.withColor(TooltipHelper.RAINBOW_SLOW.current) }
+    }
+
     fun color(int: Int): ComponentSupplier = operatorComponent {
         withStyle { it.withColor(int) }
+    }
+
+    // ////////////////////////////////
+    // ****** 滚动 ******//
+    // //////////////////////////////
+    fun scrollSuprachronal(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.white_blue(supplier.component.string).toLiteralSupplier()
+    }
+    fun scrollFullColor(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.full_color(supplier.component.string).toLiteralSupplier()
+    }
+    fun scrollBioware(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.dark_green(supplier.component.string).toLiteralSupplier()
+    }
+    fun scrollOptical(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.golden(supplier.component.string).toLiteralSupplier()
+    }
+    fun scrollExotic(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.purplish_red(supplier.component.string).toLiteralSupplier()
+    }
+    fun scrollCosmic(): ComponentSupplier = transformComponent { supplier ->
+        StringUtils.dark_purplish_red(supplier.component.string).toLiteralSupplier()
     }
 
     // ////////////////////////////////
@@ -159,27 +207,22 @@ class ComponentSupplier(var component: Component, private val delayed: MutableLi
         operatorComponent { withStyle(ChatFormatting.ITALIC) }
         return this
     }
-
     fun bold(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.BOLD) }
         return this
     }
-
     fun underline(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.UNDERLINE) }
         return this
     }
-
     fun strikethrough(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.STRIKETHROUGH) }
         return this
     }
-
     fun obfuscated(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.OBFUSCATED) }
         return this
     }
-
     fun reset(): ComponentSupplier {
         operatorComponent { withStyle(ChatFormatting.RESET) }
         return this

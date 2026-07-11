@@ -1,158 +1,318 @@
 package net.phasetranscrystal.breacore.api.material.stack;
 
-import net.phasetranscrystal.brealib.util.FormattingUtil;
-
+import net.phasetranscrystal.breacore.api.material.MarkerMaterial;
 import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.data.materials.BreaMaterials;
 
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.*;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.neoforged.neoforge.common.MutableDataComponentHolder;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.handler.codec.DecoderException;
+import io.netty.handler.codec.EncoderException;
+import lombok.Setter;
+import org.jspecify.annotations.Nullable;
 
-/**
- * 表示具有特定数量的不可变材料堆栈。
- * <p>
- * {@code MaterialStack} 将 {@link Material} 与数量配对。
- * 通常用于配方、库存和材料处理操作。
- * 该类是一个 {@code record}，因此基于其组件自动提供 {@code equals()}、{@code hashCode()} 和 {@code toString()} 的实现。
- * </p>
- * <p>
- * 此类通过 {@link #EMPTY} 提供静态空实例，并支持从字符串表示解析，且为了提高性能而进行了缓存。
- * </p>
- *
- * @param material 此堆栈中包含的材料；永不为 null
- * @param amount   材料的数量；可能为零或正数
- * @see Material
- * @see BreaMaterials
- * @see #EMPTY
- */
-public record MaterialStack(@NotNull Material material, long amount) {
+import java.util.*;
+import java.util.function.Predicate;
 
-    /**
-     * 空材料堆栈实例。
-     * <p>
-     * 此堆栈使用 {@link BreaMaterials#NULL} 作为其材料，数量为 0。
-     * 建议使用此常量而不是创建新的空堆栈。
-     * </p>
-     */
-    public static final MaterialStack EMPTY = new MaterialStack(BreaMaterials.NULL, 0);
+public final class MaterialStack implements MutableDataComponentHolder, MaterialInstance, DataComponentHolder {
 
-    /**
-     * 已解析材料堆栈的缓存，以避免冗余解析。
-     * <p>
-     * 使用 {@link WeakHashMap} 允许在解析的字符串在其他地方不再使用时对缓存条目进行垃圾回收。
-     * </p>
-     */
-    private static final Map<String, MaterialStack> PARSE_CACHE = new WeakHashMap<>();
+    public static final MapCodec<MaterialStack> MAP_CODEC = MapCodec.recursive(
+            "MaterialStack",
+            c -> RecordCodecBuilder.mapCodec(
+                    instance -> instance.group(
+                            MATERIAL_HOLDER_CODEC_WITH_BOUND_COMPONENTS.fieldOf(MATERIAL_ID).forGetter(MaterialStack::typeHolder),
+                            ExtraCodecs.POSITIVE_LONG.fieldOf(MATERIAL_AMOUNT).forGetter(MaterialStack::getAmount),
+                            DataComponentPatch.CODEC.optionalFieldOf(FIELD_COMPONENTS, DataComponentPatch.EMPTY)
+                                    .forGetter(stack -> stack.components.asPatch()))
+                            .apply(instance, MaterialStack::new)));
+    public static final Codec<MaterialStack> CODEC = Codec.lazyInitialized(MAP_CODEC::codec);
 
-    /**
-     * 将字符串表示解析为 {@code MaterialStack}。
-     * <p>
-     * 字符串格式可以是以下之一：
-     * <ul>
-     * <li>{@code "MaterialName"} - 单个该材料</li>
-     * <li>{@code "Nx MaterialName"} - N 个该材料（例如，"3x Iron"）</li>
-     * </ul>
-     * 解析器对材料名称区分大小写，并期望有一个可选的计数前缀，用空格分隔。字符串周围的空格会被修剪。
-     * </p>
-     * <p>
-     * 结果缓存在弱缓存中，以提高重复解析相同字符串时的性能。
-     * </p>
-     *
-     * @param str 要解析的字符串；可能为 null 或空
-     * @return 解析后的材料堆栈；永不为 null，但如果找不到材料，则可能为 {@link #EMPTY}
-     * @throws NumberFormatException 如果计数前缀不是有效的整数
-     * @see BreaMaterials#get(String)
-     * @see #toString()
-     */
-    public static MaterialStack fromString(CharSequence str) {
-        String trimmed = str.toString().trim();
-        String copy = trimmed;
+    public static Codec<MaterialStack> fixedAmountCodec(long amount) {
+        return Codec.lazyInitialized(
+                () -> RecordCodecBuilder.create(
+                        instance -> instance.group(
+                                MATERIAL_HOLDER_CODEC.fieldOf(MATERIAL_ID).forGetter(MaterialStack::typeHolder),
+                                DataComponentPatch.CODEC.optionalFieldOf(FIELD_COMPONENTS, DataComponentPatch.EMPTY)
+                                        .forGetter(stack -> stack.components.asPatch()))
+                                .apply(instance, (holder, patch) -> new MaterialStack(holder, amount, patch))));
+    }
 
-        var cached = PARSE_CACHE.get(trimmed);
+    public static final Codec<MaterialStack> OPTIONAL_CODEC = ExtraCodecs.optionalEmptyMap(CODEC)
+            .xmap(optional -> optional.orElse(MaterialStack.EMPTY), stack -> stack.isEmpty() ? Optional.empty() : Optional.of(stack));
 
-        if (cached != null) {
-            return cached;
+    public static final StreamCodec<RegistryFriendlyByteBuf, MaterialStack> OPTIONAL_STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, MaterialStack>() {
+
+        @Override
+        public MaterialStack decode(RegistryFriendlyByteBuf buf) {
+            var amount = buf.readVarLong();
+            if (amount <= 0)
+                return MaterialStack.EMPTY;
+            else {
+                var holder = MATERIAL_HOLDER_STREAM_CODEC.decode(buf);
+                var patch = DataComponentPatch.STREAM_CODEC.decode(buf);
+                return new MaterialStack(holder, amount, patch);
+            }
         }
 
-        var count = 1;
-        var spaceIndex = copy.indexOf(' ');
+        @Override
+        public void encode(RegistryFriendlyByteBuf buf, MaterialStack stack) {
+            if (stack.isEmpty())
+                buf.writeVarLong(0);
+            else {
+                buf.writeVarLong(stack.getAmount());
+                MATERIAL_HOLDER_STREAM_CODEC.encode(buf, stack.typeHolder());
+                DataComponentPatch.STREAM_CODEC.encode(buf, stack.components.asPatch());
+            }
+        }
+    };
+    public static final StreamCodec<RegistryFriendlyByteBuf, MaterialStack> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, MaterialStack>() {
 
-        if (spaceIndex >= 2 && copy.indexOf('x') == spaceIndex - 1) {
-            count = Integer.parseInt(copy.substring(0, spaceIndex - 1));
-            copy = copy.substring(spaceIndex + 1);
+        @Override
+        public MaterialStack decode(RegistryFriendlyByteBuf buf) {
+            var stack = MaterialStack.OPTIONAL_STREAM_CODEC.decode(buf);
+            if (stack.isEmpty())
+                throw new DecoderException("Empty MaterialStack not allowed");
+            return stack;
         }
 
-        cached = new MaterialStack(BreaMaterials.get(copy), count);
-        PARSE_CACHE.put(trimmed, cached);
-        return cached;
-    }
+        @Override
+        public void encode(RegistryFriendlyByteBuf buf, MaterialStack stack) {
+            if (stack.isEmpty())
+                throw new EncoderException("Empty MaterialStack not allowed");
+            MaterialStack.OPTIONAL_STREAM_CODEC.encode(buf, stack);
+        }
+    };
 
-    /**
-     * 创建此材料堆栈的副本。
-     * <p>
-     * 由于 {@code MaterialStack} 是不可变的，如果堆栈为空（由 {@link #isEmpty()} 定义），则此方法返回相同实例，
-     * 否则创建具有相同材料和数量的新实例。
-     * </p>
-     *
-     * @return 此材料堆栈的副本；如果为空，则可能是相同实例
-     */
-    public MaterialStack copy() {
-        if (isEmpty()) return EMPTY;
-        return new MaterialStack(material, amount);
-    }
+    public static final MaterialStack EMPTY = new MaterialStack(null);
+    @Setter
+    private long amount;
+    private final @Nullable Holder<Material> material;
+    private final PatchedDataComponentMap components;
 
-    /**
-     * 检查此材料堆栈是否为空。
-     * <p>
-     * 堆栈在以下情况下被视为空：
-     * <ul>
-     * <li>材料为 {@link BreaMaterials#NULL}，或</li>
-     * <li>数量小于 1</li>
-     * </ul>
-     * </p>
-     *
-     * @return 如果此堆栈为空则为 {@code true}，否则为 {@code false}
-     */
-    public boolean isEmpty() {
-        return this.material == BreaMaterials.NULL || this.amount < 1;
-    }
-
-    /**
-     * 返回此材料堆栈的字符串表示。
-     * <p>
-     * 格式取决于材料的属性：
-     * <ul>
-     * <li>如果材料没有化学式或化学式为空：{@code "?"}</li>
-     * <li>如果材料有多个成分：{@code "(formula)"}</li>
-     * <li>否则：化学式</li>
-     * </ul>
-     * 如果数量大于 1，则使用 {@link FormattingUtil#toSmallDownNumbers(String)} 以下标格式附加数量。
-     * </p>
-     * <p>
-     * 如果堆栈 {@link #isEmpty()}，则返回空字符串。
-     * </p>
-     *
-     * @return 此材料堆栈的格式化字符串表示
-     * @see Material#getChemicalFormula()
-     * @see Material#getMaterialComponents()
-     * @see FormattingUtil#toSmallDownNumbers(String)
-     */
     @Override
-    public @NotNull String toString() {
-        String string = "";
-        if (this.isEmpty()) return "";
-        if (material.getChemicalFormula() == null || material.getChemicalFormula().isEmpty()) {
-            string += "?";
-        } else if (material.getMaterialComponents().size() > 1) {
-            string += '(' + material.getChemicalFormula() + ')';
+    public DataComponentMap getComponents() {
+        return isEmpty() ? DataComponentMap.EMPTY : components;
+    }
+
+    public DataComponentPatch getComponentsPatch() {
+        return !this.isEmpty() ? this.components.asPatch() : DataComponentPatch.EMPTY;
+    }
+
+    public DataComponentMap immutableComponents() {
+        return !this.isEmpty() ? this.components.toImmutableMap() : DataComponentMap.EMPTY;
+    }
+
+    public boolean hasNonDefault(DataComponentType<?> type) {
+        return !isEmpty() && components.hasNonDefault(type);
+    }
+
+    public boolean isComponentsPatchEmpty() {
+        return this.isEmpty() || this.components.isPatchEmpty();
+    }
+
+    public MaterialStack(Material material, long amount, DataComponentPatch patch) {
+        this(material.builtInRegistryHolder(), amount, patch);
+    }
+
+    public MaterialStack(Material material, long amount) {
+        this(material.builtInRegistryHolder(), amount, DataComponentPatch.EMPTY);
+    }
+
+    public MaterialStack(Holder<Material> material, long amount, DataComponentPatch patch) {
+        this(material, amount, PatchedDataComponentMap.fromPatch(material.components(), patch));
+    }
+
+    public MaterialStack(Holder<Material> material, long amount) {
+        this(material, amount, DataComponentPatch.EMPTY);
+    }
+
+    public MaterialStack(Holder<Material> material, long amount, PatchedDataComponentMap components) {
+        this.material = material;
+        this.amount = amount;
+        this.components = components;
+    }
+
+    private MaterialStack(@Nullable Void unused) {
+        this.material = null;
+        this.components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
+    }
+
+    public boolean isEmpty() {
+        return this == EMPTY || material.value().isSame(MarkerMaterial.NULL) || this.amount <= 0;
+    }
+
+    public MaterialStack split(long amount) {
+        long i = Math.min(amount, getAmount());
+        MaterialStack materialStack = this.copyWithAmount(i);
+        this.shrink(i);
+        return materialStack;
+    }
+
+    public MaterialStack copyAndClear() {
+        if (this.isEmpty()) {
+            return EMPTY;
         } else {
-            string += material.getChemicalFormula();
+            MaterialStack materialStack = this.copy();
+            this.setAmount(0);
+            return materialStack;
         }
-        if (amount > 1) {
-            string += FormattingUtil.toSmallDownNumbers(Long.toString(amount));
+    }
+
+    public Material getMaterial() {
+        return typeHolder().value();
+    }
+
+    @Override
+    public Holder<Material> typeHolder() {
+        return isEmpty() ? MarkerMaterial.NULL.builtInRegistryHolder() : material;
+    }
+
+    public boolean is(Predicate<Holder<Material>> holderPredicate) {
+        return holderPredicate.test(this.typeHolder());
+    }
+
+    public MaterialStack copy() {
+        if (this.isEmpty()) {
+            return EMPTY;
+        } else {
+            return new MaterialStack(typeHolder(), amount(), this.components.copy());
         }
-        return string;
+    }
+
+    public MaterialStack copyWithAmount(long amount) {
+        if (this.isEmpty()) {
+            return EMPTY;
+        } else {
+            MaterialStack materialStack = this.copy();
+            materialStack.setAmount(amount);
+            return materialStack;
+        }
+    }
+
+    public MaterialStack transmuteCopy(Material newMaterial) {
+        return transmuteCopy(newMaterial, amount());
+    }
+
+    public MaterialStack transmuteCopy(Material newMaterial, long newAmount) {
+        return isEmpty() ? EMPTY : transmuteCopyIgnoreEmpty(newMaterial, newAmount);
+    }
+
+    private MaterialStack transmuteCopyIgnoreEmpty(Material newMaterial, long newAmount) {
+        return new MaterialStack(newMaterial, newAmount, components.asPatch());
+    }
+
+    @Override
+    public String toString() {
+        return this.getAmount() + " " + this.getMaterial();
+    }
+
+    @Override
+    public @Nullable <T> T set(DataComponentType<T> componentType, @Nullable T value) {
+        return this.components.set(componentType, value);
+    }
+
+    public <T> @Nullable T set(TypedDataComponent<T> value) {
+        return components.set(value);
+    }
+
+    @Override
+    public @Nullable <T> T remove(DataComponentType<? extends T> componentType) {
+        return this.components.remove(componentType);
+    }
+
+    @Override
+    public void applyComponents(DataComponentPatch patch) {
+        this.components.applyPatch(patch);
+    }
+
+    @Override
+    public void applyComponents(DataComponentMap components) {
+        this.components.setAll(components);
+    }
+
+    @Override
+    public long amount() {
+        return this.isEmpty() ? 0 : this.amount;
+    }
+
+    public long getAmount() {
+        return amount();
+    }
+
+    public void grow(long addedAmount) {
+        this.setAmount(this.getAmount() + addedAmount);
+    }
+
+    public void shrink(long removedAmount) {
+        this.grow(-removedAmount);
+    }
+
+    public static boolean matches(MaterialStack first, MaterialStack second) {
+        if (first == second) {
+            return true;
+        } else {
+            return first.getAmount() != second.getAmount() ? false : isSameMaterialSameComponents(first, second);
+        }
+    }
+
+    public static boolean matches(MaterialStack a, @Nullable MaterialStackTemplate b) {
+        if (b == null) {
+            return a.isEmpty();
+        }
+
+        return a.amount() == b.amount() && isSameMaterialSameComponents(a, b);
+    }
+
+    public static boolean isSameMaterial(MaterialStack first, MaterialStack second) {
+        return first.is(second.getMaterial());
+    }
+
+    public static boolean isSameMaterial(MaterialStack a, MaterialStackTemplate b) {
+        return b == null ? a.isEmpty() : a.is(b.material());
+    }
+
+    /**
+     * Checks if the two fluid stacks have the same fluid and components. Ignores amount.
+     *
+     * @return {@code true} if the two fluid stacks have the same fluid and components
+     */
+    public static boolean isSameMaterialSameComponents(MaterialStack first, MaterialStack second) {
+        if (!first.is(second.getMaterial())) {
+            return false;
+        } else {
+            return first.isEmpty() && second.isEmpty() ? true : Objects.equals(first.components, second.components);
+        }
+    }
+
+    public static boolean isSameMaterialSameComponents(MaterialStack a, MaterialStackTemplate b) {
+        if (a.isEmpty() || b == null) {
+            return a.isEmpty() == (b == null);
+        } else {
+            return a.is(b.material()) && a.components.patchEquals(b.components());
+        }
+    }
+
+    public static MapCodec<MaterialStack> lenientOptionalFieldOf(String fieldName) {
+        return CODEC.lenientOptionalFieldOf(fieldName)
+                .xmap(optional -> optional.orElse(EMPTY), stack -> stack.isEmpty() ? Optional.empty() : Optional.of(stack));
+    }
+
+    /**
+     * Hashes the fluid and components of this stack, ignoring the amount.
+     */
+    public static long hashMaterialAndComponents(@Nullable MaterialStack stack) {
+        if (stack != null) {
+            long i = 31 + stack.getMaterial().hashCode();
+            return 31 * i + stack.getComponents().hashCode();
+        } else {
+            return 0;
+        }
     }
 }

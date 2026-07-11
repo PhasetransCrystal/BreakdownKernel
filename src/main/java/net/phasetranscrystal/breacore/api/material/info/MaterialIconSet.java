@@ -2,7 +2,6 @@ package net.phasetranscrystal.breacore.api.material.info;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -11,10 +10,8 @@ import java.util.Map;
 public class MaterialIconSet {
 
     public static final Map<String, MaterialIconSet> ICON_SETS = new HashMap<>();
-
-    public static final MaterialIconSet DULL = new MaterialIconSet("dull", null, true);
-
-    // Implementation -----------------------------------------------------------------------------------------------
+    public static final MaterialIconSet DEFAULT = new MaterialIconSet("default", null, true);
+    public static final MaterialIconSet FLUID = new MaterialIconSet("fluid", DEFAULT);
 
     private static int idCounter = 0;
     public final String name;
@@ -27,40 +24,22 @@ public class MaterialIconSet {
      */
     public final MaterialIconSet parentIconset;
 
-    /**
-     * 创建一个新的MaterialIconSet，其父图标集为{@link MaterialIconSet#DULL}
-     *
-     * @param name 图标集名称
-     */
-    public MaterialIconSet(@NotNull String name) {
-        this(name, MaterialIconSet.DULL);
+    public MaterialIconSet(String name) {
+        this(name, MaterialIconSet.DEFAULT);
     }
 
-    /**
-     * 创建一个新的MaterialIconSet，可指定父图标集
-     *
-     * @param name          图标集名称
-     * @param parentIconset 父图标集
-     */
-    public MaterialIconSet(@NotNull String name, @NotNull MaterialIconSet parentIconset) {
-        this(name, parentIconset, false);
+    public MaterialIconSet(String name, MaterialIconSet parentIconSet) {
+        this(name, parentIconSet, false);
     }
 
-    /**
-     * 创建一个新的MaterialIconSet，可作为根图标集
-     *
-     * @param name          图标集名称
-     * @param parentIconset 父图标集，若此图标集为根图标集则应为null
-     * @param isRootIconset 如果此图标集为根图标集则为true，否则为false
-     */
-    public MaterialIconSet(@NotNull String name, @Nullable MaterialIconSet parentIconset, boolean isRootIconset) {
+    private MaterialIconSet(String name, MaterialIconSet parentIconSet, boolean isRootIconSet) {
         this.name = name.toLowerCase(Locale.ENGLISH);
         Preconditions.checkArgument(!ICON_SETS.containsKey(this.name),
                 "MaterialIconSet " + this.name + " 已注册！");
         this.id = idCounter++;
-        this.isRootIconset = isRootIconset;
-        this.parentIconset = parentIconset;
-        ICON_SETS.put(this.name, this);
+        this.isRootIconset = isRootIconSet;
+        this.parentIconset = parentIconSet;
+        ICON_SETS.put(name, this);
     }
 
     public static MaterialIconSet getByName(@NotNull String name) {

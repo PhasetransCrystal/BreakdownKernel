@@ -36,5 +36,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'BreakdownKernal'
-
-include ':BreaLib'

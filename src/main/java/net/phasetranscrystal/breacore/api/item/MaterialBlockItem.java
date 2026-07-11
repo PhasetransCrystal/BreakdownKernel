@@ -1,46 +1,25 @@
 package net.phasetranscrystal.breacore.api.item;
 
-import net.phasetranscrystal.breacore.api.BreaApi;
-import net.phasetranscrystal.breacore.api.block.MaterialBlock;
-import net.phasetranscrystal.breacore.api.material.property.DustProperty;
-import net.phasetranscrystal.breacore.api.material.property.PropertyKey;
+import net.phasetranscrystal.breacore.api.material.Material;
+import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.entity.FuelValues;
+import net.minecraft.world.level.block.Block;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import lombok.Getter;
 
 public class MaterialBlockItem extends BlockItem {
 
-    public MaterialBlockItem(MaterialBlock block, Properties properties) {
+    @Getter
+    private final MaterialVariant variant;
+    @Getter
+    private final Material material;
+
+    public MaterialBlockItem(MaterialVariant variant, Material mat, Block block, Properties properties) {
         super(block, properties);
+        this.variant = variant;
+        this.material = mat;
     }
 
-    @Override
-    public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType, FuelValues fuelValues) {
-        return getItemBurnTime();
-    }
-
-    @Override
-    @NotNull
-    public MaterialBlock getBlock() {
-        return (MaterialBlock) super.getBlock();
-    }
-
-    @Override
-    public Component getName(ItemStack stack) {
-        return getBlock().getName();
-    }
-
-    public int getItemBurnTime() {
-        var material = getBlock().material;
-        DustProperty property = material.isNull() ? null : material.getProperty(PropertyKey.DUST);
-        if (property != null)
-            return (int) (property.getBurnTime() * getBlock().tagPrefix.getMaterialAmount(material) / BreaApi.M);
-        return 0;
-    }
+    public void onRegister() {}
 }
