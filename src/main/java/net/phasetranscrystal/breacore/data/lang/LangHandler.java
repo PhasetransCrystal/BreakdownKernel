@@ -4,6 +4,7 @@ import net.phasetranscrystal.registrylib.datagen.provider.RegistryLibLangProvide
 
 import net.phasetranscrystal.breacore.api.annotation.TranslationKeyProvider;
 import net.phasetranscrystal.breacore.api.lang.CNEN;
+import net.phasetranscrystal.breacore.api.registry.ScanningClass;
 
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -30,6 +31,7 @@ public class LangHandler {
 
     public static void init() {
         TranslationKeyProvider.LANG.forEach(LangHandler::addCNEN);
+        ScanningClass.LANG.forEach(LangHandler::addCNEN);
         addCNEN("key.breacore.nightvision", "夜视开关", "Night Vision Toggle");
     }
 

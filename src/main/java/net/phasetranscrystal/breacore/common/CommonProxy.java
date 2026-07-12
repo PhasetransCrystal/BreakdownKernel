@@ -7,7 +7,9 @@ import net.phasetranscrystal.breacore.api.addon.IBreaAddon;
 import net.phasetranscrystal.breacore.api.material.event.PostMaterialEvent;
 import net.phasetranscrystal.breacore.api.material.register.MaterialVariant;
 import net.phasetranscrystal.breacore.api.material.registry.MaterialRegistry;
+import net.phasetranscrystal.breacore.api.misc.AutoInitializeImpl;
 import net.phasetranscrystal.breacore.api.registry.BreaRegistries;
+import net.phasetranscrystal.breacore.api.registry.ScanningClass;
 import net.phasetranscrystal.breacore.common.data.*;
 import net.phasetranscrystal.breacore.config.ConfigHolder;
 import net.phasetranscrystal.breacore.data.Datagen;
@@ -21,6 +23,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
+import static net.phasetranscrystal.breacore.common.BreaRegistration.MATERIAL_REGISTRATE;
 import static net.phasetranscrystal.breacore.common.BreaRegistration.REGISTRATE;
 
 public class CommonProxy {
@@ -29,6 +32,7 @@ public class CommonProxy {
         var modBus = BreakdownCore.getModEventBus();
         BreaApi.materialManager = BreaRegistries.MATERIALS;
         ConfigHolder.init();
+        ScanningClass.init();
         modBus.register(CommonProxy.class);
         init();
 
@@ -37,6 +41,8 @@ public class CommonProxy {
     }
 
     public static void init() {
+        BreaTooltips.init();
+        AutoInitializeImpl.INSTANCE.originInit();
         BreaTags.init();
         BreaCreativeModeTabs.init();
 
@@ -76,7 +82,7 @@ public class CommonProxy {
         REGISTRATE.defaultCreativeTab(BreaCreativeModeTabs.MATERIAL_ITEM.getKey());
         for (var material : managerInternal) {
             for (var variant : MaterialVariant.values()) {
-                variant.register(REGISTRATE, material);
+                variant.register(MATERIAL_REGISTRATE, material);
             }
         }
     }

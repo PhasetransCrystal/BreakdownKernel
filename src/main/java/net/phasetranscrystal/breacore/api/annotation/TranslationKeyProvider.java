@@ -10,15 +10,15 @@ public final class TranslationKeyProvider {
 
     public static final Object2ObjectOpenHashMap<String, CNEN> LANG = BreaLib.isDataGen() ? new Object2ObjectOpenHashMap<>() : null;
 
-    public static String getTranslationKey(String var0, String var1) {
-        return getTranslationKey(var0, var1, "breacore.lang");
+    public static String getTranslationKey(String cn, String en) {
+        return getTranslationKey(cn, en, "breacore.lang");
     }
 
-    public static String getTranslationKey(String var0, String var1, String var2) {
-        String var3 = (var2 != null ? var2 : "") + "." + var1.hashCode();
+    public static String getTranslationKey(String cn, String en, String prefix) {
+        String var3 = (prefix != null ? prefix : "") + "." + en.hashCode();
         var3 = var3.replace("..", ".");
         if (LANG != null) {
-            LANG.put(var3, new CNEN(var0, var1));
+            LANG.put(var3, new CNEN(cn, en));
         }
 
         return var3;

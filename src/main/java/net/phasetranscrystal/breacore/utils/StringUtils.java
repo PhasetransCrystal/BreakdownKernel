@@ -11,9 +11,9 @@ public final class StringUtils {
 
     private StringUtils() {}
 
-    public static String numberToChinese(int var0) {
-        if (var0 >= 0 && var0 <= 9) {
-            return ChineseNumbers[var0];
+    public static String numberToChinese(int value) {
+        if (value >= 0 && value <= 9) {
+            return ChineseNumbers[value];
         } else {
             throw new IllegalArgumentException("Number must be between 0 and 9");
         }

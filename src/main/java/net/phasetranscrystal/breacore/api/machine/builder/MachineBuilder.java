@@ -3,8 +3,11 @@ package net.phasetranscrystal.breacore.api.machine.builder;
 import net.phasetranscrystal.brealib.util.RotationState;
 
 import net.phasetranscrystal.registrylib.RegistryCore;
+import net.phasetranscrystal.registrylib.annotations.StandardAPI;
+import net.phasetranscrystal.registrylib.annotations.SyntaxSugar;
 import net.phasetranscrystal.registrylib.builders.BlockBuilder;
 import net.phasetranscrystal.registrylib.builders.ItemBuilder;
+import net.phasetranscrystal.registrylib.tooltip.SubNode;
 import net.phasetranscrystal.registrylib.tooltip.TooltipNodeCollector;
 import net.phasetranscrystal.registrylib.util.entry.BlockEntry;
 
@@ -41,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.*;
 
 @Accessors(chain = true, fluent = true)
@@ -89,7 +91,7 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> {
     @Setter
     private BiFunction<ItemStack, Integer, Integer> itemColor = ((itemStack, tintIndex) -> tintIndex == 1 ? paintingColor : -1);
     // private PartAbility[] abilities = new PartAbility[0];
-    private final List<TooltipNodeCollector.TooltipConfig> tooltips = new ArrayList<>();
+    private @Nullable ArrayList<TooltipNodeCollector.TooltipConfig> tooltipConfigs;
     @Setter
     @Nullable
     private BiConsumer<ItemStack, Consumer<Component>> tooltipBuilder;
@@ -137,8 +139,19 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> {
         return this;
     }
 
-    public MachineBuilder<DEFINITION> tooltips(TooltipNodeCollector.TooltipConfig... configs) {
-        this.tooltips.addAll(List.of(configs));
+    @StandardAPI
+    public MachineBuilder<DEFINITION> addTooltip(TooltipNodeCollector.@NotNull TooltipConfig config) {
+        if (this.tooltipConfigs == null) {
+            this.tooltipConfigs = new ArrayList<>();
+        }
+
+        this.tooltipConfigs.add(config);
+        return this;
+    }
+
+    @SyntaxSugar("addTooltip((collector, stack) -> collector.node(new SubNode.Basic(component, 0)))")
+    public MachineBuilder<DEFINITION> addTooltip(@NotNull Component component) {
+        this.addTooltip((TooltipNodeCollector.TooltipConfig) ((collector, stack) -> collector.node(new SubNode.Basic(component, 0))));
         return this;
     }
 
@@ -197,12 +210,11 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> {
     static class BlockBuilderWrapper {
 
         @SuppressWarnings("removal")
-        public static <D extends MachineDefinition> BlockBuilder<Block, MachineBuilder<D>> makeBlockBuilder(MachineBuilder<D> builder,
-                                                                                                            D definition) {
-            return builder.registrate.block(builder, builder.name, properties -> {
-                RotationState.set(builder.rotationState);
+        public static <D extends MachineDefinition> BlockBuilder<Block, MachineBuilder<D>> makeBlockBuilder(MachineBuilder<D> owner, D definition) {
+            return owner.registrate.block(owner, owner.name, properties -> {
+                RotationState.set(owner.rotationState);
                 MachineDefinition.setBuilt(definition);
-                var b = builder.blockFactory.apply(properties, definition);
+                var b = owner.blockFactory.apply(properties, definition);
                 RotationState.clear();
                 MachineDefinition.clearBuilt();
                 return b.self();
@@ -210,18 +222,20 @@ public class MachineBuilder<DEFINITION extends MachineDefinition> {
                     .initialProperties(() -> Blocks.DISPENSER)
                     .addTag(BreaTags.MACHINE_BLOCK)
                     .properties(BlockBehaviour.Properties::noLootTable)
-                    .properties(builder.blockProp);
+                    .properties(owner.blockProp);
         }
     }
 
     static class ItemBuilderWrapper {
 
-        public static <D extends MachineDefinition> ItemBuilder<MetaMachineItem, MachineBuilder<D>> makeItemBuilder(MachineBuilder<D> builder,
+        public static <D extends MachineDefinition> ItemBuilder<MetaMachineItem, MachineBuilder<D>> makeItemBuilder(MachineBuilder<D> owner,
                                                                                                                     BlockEntry<Block> block) {
-            var ibuilder = builder.registrate.item(builder, builder.name, properties -> builder.itemFactory.apply((IMachineBlock) block.get(), properties), false)
-                    .properties(builder.itemProp);
-            builder.tooltips.forEach(ibuilder::addTooltip);
-            return ibuilder;
+            var builder = owner.registrate.item(owner, owner.name, properties -> owner.itemFactory.apply((IMachineBlock) block.get(), properties), false)
+                    .properties(owner.itemProp);
+            if (owner.tooltipConfigs != null) {
+                owner.tooltipConfigs.forEach(builder::addTooltip);
+            }
+            return builder;
         }
     }
 }

@@ -11,12 +11,14 @@ public class RegisterActions {
 
     public static RegisterAction GeneralItem = (registrate, variant, material) -> {
         var attr = material.getAttribute(AttributeType.GENERAL);
-        var builder = registrate.componentItem(variant.idPattern().formatted(material.getName()), prop -> new MaterialItem(variant, material, prop));
+        registrate.getRegistryLib().defaultCreativeTab(variant.itemCreativeTab().get().getKey());
+        var builder = registrate.item(variant.idPattern().formatted(material.getName()), prop -> new MaterialItem(variant, material, prop), true);
         builder.properties(prop -> prop.enchantable(attr.getHarvestLevel()));
         builder.register();
     };
     public static RegisterAction GeneralBlock = (registrate, variant, material) -> {
         var attr = material.getAttribute(AttributeType.GENERAL);
+        registrate.getRegistryLib().defaultCreativeTab(variant.itemCreativeTab().get().getKey());
         var builder = registrate.block(variant.idPattern().formatted(material.getName()), prop -> new MaterialBlock(variant, material, prop));
         builder.item((block, prop) -> new MaterialBlockItem(variant, material, block, prop), itemBuilder -> itemBuilder
                 .properties(prop -> prop.enchantable(attr.getHarvestLevel())));
@@ -24,6 +26,7 @@ public class RegisterActions {
     };
     public static RegisterAction GeneralFluid = (registrate, variant, material) -> {
         var attr = material.getAttribute(AttributeType.FLUID);
+        registrate.getRegistryLib().defaultCreativeTab(variant.itemCreativeTab().get().getKey());
         var builder = registrate.fluid(variant.idPattern().formatted(material.getName()), BreaFluidTypeExtensions.FLUID_LIQUID_STILL, BreaFluidTypeExtensions.FLUID_LIQUID_FLOWING);
         if (!attr.isWithFlowing()) builder.noBlock();
         if (!attr.isWithBucket()) builder.noBucket();

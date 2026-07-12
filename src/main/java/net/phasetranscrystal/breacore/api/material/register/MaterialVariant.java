@@ -6,7 +6,7 @@ import net.phasetranscrystal.registrylib.util.entry.RegistryEntry;
 
 import net.phasetranscrystal.breacore.api.BreaApi;
 import net.phasetranscrystal.breacore.api.material.Material;
-import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
+import net.phasetranscrystal.breacore.api.registry.registrate.BreaGroup;
 import net.phasetranscrystal.breacore.api.tag.BreaTag;
 
 import net.minecraft.network.chat.Component;
@@ -120,14 +120,12 @@ public class MaterialVariant {
         return this;
     }
 
-    public void register(BreaRegistryCore registrate, Material material) throws IllegalArgumentException {
+    public void register(BreaGroup registrate, Material material) throws IllegalArgumentException {
         if (!registerConditionList.isEmpty()) {
             for (RegisterCondition condition : registerConditionList) {
                 if (!condition.validate(material)) return;
             }
         }
-        if (itemCreativeTab.get() != null)
-            registrate.defaultCreativeTab(itemCreativeTab.get().getKey());
         for (RegisterAction action : registerActionList) {
             action.register(registrate, this, material);
         }

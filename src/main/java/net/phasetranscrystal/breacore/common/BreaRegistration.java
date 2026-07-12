@@ -6,6 +6,7 @@ import net.phasetranscrystal.breacore.api.registry.registrate.BreaRegistryCore;
 import net.phasetranscrystal.breacore.common.data.BreaTags;
 
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class BreaRegistration {
 
@@ -16,6 +17,13 @@ public class BreaRegistration {
     public static final BreaRegistryCore REGISTRATE = BreaRegistryCore.create(BreakdownCore.MOD_ID);
     public static final BreaGroup DEBUG_REGISTRATE = (BreaGroup) REGISTRATE.group("debug")
             .addItemTag(BreaTags.DEBUG_ITEM)
+            .addBlockTag(BreaTags.DEBUG_BLOCK)
             .tab(CreativeModeTabs.OP_BLOCKS)
+            .build();
+    public static final BreaGroup MATERIAL_REGISTRATE = (BreaGroup) REGISTRATE.group("material")
+            .addItemTag(BreaTags.MATERIAL_ITEM)
+            .addBlockTag(BreaTags.MATERIAL_BLOCK)
+            .addFluidTag(BreaTags.MATERIAL_FLUID)
+            .blockProperties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
             .build();
 }
