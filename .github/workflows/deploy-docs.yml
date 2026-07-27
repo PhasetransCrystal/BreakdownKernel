@@ -3,10 +3,10 @@ name: Deploy Docs to GitHub Pages
 on:
   push:
     branches:
-      - "master"
+      - "**"
     paths:
       - ".github/workflows/deploy-docs.yml"
-      - "docs/**"
+      - "docs-content/**"
       - "website/**"
   workflow_dispatch:
 
@@ -41,8 +41,7 @@ jobs:
         run: |
           branch_path="${GITHUB_REF_NAME//\//-}"
           echo "branch_path=${branch_path}" >> "$GITHUB_OUTPUT"
-          repo_name="${GITHUB_REPOSITORY#*/}"
-          echo "base_url=/${repo_name}/${branch_path}/" >> "$GITHUB_OUTPUT"
+          echo "base_url=/${branch_path}/" >> "$GITHUB_OUTPUT"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -175,7 +174,7 @@ jobs:
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>BreakdownKernel Wiki Versions</title>
+            <title>BreakdownKernal Wiki Versions</title>
             <style>
               :root {{
                 color-scheme: light;
@@ -289,9 +288,9 @@ jobs:
             <main>
               <section class="hero" aria-labelledby="page-title">
                 <div>
-                  <p class="eyebrow">BreakdownKernel Wiki</p>
+                  <p class="eyebrow">RegistryLib Wiki</p>
                   <h1 id="page-title">Version Directory</h1>
-                  <p class="summary">Choose the wiki that matches the BreakdownKernel branch or release line you are using. Each entry shows when that version was last published.</p>
+                  <p class="summary">Choose the wiki that matches the BreakdownKernal branch or release line you are using. Each entry shows when that version was last published.</p>
                 </div>
                 <p class="generated"><span>Directory refreshed</span><strong>{escape(generated)}</strong></p>
               </section>
