@@ -33,20 +33,24 @@ flowchart TD
 
 ```java
 MachineDefinition def = MachineDefinition.createDefinition(
-    Identifier.of("your_mod", "your_machine")
+        Identifier.of("your_mod", "your_machine")
 );
-def.setMachineSupplier(YourMachine::new);
-def.setRenderer(yourRenderer);
+def.
+
+setMachineSupplier(YourMachine::new);
+def.
+
+setRenderer(yourRenderer);
 ```
 
-| 配置项                      | 说明               |
-|--------------------------|------------------|
-| `setBlockSupplier`       | 自定义方块提供者         |
-| `setItemSupplier`        | 自定义物品提供者         |
+| 配置项                   | 说明                 |
+|--------------------------|----------------------|
+| `setBlockSupplier`       | 自定义方块提供者     |
+| `setItemSupplier`        | 自定义物品提供者     |
 | `setMachineSupplier`     | MetaMachine 工厂方法 |
-| `setRenderer`            | 自定义渲染器           |
-| `setShape`               | 碰撞箱形状            |
-| `setAllowExtendedFacing` | 是否允许向上放置         |
+| `setRenderer`            | 自定义渲染器         |
+| `setShape`               | 碰撞箱形状           |
+| `setAllowExtendedFacing` | 是否允许向上放置     |
 
 ### MetaMachine
 
@@ -83,13 +87,13 @@ public class EnergyTrait extends MachineTrait {
 
 机器功能的接口标记，所有 feature 均继承此接口：
 
-| Feature 接口               | 用途         |
-|--------------------------|------------|
+| Feature 接口             | 用途                 |
+|--------------------------|----------------------|
 | `IDropSaveMachine`       | 破坏时保存数据到物品 |
-| `IMachineLife`           | 机器生命周期回调   |
-| `IMachineModifyDrops`    | 自定义掉落物     |
-| `IRedstoneSignalMachine` | 红石信号交互     |
-| `IUIMachine`             | UI 界面支持    |
+| `IMachineLife`           | 机器生命周期回调     |
+| `IMachineModifyDrops`    | 自定义掉落物         |
+| `IRedstoneSignalMachine` | 红石信号交互         |
+| `IUIMachine`             | UI 界面支持          |
 
 ## 多方块结构
 

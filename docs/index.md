@@ -6,7 +6,7 @@ title: BreakdownKernel（瓦解核心）
 
 # BreakdownKernel（瓦解核心）
 
-面向 Minecraft 26.1.2 的大型系列 Mod 基础框架。通过**通用材料系统**统一管理材料定义，自动生成对应的物品、方块、流体等游戏内容，大幅减少样板代码。
+面向 Minecraft 26.1.2 的大型系列 Mod 基础框架。通过 **通用材料系统**统一管理材料定义，自动生成对应的物品、方块、流体等游戏内容，大幅减少样板代码。
 
 ## 核心特性
 
@@ -20,11 +20,14 @@ title: BreakdownKernel（瓦解核心）
 
 ```groovy
 repositories {
-    maven { url = 'https://maven.nilarea.cn/releases' }
+    maven {
+        name = "Ptcrys Releases"
+        url = uri("https://maven.ptcrys.net/releases")
+    }
 }
 // build.gradle
 dependencies {
-    implementation("net.phasetranscrystal:BreakdownKernal:0.1.0")
+    implementation("net.ptcrys:breakdown:26.7.27")
 }
 ```
 
@@ -46,13 +49,13 @@ Material aluminium = new Material.Builder("aluminium")
 
 ## 模块
 
-| 模块                          | 说明                                                    |
-|-----------------------------|-------------------------------------------------------|
+| 模块                              | 说明                                                    |
+|-----------------------------------|---------------------------------------------------------|
 | [通用材料系统](material/index.md) | Material / MaterialAttribute / MaterialVariant 核心 API |
-| [机器与多方块系统](multiblock.md)   | MachineDefinition / MetaMachine / MachineTrait        |
-| [相变能量系统](phase-energy.md)   | 统一能量单位 PE，能量网络与传输                                     |
-| [世界生成](3-world-gen.md)        | 异步矿石/结构生成与 Biome Modifier                             |
-| BreaLib                     | 日志、环境检测、线程安全等基础工具库                                    |
+| [机器与多方块系统](multiblock.md) | MachineDefinition / MetaMachine / MachineTrait          |
+| [相变能量系统](phase-energy.md)   | 统一能量单位 PE，能量网络与传输                         |
+| [世界生成](3-world-gen.md)        | 异步矿石/结构生成与 Biome Modifier                      |
+| BreaLib                           | 日志、环境检测、线程安全等基础工具库                    |
 
 ## 进行中任务
 

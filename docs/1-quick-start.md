@@ -8,12 +8,12 @@ sidebar_position: 1
 
 ## 环境要求
 
-| 工具        | 版本           |
-|-----------|--------------|
-| JDK       | Java 25      |
-| Gradle    | 8.x（Wrapper） |
-| Minecraft | 26.1         |
-| Mod 平台    | NeoForge     |
+| 工具      | 版本             |
+|-----------|------------------|
+| JDK       | Java 25          |
+| Gradle    | 9.6.1（Wrapper） |
+| Minecraft | 26.1.2           |
+| Mod 平台  | NeoForge         |
 
 ## 添加依赖
 
@@ -21,11 +21,14 @@ sidebar_position: 1
 
 ```groovy
 repositories {
-    maven { url = 'https://maven.nilarea.cn/releases' }
+    maven {
+        name = "Ptcrys Releases"
+        url = uri("https://maven.ptcrys.net/releases")
+    }
 }
-
+// build.gradle
 dependencies {
-    implementation("net.phasetranscrystal:BreakdownKernal:0.1.0")
+    implementation("net.ptcrys:breakdown:26.7.27")
 }
 ```
 
@@ -35,9 +38,9 @@ dependencies {
 
 ```
 YourDLC/
-├── src/main/java/com/yourname/dlc/
+├── src/main/java/net/ptcrys/dlcname/
 ├── src/main/resources/
-│   └── data/yourdlc/          # 数据包（配方、结构等）
+│   └── data/dlcname/
 ├── build.gradle
 └── settings.gradle
 ```
@@ -47,7 +50,6 @@ YourDLC/
 ```
 Your DLC
   └── BreakdownKernel（公开 API）
-        └── BreaLib（内置，闭源，通过 BreakdownKernel API 间接使用）
 ```
 
 DLC **只需依赖 BreakdownKernel**，不能直接依赖 BreaLib。所有底层能力通过 BreakdownKernel 的公开 API 访问。

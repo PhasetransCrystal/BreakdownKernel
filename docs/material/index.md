@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # 通用材料系统
 
-通用材料系统由多个相互解耦的模块组成，核心思想是**一次定义材料，自动生成全部变体**。对材料的任意操作会影响该种类下的所有物品。
+通用材料系统由多个相互解耦的模块组成，核心思想是 **一次定义材料，自动生成全部变体**。对材料的任意操作会影响该种类下的所有物品。
 
 ## 架构总览
 
@@ -41,26 +41,26 @@ Material aluminium = new Material.Builder("aluminium")
         .build();
 ```
 
-| Builder 方法                  | 说明        |
-|-----------------------------|-----------|
-| `.ingot()`                  | 标记为金属锭材料  |
-| `.gem()`                    | 标记为宝石材料   |
+| Builder 方法                | 说明               |
+|-----------------------------|--------------------|
+| `.ingot()`                  | 标记为金属锭材料   |
+| `.gem()`                    | 标记为宝石材料     |
 | `.fluid()`                  | 标记为可流体化材料 |
-| `.color(int)`               | 设置材料颜色    |
-| `.element(Element)`         | 绑定化学元素    |
-| `.formula(String)`          | 设置化学式     |
-| `.components(Material... )` | 设置组分材料    |
+| `.color(int)`               | 设置材料颜色       |
+| `.element(Element)`         | 绑定化学元素       |
+| `.formula(String)`          | 设置化学式         |
+| `.components(Material... )` | 设置组分材料       |
 
 ### MaterialAttribute
 
 材料属性的定义接口，决定材料「能做什么」。
 
-| 属性类型      | 接口                 | 说明                  |
-|-----------|--------------------|---------------------|
+| 属性类型  | 接口               | 说明                                |
+|-----------|--------------------|-------------------------------------|
 | `GENERAL` | `GeneralAttribute` | 通用属性：挖掘等级（0-3）、燃烧时间 |
-| `INGOT`   | `IngotAttribute`   | 金属锭属性               |
-| `GEM`     | `GemAttribute`     | 宝石属性                |
-| `FLUID`   | `FluidAttribute`   | 流体属性（可带桶、可流动）       |
+| `INGOT`   | `IngotAttribute`   | 金属锭属性                          |
+| `GEM`     | `GemAttribute`     | 宝石属性                            |
+| `FLUID`   | `FluidAttribute`   | 流体属性（可带桶、可流动）          |
 
 可重写方法进行可加性验证和格式化生成前置属性。
 
@@ -68,14 +68,14 @@ Material aluminium = new Material.Builder("aluminium")
 
 材料变体的定义。每个变体对应一系列材料实例（流体、方块、物品、桶等）。
 
-| 变体       | 物量  | 需求属性        |
-|----------|-----|-------------|
-| `ingot`  | M   | INGOT       |
-| `nugget` | M/9 | INGOT       |
-| `dust`   | M   | GENERAL     |
-| `block`  | 9M  | INGOT 或 GEM |
-| `liquid` | M   | FLUID       |
-| `melt`   | M   | FLUID       |
+| 变体     | 物量 | 需求属性     |
+|----------|------|--------------|
+| `ingot`  | M    | INGOT        |
+| `nugget` | M/9  | INGOT        |
+| `dust`   | M    | GENERAL      |
+| `block`  | 9M   | INGOT 或 GEM |
+| `liquid` | M    | FLUID        |
+| `melt`   | M    | FLUID        |
 
 > **M** = 3,628,800（高可整除值，便于配方计算）
 
@@ -89,7 +89,7 @@ RegisterCondition generateIngot =
         (Material m) -> m.hasAttribute(AttributeType.INGOT);
 ```
 
-多个条件同时设置时，**全部满足**才执行注册。
+多个条件同时设置时， **全部满足**才执行注册。
 
 ### RegisterAction
 
@@ -121,12 +121,12 @@ public static final AttributeType<FluidAttribute> FLUID =
 
 ## 材料分类
 
-| 类别                          | 说明                |
-|-----------------------------|-------------------|
-| ElementMaterials            | 116+ 周期表元素        |
+| 类别                        | 说明                               |
+|-----------------------------|------------------------------------|
+| ElementMaterials            | 116+ 周期表元素                    |
 | FirstDegreeMaterials        | 氧化物、硫化物、氯化物等一级化合物 |
-| SecondDegreeMaterials       | 常见二级化合物           |
-| HigherDegreeMaterials       | 复杂高级化合物           |
-| OrganicChemistryMaterials   | 有机化合物             |
-| UnknownCompositionMaterials | 未知成分占位材料          |
-| MarkerMaterials             | 内部引用标记材料          |
+| SecondDegreeMaterials       | 常见二级化合物                     |
+| HigherDegreeMaterials       | 复杂高级化合物                     |
+| OrganicChemistryMaterials   | 有机化合物                         |
+| UnknownCompositionMaterials | 未知成分占位材料                   |
+| MarkerMaterials             | 内部引用标记材料                   |

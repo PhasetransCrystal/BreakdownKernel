@@ -8,25 +8,25 @@ BreakdownKernel 为 DLC 模组提供稳定的核心 API。以下为各模块公�
 
 ## 模块总览
 
-| 模块      | 包路径                          | 用途                          |
-|---------|------------------------------|-----------------------------|
-| 材料系统    | `breacore.api.material`      | 材料定义、元素、属性、变体               |
-| 机器系统    | `breacore.api.machine`       | 机器定义、MetaMachine、特性         |
-| DLC 扩展  | `breacore.api.addon`         | @BreaAddon 注解、IBreaAddon 接口 |
-| 注册系统    | `breacore.api.registry`      | BreaRegistry、Registrate 扩展  |
-| Perk 系统 | `breacore.api.perk`          | 实体加成、属性修改器                  |
-| 事件分发    | `breacore.api.eventdispatch` | 实体事件分发器                     |
-| 能量系统    | `breacore.api.energy`        | 相变能量（规划中）                   |
-| 世界生成    | `breacore.api.worldgen`      | 矿石/结构生成（规划中）                |
+| 模块      | 包路径                        | 用途                             |
+|-----------|-------------------------------|----------------------------------|
+| 材料系统  | `breakdown.api.material`      | 材料定义、元素、属性、变体       |
+| 机器系统  | `breakdown.api.machine`       | 机器定义、MetaMachine、特性      |
+| DLC 扩展  | `breakdown.api.addon`         | @BreaAddon 注解、IBreaAddon 接口 |
+| 注册系统  | `breakdown.api.registry`      | BreaRegistry、Registrate 扩展    |
+| Perk 系统 | `breakdown.api.perk`          | 实体加成、属性修改器             |
+| 事件分发  | `breakdown.api.eventdispatch` | 实体事件分发器                   |
+| 能量系统  | `breakdown.api.energy`        | 相变能量（规划中）               |
+| 世界生成  | `breakdown.api.worldgen`      | 矿石/结构生成（规划中）          |
 
 ## 核心常量
 
 定义在 `BreaApi` 中：
 
-| 常量  | 值         | 说明            |
-|-----|-----------|---------------|
-| `M` | 3,628,800 | 一单位材料的标准物质量   |
-| `L` | 144       | 每材料单位的流体量（mB） |
+| 常量 | 值        | 说明                     |
+|------|-----------|--------------------------|
+| `M`  | 3,628,800 | 一单位材料的标准物质量   |
+| `L`  | 144       | 每材料单位的流体量（mB） |
 
 ## DLC 入口
 
