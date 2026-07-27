@@ -49,20 +49,20 @@ Material aluminium = new Material.Builder("aluminium")
 
 ## 模块
 
-| 模块                              | 说明                                                    |
-|-----------------------------------|---------------------------------------------------------|
-| [通用材料系统](material/index.md) | Material / MaterialAttribute / MaterialVariant 核心 API |
-| [机器与多方块系统](multiblock.md) | MachineDefinition / MetaMachine / MachineTrait          |
-| [相变能量系统](phase-energy.md)   | 统一能量单位 PE，能量网络与传输                         |
-| [世界生成](3-world-gen.md)        | 异步矿石/结构生成与 Biome Modifier                      |
-| BreaLib                           | 日志、环境检测、线程安全等基础工具库                    |
+| 模块                                            | 说明                                                    |
+|-------------------------------------------------|---------------------------------------------------------|
+| [通用材料系统](material/index.md)               | Material / MaterialAttribute / MaterialVariant 核心 API |
+| [机器与多方块系统](machine/multiblock/index.md) | MachineDefinition / MetaMachine / MachineTrait          |
+| [相变能量系统](machine/1-phase-energy.md)       | 统一能量单位 PE，能量网络与传输                         |
+| [世界生成](3-world-gen.md)                      | 异步矿石/结构生成与 Biome Modifier                      |
+| BreaLib                                         | 日志、环境检测、线程安全等基础工具库                    |
 
 ## 进行中任务
 
 - [x] [通用材料系统](material/index.md)
-- [x] [机器系统](multiblock.md)
+- [x] [机器系统](machine/multiblock/index.md)
 - [ ] 配方系统
-- [ ] [能量系统](phase-energy.md)
+- [ ] [能量系统](machine/1-phase-energy.md)
 - [ ] [世界生成](3-world-gen.md)
 - [ ] 多方块结构
 
@@ -70,7 +70,7 @@ Material aluminium = new Material.Builder("aluminium")
 
 - [快速开始](1-quick-start.md) — DLC 开发环境搭建与入门
 - [通用材料系统](material/index.md) — 材料定义与自动生成
-- [机器与多方块系统](multiblock.md) — 机器定义与特性
-- [相变能量系统](phase-energy.md) — 能量 API 设计
+- [机器与多方块系统](machine/multiblock/index.md) — 机器定义与特性
+- [相变能量系统](machine/1-phase-energy.md) — 能量 API 设计
 - [世界生成](3-world-gen.md) — 矿石与结构生成
 - [API 参考](2-api-reference.md) — 接口速查

@@ -20,5 +20,5 @@ BreakdownKernel 的世界生成系统负责矿石放置、结构生成和生物�
 
 ## 相关页面
 
-- [机器与多方块系统](multiblock.md) — 多方块结构
+- [机器与多方块系统](machine/multiblock/index.md) — 多方块结构
 - [API 参考](2-api-reference.md) — 世界生成 API

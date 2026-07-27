@@ -84,5 +84,5 @@ public class YourDLC implements IBreaAddon {
 ## 下一步
 
 - [通用材料系统](material/index.md) — 定义你的材料
-- [机器系统](multiblock.md) — 创建自定义机器
+- [机器系统](machine/multiblock/index.md) — 创建自定义机器
 - [API 参考](2-api-reference.md) — 完整接口速查

@@ -30,5 +30,5 @@ sidebar_position: 21
 
 ## 相关页面
 
-- [机器与多方块系统](multiblock.md) — 机器能量管理
-- [API 参考](api-reference.md) — 接口文档
+- [机器与多方块系统](multiblock/index.md) — 机器能量管理
+- [API 参考](../2-api-reference.md) — 接口文档

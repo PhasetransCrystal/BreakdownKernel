@@ -12,7 +12,6 @@ const sidebars = {
                 type: 'doc',
                 id: 'material/index',
             },
-            slug: "/material",
             items: [
                 'material/element',
             ],
@@ -25,9 +24,8 @@ const sidebars = {
                 type: 'doc',
                 id: 'machine/index',
             },
-            slug: "/machine",
             items: [
-                "machine/1-phase-energy",
+                "machine/phase-energy",
                 {
                     type: 'category',
                     label: '多方块机器系统',
@@ -36,13 +34,13 @@ const sidebars = {
                         type: 'doc',
                         id: 'machine/multiblock/index',
                     },
-                    slug: "/machine/multiblock",
+                    items: [],
                 },
             ],
         },
-        "1-quick-start",
-        "2-api-reference",
-        "3-world-gen",
+        "quick-start",
+        "api-reference",
+        "world-gen",
     ],
 };
 

@@ -46,7 +46,7 @@ public class YourDLC implements IBreaAddon {
 
 ## 机器 API
 
-参见 [机器与多方块系统](multiblock.md)。
+参见 [机器与多方块系统](machine/multiblock/index.md)。
 
 核心类：`MachineDefinition`、`MetaMachine`、`MachineTrait`、`IMachineFeature`。
 
@@ -59,4 +59,4 @@ public class YourDLC implements IBreaAddon {
 
 - [快速开始](1-quick-start.md)
 - [通用材料系统](material/index.md)
-- [机器与多方块系统](multiblock.md)
+- [机器与多方块系统](machine/multiblock/index.md)

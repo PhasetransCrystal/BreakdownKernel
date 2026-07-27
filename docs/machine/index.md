@@ -76,5 +76,5 @@ if (machine instanceof IEnergyMachine energyMachine) {
 
 ## 子模块
 
-- **[相变能量系统](./1-phase-energy)** — 统一的能量 API，支持有线和无线传输
-- **[多方块机器系统](./multiblock)** — 多方块结构定义、成型检测与渲染
+- **[相变能量系统](machine/phase-energy)** — 统一的能量 API，支持有线和无线传输
+- **[多方块机器系统](machine/multiblock)** — 多方块结构定义、成型检测与渲染

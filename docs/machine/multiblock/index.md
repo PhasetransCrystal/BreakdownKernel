@@ -101,6 +101,6 @@ public class EnergyTrait extends MachineTrait {
 
 ## 相关页面
 
-- [通用材料系统](material/index.md) — 材料定义
-- [相变能量系统](phase-energy.md) — 能量 API
-- [API 参考](api-reference.md) — 完整接口
+- [通用材料系统](../../material/index.md) — 材料定义
+- [相变能量系统](../1-phase-energy.md) — 能量 API
+- [API 参考](../../2-api-reference.md) — 完整接口
