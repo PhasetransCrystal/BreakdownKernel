@@ -12,11 +12,20 @@ const sidebars = {
                 type: 'doc',
                 id: 'material/index',
             },
+            slug: "/material",
+            items: [
+                'material/element',
+            ],
         },
         {
             type: 'category',
             label: '通用机器系统',
             collapsible: false,
+            link: {
+                type: 'doc',
+                id: 'machine/index',
+            },
+            slug: "/machine",
             items: [
                 "machine/1-phase-energy",
                 {
@@ -27,12 +36,13 @@ const sidebars = {
                         type: 'doc',
                         id: 'machine/multiblock/index',
                     },
-                }
-            ]
+                    slug: "/machine/multiblock",
+                },
+            ],
         },
         "1-quick-start",
         "2-api-reference",
-        "3-world-gen"
+        "3-world-gen",
     ],
 };
 

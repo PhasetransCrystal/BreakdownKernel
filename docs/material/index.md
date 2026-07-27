@@ -123,7 +123,7 @@ public static final AttributeType<FluidAttribute> FLUID =
 
 | 类别                        | 说明                               |
 |-----------------------------|------------------------------------|
-| ElementMaterials            | 116+ 周期表元素                    |
+| ElementMaterials            | 118+ 周期表元素                    |
 | FirstDegreeMaterials        | 氧化物、硫化物、氯化物等一级化合物 |
 | SecondDegreeMaterials       | 常见二级化合物                     |
 | HigherDegreeMaterials       | 复杂高级化合物                     |
