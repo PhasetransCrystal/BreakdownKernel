@@ -28,7 +28,7 @@ repositories {
 }
 // build.gradle
 dependencies {
-    implementation("net.ptcrys:breakdown:26.7.27")
+    implementation("net.ptcrys:BreakdownKernal:26.7.27")
 }
 ```
 
