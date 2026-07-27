@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.phasetranscrystal.breacore.mixins",
+  "package": "net.ptcrys.breakdown.mixins",
   "compatibilityLevel": "JAVA_25",
-  "plugin": "net.phasetranscrystal.breacore.mixins.BreaMixinPlugin",
+  "plugin": "net.ptcrys.breakdown.mixins.BreaMixinPlugin",
   "mixins": [
     "BlockPropertiesAccessor",
     "MappedRegistryAccess",

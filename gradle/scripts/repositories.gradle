@@ -5,15 +5,19 @@ repositories {
     }
     mavenCentral()
     maven {
-        name = "reposilite"
-        url = 'https://maven.nilarea.cn/releases'
+        name = "Ptcrys Releases"
+        url = uri("https://maven.ptcrys.net/releases")
     }
     maven {
-        name = "reposilite"
-        url = 'https://maven.nilarea.cn/private'
+        name = "Ptcrys Snapshots"
+        url = uri("https://maven.ptcrys.net/snapshots")
+    }
+    maven {
+        name = "Ptcrys Private"
+        url = uri("https://maven.ptcrys.net/private")
         credentials {
-            username = project.findProperty('reposiliteUsername')
-            password = project.findProperty('reposilitePassword')
+            username = project.findProperty('ptcrysUsername')
+            password = project.findProperty('ptcrysPassword')
         }
     }
 

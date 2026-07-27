@@ -1,8 +1,6 @@
 #Organize Import Order
 #Sat May 27 02:13:47 CDT 2023
-0=net.phasetranscrystal.brealib
-0=net.phasetranscrystal.registrylib
-1=net.phasetranscrystal
+1=net.ptcrys
 1=net
 2=
 3=java

@@ -10,7 +10,7 @@ plugins {
 }
 
 allprojects {
-    group = 'net.phasetranscrystal'
+    group = 'net.ptcrys'
 }
 
 def buildDate = new Date()
@@ -74,12 +74,11 @@ publishing {
     }
     repositories {
         maven {
-            name = "reposilite"
-            url = 'https://maven.nilarea.cn/releases'
-            // 认证信息在此配置
+            name = "PtcrysReleases"
+            url = uri("https://maven.ptcrys.net/releases")
             credentials {
-                username = project.findProperty('reposiliteUsername')
-                password = project.findProperty('reposilitePassword')
+                username = project.findProperty('ptcrysUsername')
+                password = project.findProperty('ptcrysPassword')
             }
         }
     }
