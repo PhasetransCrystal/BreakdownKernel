@@ -10,7 +10,7 @@ import net.ptcrys.breakdown.api.machine.MetaMachine;
 import net.ptcrys.breakdown.api.registry.BreaRegistries;
 import net.ptcrys.breakdown.common.data.BreaTags;
 import net.ptcrys.breakdown.config.ConfigHolder;
-import net.ptcrys.breakdown.utils.RotationState;
+import net.ptcrys.breakdown.utils.enums.RotationState;
 import net.ptcrys.registrylib.RegistryCore;
 import net.ptcrys.registrylib.annotations.StandardAPI;
 import net.ptcrys.registrylib.annotations.SyntaxSugar;

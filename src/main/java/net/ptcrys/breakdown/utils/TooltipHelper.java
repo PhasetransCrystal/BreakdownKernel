@@ -1,8 +1,7 @@
-package net.ptcrys.breakdown.utilss;
+package net.ptcrys.breakdown.utils;
 
 import net.ptcrys.breakdown.BreakdownKernal;
 import net.ptcrys.breakdown.api.BreaApi;
-import net.ptcrys.breakdown.utils.GradientUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
@@ -18,7 +17,7 @@ public class TooltipHelper {
     public static final UnaryOperator<Style> RAINBOW_HSL = (style) -> style.withColor(rainbowColor(2.5F));
     public static final UnaryOperator<Style> RAINBOW_HSL_SLOW = (style) -> style.withColor(rainbowColor(1.25F));
     public static final UnaryOperator<Style> RAINBOW_HSL_FAST = (style) -> style.withColor(rainbowColor(3.75F));
-    private static final List<BreaFormattingCode> CODES = new ArrayList();
+    private static final List<BreaFormattingCode> CODES = new ArrayList<>();
     private static final ChatFormatting[] ALL_COLORS;
     public static final BreaFormattingCode RAINBOW_FAST;
     public static final BreaFormattingCode RAINBOW;
@@ -29,7 +28,7 @@ public class TooltipHelper {
     public static final BreaFormattingCode BLINKING_GRAY;
 
     public static TextColor rainbowColor(float speed) {
-        return TextColor.fromRgb(GradientUtil.toRGB((float) (BreaApi.CLIENT_TIME & 1048575) * speed, 95.0F, 60.0F));
+        return TextColor.fromRgb(ColorUtil.toRGB((float) (BreaApi.CLIENT_TIME & 1048575) * speed, 95.0F, 60.0F));
     }
 
     public static BreaFormattingCode createNewCode(int rate, ChatFormatting... codes) {

@@ -6,7 +6,7 @@ import net.ptcrys.breakdown.api.machine.MetaMachine;
 import net.ptcrys.breakdown.api.machine.feature.IDropSaveMachine;
 import net.ptcrys.breakdown.api.machine.feature.IMachineLife;
 import net.ptcrys.breakdown.api.machine.feature.IMachineModifyDrops;
-import net.ptcrys.breakdown.utils.RotationState;
+import net.ptcrys.breakdown.utils.enums.RotationState;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

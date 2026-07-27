@@ -8,11 +8,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BreaMath {
-
-    public static long clamp(long value, long min, long max) {
-        return Math.max(min, Math.min(max, value));
-    }
+public class MathUtil {
 
     public static List<ItemStack> splitStacks(ItemStack stack, long amount) {
         int count = saturatedCast(amount);

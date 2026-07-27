@@ -2,8 +2,8 @@ package net.ptcrys.breakdown.api.lang
 
 import net.ptcrys.breakdown.api.annotation.NewDataAttributes
 import net.ptcrys.breakdown.api.annotation.TranslationKeyProvider
-import net.ptcrys.breakdown.utilss.StringUtils
-import net.ptcrys.breakdown.utilss.TooltipHelper
+import net.ptcrys.breakdown.utils.StringUtils
+import net.ptcrys.breakdown.utils.TooltipHelper
 
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component

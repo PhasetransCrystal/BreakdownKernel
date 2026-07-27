@@ -1,4 +1,4 @@
-package net.ptcrys.breakdown.utilss;
+package net.ptcrys.breakdown.utils;
 
 import net.minecraft.ChatFormatting;
 

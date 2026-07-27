@@ -12,8 +12,8 @@ import net.ptcrys.breakdown.api.material.stack.MaterialResource;
 import net.ptcrys.breakdown.api.material.stack.MaterialStack;
 import net.ptcrys.breakdown.api.registry.BreaRegistries;
 import net.ptcrys.breakdown.common.data.BreaMaterials;
-import net.ptcrys.breakdown.utils.BreaMath;
 import net.ptcrys.breakdown.utils.FormattingUtil;
+import net.ptcrys.breakdown.utils.MathUtil;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -279,7 +279,7 @@ public class Material implements Comparable<Material>, IMaterialExtension {
                         colorTemp += stack.getMaterial().getMaterialARBG() * stack.amount();
                         divisor += stack.amount();
                     }
-                    colors.put(MaterialIconLayer.BaseLayer, BreaMath.saturatedCast(colorTemp / divisor));
+                    colors.put(MaterialIconLayer.BaseLayer, MathUtil.saturatedCast(colorTemp / divisor));
                 }
             }
         }

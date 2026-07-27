@@ -15,9 +15,9 @@ import net.ptcrys.breakdown.api.machine.feature.IRedstoneSignalMachine;
 import net.ptcrys.breakdown.api.machine.trait.MachineTrait;
 import net.ptcrys.breakdown.common.machine.owner.MachineOwner;
 import net.ptcrys.breakdown.common.machine.owner.PlayerOwner;
-import net.ptcrys.breakdown.utils.RelativeDirection;
-import net.ptcrys.breakdown.utils.RotationState;
 import net.ptcrys.breakdown.utils.TickableSubscription;
+import net.ptcrys.breakdown.utils.enums.RelativeDirection;
+import net.ptcrys.breakdown.utils.enums.RotationState;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

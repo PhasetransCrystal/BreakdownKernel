@@ -1,4 +1,4 @@
-package net.ptcrys.breakdown.utils;
+package net.ptcrys.breakdown.utils.collections;
 
 import com.mojang.datafixers.util.Pair;
 import org.jetbrains.annotations.NotNull;

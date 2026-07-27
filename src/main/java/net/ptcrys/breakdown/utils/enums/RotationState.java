@@ -1,4 +1,4 @@
-package net.ptcrys.breakdown.utils;
+package net.ptcrys.breakdown.utils.enums;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
