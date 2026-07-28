@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.config;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
@@ -8,7 +8,7 @@ import dev.toma.configuration.config.Configurable;
 import dev.toma.configuration.config.format.ConfigFormats;
 import org.jetbrains.annotations.ApiStatus;
 
-@Config(id = BreakdownKernal.MOD_ID)
+@Config(id = BreaLib.Core_ID)
 public class ConfigHolder {
 
     public static ConfigHolder INSTANCE;

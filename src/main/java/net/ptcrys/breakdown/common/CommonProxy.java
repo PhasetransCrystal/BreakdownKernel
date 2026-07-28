@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.common;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.BreaApi;
 import net.ptcrys.breakdown.api.addon.AddonFinder;
 import net.ptcrys.breakdown.api.addon.IBreaAddon;
@@ -29,7 +29,7 @@ import static net.ptcrys.breakdown.common.BreaRegistration.REGISTRATE;
 public class CommonProxy {
 
     public CommonProxy() {
-        var modBus = BreakdownKernal.getModEventBus();
+        var modBus = BreaLib.getModEventBus();
         BreaApi.materialManager = BreaRegistries.MATERIALS;
         ConfigHolder.init();
         ScanningClass.init();
@@ -65,10 +65,10 @@ public class CommonProxy {
         BreaElements.init();
         MaterialRegistry managerInternal = (MaterialRegistry) BreaApi.materialManager;
         managerInternal.unfreezeRegistries();
-        BreakdownKernal.LOGGER.info("Registering Materials");
+        BreaLib.LOGGER.info("Registering Materials");
         BreaMaterials.init();
-        managerInternal.setFallbackMaterial(BreakdownKernal.MOD_ID, BreaMaterials.Actinium);
-        BreakdownKernal.LOGGER.info("Registering addon Materials");
+        managerInternal.setFallbackMaterial(BreaLib.Core_ID, BreaMaterials.Actinium);
+        BreaLib.LOGGER.info("Registering addon Materials");
         BreaApi.postRegisterEvent(BreaRegistries.MATERIALS);
         // Fire Post-Material event, intended for when Materials need to be iterated over in-full before freezing
         // Block entirely new Materials from being added in the Post event

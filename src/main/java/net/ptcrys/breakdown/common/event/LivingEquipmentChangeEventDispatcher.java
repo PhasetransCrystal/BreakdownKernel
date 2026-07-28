@@ -1,13 +1,13 @@
 package net.ptcrys.breakdown.common.event;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.perk.event.StackPerkProviderComponentChangeEvent;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 
-@EventBusSubscriber(modid = BreakdownKernal.MOD_ID)
+@EventBusSubscriber(modid = BreaLib.Core_ID)
 public class LivingEquipmentChangeEventDispatcher {
 
     @SubscribeEvent

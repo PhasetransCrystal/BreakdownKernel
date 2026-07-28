@@ -8,7 +8,7 @@ import net.ptcrys.breakdown.common.BreaRegistration;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@BreaAddon(BreakdownKernal.MOD_ID)
+@BreaAddon(BreaLib.Core_ID)
 public class BreakdownAddon implements IBreaAddon {
 
     @Override

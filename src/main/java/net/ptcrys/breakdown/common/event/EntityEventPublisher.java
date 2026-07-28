@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.common.event;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.event.EntityAttackEvent;
 import net.ptcrys.breakdown.api.event.EntityKillEvent;
 import net.ptcrys.breakdown.api.event.GatherEntityDistributeEvent;
@@ -38,7 +38,7 @@ import java.util.function.Function;
  * <li>自定义事件转发：创建适配事件并转发到多个实体（如攻击、击杀事件）</li>
  * </ul>
  */
-@EventBusSubscriber(modid = BreakdownKernal.MOD_ID)
+@EventBusSubscriber(modid = BreaLib.Core_ID)
 public final class EntityEventPublisher {
 
     private static final Consumer<EntityEvent> DISTRIBUTE_CONSUMER = EventDispatcher::dispatchSelf;

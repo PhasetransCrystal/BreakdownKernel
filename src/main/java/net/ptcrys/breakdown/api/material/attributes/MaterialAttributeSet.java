@@ -1,7 +1,6 @@
 package net.ptcrys.breakdown.api.material.attributes;
 
 import net.ptcrys.breakdown.BreaLib;
-import net.ptcrys.breakdown.BreakdownKernal;
 import net.ptcrys.breakdown.api.material.Material;
 
 import lombok.Getter;
@@ -59,7 +58,7 @@ public class MaterialAttributeSet {
             var dep = depType.constructDefault();
             if (dep.isEmpty()) {
                 if (BreaLib.isProd()) {
-                    BreakdownKernal.LOGGER.warn("Empty dependency found for {}", key.getKey());
+                    BreaLib.LOGGER.warn("Empty dependency found for {}", key.getKey());
                     return;
                 }
                 throw new IllegalStateException("Empty dependency found for " + key.getKey());

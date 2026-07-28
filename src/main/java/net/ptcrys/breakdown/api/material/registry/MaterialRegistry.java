@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.material.registry;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.material.MarkerMaterial;
 import net.ptcrys.breakdown.api.material.Material;
 import net.ptcrys.breakdown.api.registry.BreaRegistry;
@@ -84,7 +84,7 @@ public class MaterialRegistry extends BreaRegistry<Material> implements IMateria
 
     @NotNull
     public Material getDefaultFallback() {
-        return fallbackMaterials.get(BreakdownKernal.MOD_ID);
+        return fallbackMaterials.get(BreaLib.Core_ID);
     }
 
     @NotNull

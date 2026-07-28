@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.common.data;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.BreaApi;
 import net.ptcrys.breakdown.api.addon.AddonFinder;
 import net.ptcrys.breakdown.api.addon.IBreaAddon;
@@ -295,7 +295,7 @@ public class BreaMaterials {
         var mat = BreaApi.materialManager.getMaterial(Identifier.parse(name));
         // mat could be null here due to the registrate grabbing a oldmaterial that isn't in the map
         if (mat == null) {
-            BreakdownKernal.LOGGER.warn("{} is not a known Material", name);
+            BreaLib.LOGGER.warn("{} is not a known Material", name);
             return MarkerMaterial.NULL;
         }
         return mat;

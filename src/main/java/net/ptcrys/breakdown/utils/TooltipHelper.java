@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.utils;
 
-import net.ptcrys.breakdown.BreakdownKernal;
+import net.ptcrys.breakdown.BreaLib;
 import net.ptcrys.breakdown.api.BreaApi;
 
 import net.minecraft.ChatFormatting;
@@ -33,14 +33,14 @@ public class TooltipHelper {
 
     public static BreaFormattingCode createNewCode(int rate, ChatFormatting... codes) {
         if (rate <= 0) {
-            BreakdownKernal.LOGGER.error("Could not create GT Formatting Code with rate {}, must be greater than zero!", rate);
+            BreaLib.LOGGER.error("Could not create GT Formatting Code with rate {}, must be greater than zero!", rate);
             return null;
         } else if (codes != null && codes.length > 1) {
             BreaFormattingCode code = new BreaFormattingCode(rate, codes);
             CODES.add(code);
             return code;
         } else {
-            BreakdownKernal.LOGGER.error("Could not create GT Formatting Code with codes {}, must have length greater than one!", Arrays.toString(codes));
+            BreaLib.LOGGER.error("Could not create GT Formatting Code with codes {}, must have length greater than one!", Arrays.toString(codes));
             return null;
         }
     }
