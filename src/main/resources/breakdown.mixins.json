@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ptcrys.breakdown.mixins",
+  "compatibilityLevel": "JAVA_25",
+  "plugin": "net.ptcrys.breakdown.mixins.BreaMixinPlugin",
+  "mixins": [
+    "BlockPropertiesAccessor",
+    "MappedRegistryAccess",
+    "RegisterEventAccessor",
+    "ResourceKeyAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

@@ -10,13 +10,14 @@ plugins {
 }
 
 allprojects {
-    group = 'net.phasetranscrystal'
+    group = 'net.ptcrys'
 }
 
 def buildDate = new Date()
 def dynamicVersion = "${String.format('%ty', buildDate)}.${buildDate.month + 1}.${buildDate.date}"
-ext.mod_version = dynamicVersion
-version = dynamicVersion
+def isRelease = System.getenv('RELEASE_BUILD') == 'true'
+version = isRelease ? dynamicVersion : "${dynamicVersion}-SNAPSHOT"
+ext.mod_version = version
 group = mod_group_id
 
 tasks.named('wrapper', Wrapper).configure {
@@ -73,22 +74,28 @@ publishing {
         }
     }
     repositories {
-        maven {
-            name = "reposilite"
-            // 根据版本类型选择 URL
-            def releasesRepoUrl = 'https://maven.nilarea.cn/releases'
-            def snapshotsRepoUrl = 'https://maven.nilarea.cn/snapshots'
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            // 认证信息在此配置
-            credentials {
-                username = project.findProperty('reposiliteUsername')
-                password = project.findProperty('reposilitePassword')
+        if (isRelease) {
+            maven {
+                name = "PtcrysReleases"
+                url = uri("https://maven.ptcrys.net/releases")
+                credentials {
+                    username = project.findProperty('ptcrysUsername')
+                    password = project.findProperty('ptcrysPassword')
+                }
+            }
+        } else {
+            maven {
+                name = "PtcrysSnapshots"
+                url = uri("https://maven.ptcrys.net/snapshots")
+                credentials {
+                    username = project.findProperty('ptcrysUsername')
+                    password = project.findProperty('ptcrysPassword')
+                }
             }
         }
     }
 }
 
-// IDEA不再自动下载依赖项的源码/javadoc jar，因此需要显式启用此行为。
 idea {
     module {
         downloadSources = true

@@ -11,7 +11,7 @@ const config = {
     v4: true,
   },
 
-  url: 'https://PhasetransCrystal.github.io',
+  url: 'https://breakdown.ptcrys.net',
   baseUrl: process.env.DOCUSAURUS_BASE_URL ?? '/',
 
   organizationName: 'PhasetransCrystal',
