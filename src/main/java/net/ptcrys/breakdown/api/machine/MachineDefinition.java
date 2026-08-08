@@ -4,6 +4,7 @@ import net.ptcrys.breakdown.api.block.IMachineBlock;
 import net.ptcrys.breakdown.api.blockentity.IMachineBlockEntity;
 import net.ptcrys.breakdown.api.gui.EditableMachineUI;
 import net.ptcrys.breakdown.api.item.MetaMachineItem;
+import net.ptcrys.breakdown.utils.enums.RotationState;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -56,6 +57,9 @@ public class MachineDefinition implements Supplier<IMachineBlock> {
     @Getter
     @Setter
     private IRenderer renderer;
+    @Getter
+    @Setter
+    private RotationState rotationState;
     @Setter
     private VoxelShape shape;
     @Getter

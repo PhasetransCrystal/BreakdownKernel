@@ -1,7 +1,6 @@
 package net.ptcrys.breakdown.api.machine;
 
 import net.ptcrys.breakdown.BreaLib;
-import net.ptcrys.breakdown.api.block.BlockProperties;
 import net.ptcrys.breakdown.api.block.IAppearance;
 import net.ptcrys.breakdown.api.block.IMachineBlock;
 import net.ptcrys.breakdown.api.block.MetaMachineBlock;
@@ -22,8 +21,6 @@ import net.ptcrys.breakdown.utils.enums.RotationState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.server.TickTask;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndLightGetter;
@@ -190,19 +187,6 @@ public class MetaMachine implements IBlockEntityManaged, IToolable, ITickSubscri
         if (!isRemote()) {
             var subscription = new TickableSubscription(runnable);
             waitingToAdd.add(subscription);
-            var blockState = getBlockState();
-            if (!blockState.getValue(BlockProperties.SERVER_TICK)) {
-                if (getLevel() instanceof ServerLevel serverLevel) {
-                    blockState = blockState.setValue(BlockProperties.SERVER_TICK, true);
-                    holder.getSelf().setBlockState(blockState);
-                    serverLevel.getServer().schedule(new TickTask(0, () -> {
-                        if (!isInValid()) {
-                            serverLevel.setBlockAndUpdate(getPos(),
-                                    getBlockState().setValue(BlockProperties.SERVER_TICK, true));
-                        }
-                    }));
-                }
-            }
             return subscription;
         } else if (getLevel() instanceof DummyWorld) {
             var subscription = new TickableSubscription(runnable);
@@ -220,9 +204,6 @@ public class MetaMachine implements IBlockEntityManaged, IToolable, ITickSubscri
 
     public final void serverTick() {
         executeTick();
-        if (serverTicks.isEmpty() && waitingToAdd.isEmpty() && !isInValid()) {
-            getLevel().setBlockAndUpdate(getPos(), getBlockState().setValue(BlockProperties.SERVER_TICK, false));
-        }
     }
 
     public boolean isFirstDummyWorldTick = true;
@@ -328,7 +309,7 @@ public class MetaMachine implements IBlockEntityManaged, IToolable, ITickSubscri
         if (hasFrontFacing() && facing == getFrontFacing()) return false;
         var blockState = getBlockState();
         if (blockState.getBlock() instanceof MetaMachineBlock metaMachineBlock) {
-            return metaMachineBlock.rotationState.test(facing);
+            return metaMachineBlock.getRotationState().test(facing);
         }
         return false;
     }
@@ -344,7 +325,7 @@ public class MetaMachine implements IBlockEntityManaged, IToolable, ITickSubscri
         var blockState = getBlockState();
         if (blockState.getBlock() instanceof MetaMachineBlock metaMachineBlock && isFacingValid(facing)) {
             getLevel().setBlockAndUpdate(getPos(),
-                    blockState.setValue(metaMachineBlock.rotationState.property, facing));
+                    blockState.setValue(metaMachineBlock.getRotationState().property, facing));
         }
 
         if (getLevel() != null && !getLevel().isClientSide()) {

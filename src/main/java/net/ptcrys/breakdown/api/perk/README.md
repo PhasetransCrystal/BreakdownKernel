@@ -7,7 +7,7 @@ Perk 词条系统是一个为实体提供属性修饰和事件监听的机制。
 ## 文件结构
 
 ```
-breacore/api/perk/
+breakdown/api/perk/
 ├── Perk.java                         # Perk 定义类
 ├── PerkStack.java                    # Perk 堆栈（perk + 等级）
 ├── PerkStackingType.java             # 叠加类型枚举
