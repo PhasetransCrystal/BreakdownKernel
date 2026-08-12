@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.common.block.debug;
 
 import net.ptcrys.breakdown.common.blockentity.debug.FluidFurnaceBlockEntity;
-import net.ptcrys.breakdown.common.data.BreaBlockEntities;
+import net.ptcrys.breakdown.data.blockEntities.BdBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -56,6 +56,6 @@ public class FluidFurnaceBlock extends Block implements EntityBlock, BlockUIMenu
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
-        return BreaBlockEntities.FurnaceBlockEntity.create(blockPos, blockState);
+        return BdBlockEntities.FluidFurnace.create(blockPos, blockState);
     }
 }

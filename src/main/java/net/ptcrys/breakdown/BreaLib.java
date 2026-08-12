@@ -1,19 +1,19 @@
 package net.ptcrys.breakdown;
 
 import net.ptcrys.breakdown.utils.FormattingUtil;
+import net.ptcrys.registrylib.RegistryCore;
+import net.ptcrys.registrylib.datagen.ProviderType;
+import net.ptcrys.registrylib.datagen.provider.RegistryLibLangProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Strings;
@@ -26,10 +26,9 @@ public class BreaLib {
     public static final String Core_ID = "breakdown";
     public static final String NAME = "瓦解";
     public static final Logger LOGGER = BreaLib.getLogger("Kernal");
-    @Getter
-    static ModContainer modContainer;
-    @Getter
-    static IEventBus modEventBus;
+    public static final RegistryCore REGISTRY = RegistryCore.create(Core_ID);
+    public static final ProviderType<RegistryLibLangProvider> LangZhCn = REGISTRY.locale("zh_cn");
+
     private static final Identifier TEMPLATE_LOCATION = Identifier.fromNamespaceAndPath(BreaLib.Core_ID, "");
 
     public static Logger getLogger(String subModule) {
