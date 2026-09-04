@@ -2,8 +2,6 @@ package net.ptcrys.breakdown;
 
 import net.ptcrys.breakdown.utils.FormattingUtil;
 import net.ptcrys.registrylib.RegistryCore;
-import net.ptcrys.registrylib.datagen.ProviderType;
-import net.ptcrys.registrylib.datagen.provider.RegistryLibLangProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
@@ -27,7 +25,6 @@ public class BreaLib {
     public static final String NAME = "瓦解";
     public static final Logger LOGGER = BreaLib.getLogger("Kernal");
     public static final RegistryCore REGISTRY = RegistryCore.create(Core_ID);
-    public static final ProviderType<RegistryLibLangProvider> LangZhCn = REGISTRY.locale("zh_cn");
 
     private static final Identifier TEMPLATE_LOCATION = Identifier.fromNamespaceAndPath(BreaLib.Core_ID, "");
 
@@ -103,7 +100,7 @@ public class BreaLib {
         return "NeoForge";
     }
 
-    public static boolean isForge() {
+    public static boolean isNeoForge() {
         return true;
     }
 
