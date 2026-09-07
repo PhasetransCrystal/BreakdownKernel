@@ -1,10 +1,7 @@
 package net.ptcrys.breakdown.api.material;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
-import net.ptcrys.breakdown.api.material.common.ElementCompositionDataType;
-import net.ptcrys.breakdown.api.material.common.MassDataType;
-import net.ptcrys.breakdown.api.material.common.RgbColorDataType;
-import net.ptcrys.breakdown.api.material.common.TemperatureDataType;
+import net.ptcrys.breakdown.api.material.common.*;
 import net.ptcrys.topo.api.api.builtin.MaterialDomainRegistration;
 
 /** 瓦解核心内置材料数据类型(骨架):颜色/质量为渲染文案基础,物理量为工艺基础,元素组成为复合材料基础。 */
@@ -41,6 +38,14 @@ public final class BuiltinBdMaterialDataTypes {
     /** 元素组成:复合材料(合金/化合物)声明自身由哪些元素、各多少构成。 */
     public static final ElementCompositionDataType ELEMENTS = MATERIALS.dataType(
             "elements", new ElementCompositionDataType(MATERIALS.id("elements")));
+
+    /** Declaring tool stats is what makes a material's tools exist (equipment domain driver). */
+    public static final ToolStatsDataType TOOL_STATS = MATERIALS.dataType(
+            "tool_stats", new ToolStatsDataType(MATERIALS.id("tool_stats")));
+
+    /** Declaring armor stats is what makes a material's armor exist (equipment domain driver). */
+    public static final ArmorStatsDataType ARMOR_STATS = MATERIALS.dataType(
+            "armor_stats", new ArmorStatsDataType(MATERIALS.id("armor_stats")));
 
     private BuiltinBdMaterialDataTypes() {}
 

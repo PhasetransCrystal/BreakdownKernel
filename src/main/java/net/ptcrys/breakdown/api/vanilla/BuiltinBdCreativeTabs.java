@@ -19,6 +19,16 @@ public final class BuiltinBdCreativeTabs {
             "Breakdown | Materials",
             Map.of("zh_cn", "瓦解 | 材料"));
 
+    public static final RegistryEntry<CreativeModeTab, CreativeModeTab> MACHINES = BreaLib.REGISTRY.creativeTab(
+            "machines",
+            "Breakdown | machines",
+            Map.of("zh_cn", "瓦解 | 机器"));
+
+    public static final RegistryEntry<CreativeModeTab, CreativeModeTab> EQUIPMENT = BreaLib.REGISTRY.creativeTab(
+            "equipment",
+            "Breakdown | equipments",
+            Map.of("zh_cn", "瓦解 | 装备"));
+
     private BuiltinBdCreativeTabs() {}
 
     /** 触发类加载,使标签在材料注册驱动运行前完成注册。 */

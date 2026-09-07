@@ -1,5 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component;
 
+import net.ptcrys.breakdown.api.machine.BuiltinBdMachineUiLang;
 import net.ptcrys.breakdown.api.machine.common.component.resource.ScalarResource;
 import net.ptcrys.breakdown.api.machine.common.component.resource.ScalarResourcePort;
 import net.ptcrys.topo.api.api.tick.TickHandle;

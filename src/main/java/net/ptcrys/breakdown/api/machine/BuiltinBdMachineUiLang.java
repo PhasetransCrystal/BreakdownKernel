@@ -216,7 +216,7 @@ public final class BuiltinBdMachineUiLang {
     public static final LangKey UI_MULTIBLOCK_DIAGNOSE_NEED = LANG.key("ui", "multiblock.diagnose.need", "Need %s @ %s", "需要 %s @ %s");
     public static final LangKey UI_MULTIBLOCK_DIAGNOSE_NEED_FOUND = LANG.key("ui", "multiblock.diagnose.need_found", "Need %s — found %s @ %s", "需要 %s — 找到 %s @ %s");
 
-    // Property-display aspect texts (BuiltinTopoPropertyDisplays declares the same keys with
+    // Property-display aspect texts (BuiltinBdPropertyDisplays declares the same keys with
     // inline English fallbacks; these entries bake them into the generated en_us lang).
     public static final LangKey UI_MULTIBLOCK_STATE_FACING = LANG.key("ui", "multiblock.state.facing", "Facing", "朝向");
     public static final LangKey UI_MULTIBLOCK_STATE_FACING_NORTH = LANG.key("ui", "multiblock.state.facing.north", "North", "北");

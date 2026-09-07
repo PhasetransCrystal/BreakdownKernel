@@ -1,8 +1,12 @@
 package net.ptcrys.breakdown.api;
 
 import net.ptcrys.breakdown.BreaLib;
+import net.ptcrys.breakdown.api.equipment.BuiltinBdEquipment;
+import net.ptcrys.breakdown.api.equipment.BuiltinBdEquipmentLang;
 import net.ptcrys.breakdown.api.machine.*;
 import net.ptcrys.breakdown.api.machine.common.component.resource.*;
+import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdPartRoles;
+import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdPropertyDisplays;
 import net.ptcrys.breakdown.api.material.*;
 import net.ptcrys.breakdown.api.ore.*;
 import net.ptcrys.breakdown.api.ore.bindings.VanillaOreFeatureBridge;
@@ -79,9 +83,6 @@ public class BreakdownApiPlugin implements TopoPlugin {
     }
 
     @Override
-    public void registerMaterials(MaterialDomainRegistration material) {}
-
-    @Override
     public void registerMaterialCreativeTabs(MaterialDomainRegistration material) {
         BuiltinBdCreativeTabs.init();
     }
@@ -114,26 +115,6 @@ public class BreakdownApiPlugin implements TopoPlugin {
         ScalarResourcePortMetadata.init();
     }
 
-    @Override
-    public void registerMachines(MachineDomainRegistration machine) {
-        // Catalog order: casings → parts → controllers → ME → single-block → gametest fixtures.
-        BuiltinBdCasingBlocks.init();
-        BuiltinBdPartMachines.init();
-        BuiltinBdControllerMachines.init();
-        BuiltinBdMeMachines.init();
-        BuiltinBdMachines.init();
-    }
-
-    @Override
-    public void registerMachineFollowUps(MachineDomainRegistration machine) {
-        // Machine workbench + process recipes after catalogs freeze (see code-style §3.11).
-        BuiltinBdMachineCraftingRecipes.initRecipes();
-        // Pipes remain product tables on the official plugin until a dedicated pipe domain exists.
-        BuiltinBdPipeDistributionStrategies.init();
-        BuiltinBdPipes.init();
-        BuiltinBdPipeLang.init();
-    }
-
     // ── ore ──────────────────────────────────────────────────────────────────
 
     @Override
@@ -164,7 +145,6 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerLang(LangDomainRegistration lang) {
-        BuiltinBdPipeLang.init();
         BuiltinBdMachineUiLang.init();
         BuiltinBdMachineFeedbackLang.init();
         BuiltinBdEquipmentLang.init();
