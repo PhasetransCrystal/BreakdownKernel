@@ -181,7 +181,7 @@ public final class BuiltinBdMachineUiLang {
 
     // Jade config toggle for the machine overlay providers (UID topo:machine).
     // Jade asserts this key exists in dev; without it the client crashes on the first screen.
-    public static final LangKey CONFIG_JADE_PLUGIN_ODYSSEYINDUSTRIAL_MACHINE = LANG.absolute("config.jade.plugin_topo.machine", "Machine", "机器");
+    public static final LangKey CONFIG_JADE_PLUGIN_ODYSSEYINDUSTRIAL_MACHINE = LANG.absolute("config.jade.plugin_breakdown.machine", "Machine", "机器");
 
     // Multiblock preview scene toolbar + BOM dock (JEI category and the structure page).
     public static final LangKey UI_MULTIBLOCK_PREVIEW_LAYER = LANG.key("ui", "multiblock.preview.layer", "Layer view (click to slice)", "分层视图（点击以切片）");

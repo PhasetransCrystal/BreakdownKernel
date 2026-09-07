@@ -10,6 +10,8 @@ import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdPropertyDisplays;
 import net.ptcrys.breakdown.api.material.*;
 import net.ptcrys.breakdown.api.ore.*;
 import net.ptcrys.breakdown.api.ore.bindings.VanillaOreFeatureBridge;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeDistributionStrategies;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeLang;
 import net.ptcrys.breakdown.api.recipe.*;
 import net.ptcrys.breakdown.api.vanilla.*;
 import net.ptcrys.registrylib.RegistryCore;
@@ -89,7 +91,8 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerMaterialFollowUps(MaterialDomainRegistration material) {
-        // Production-line recipes moved to registerRecipes (recipe domain).
+        // Pipes remain product tables on the official plugin until a dedicated pipe domain exists.
+        BuiltinBdPipeDistributionStrategies.init();
     }
 
     // ── equipment / tools ────────────────────────────────────────────────────
@@ -145,6 +148,7 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerLang(LangDomainRegistration lang) {
+        BuiltinBdPipeLang.init();
         BuiltinBdMachineUiLang.init();
         BuiltinBdMachineFeedbackLang.init();
         BuiltinBdEquipmentLang.init();

@@ -36,6 +36,117 @@ public final class BuiltinBdEquipment {
     public static final TagKey<Item> WIRE_CUTTERS = TagHelper.item("tools/wire_cutter");
 
     public static final EquipmentDomainRegistration EQUIPMENT = BreakdownApiPlugin.INSTANCE.equipment();
+
+    // 原版工具
+
+    public static final Equipment PICKAXE = EQUIPMENT.kind("pickaxe",
+            ToolEquipment.builder()
+                    .registryPath("%s_pickaxe")
+                    .displayName("%s Pickaxe", "%s镐")
+                    .statsApplier((props, tm) -> props.pickaxe(tm, 1.0f, -2.8f))
+                    .tag(ItemTags.PICKAXES)
+                    .render(TintedTemplate.handheldItem(
+                            flat("item/equipment/handle"),
+                            tinted(PRIMARY_COLOR, "item/equipment/pickaxe"),
+                            flat("item/equipment/pickaxe_overlay")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment AXE = EQUIPMENT.kind("axe",
+            ToolEquipment.builder()
+                    .registryPath("%s_axe")
+                    .displayName("%s Axe", "%s斧")
+                    .statsApplier((props, tm) -> props.axe(tm, 6.0f, -3.1f))
+                    .tag(ItemTags.AXES)
+                    .render(TintedTemplate.handheldItem(
+                            flat("item/equipment/handle"),
+                            tinted(PRIMARY_COLOR, "item/equipment/axe"),
+                            flat("item/equipment/axe_overlay")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment SHOVEL = EQUIPMENT.kind("shovel",
+            ToolEquipment.builder()
+                    .registryPath("%s_shovel")
+                    .displayName("%s Shovel", "%s铲")
+                    .statsApplier((props, tm) -> props.shovel(tm, 1.5f, -3.0f))
+                    .tag(ItemTags.SHOVELS)
+                    .render(TintedTemplate.handheldItem(
+                            flat("item/equipment/handle"),
+                            tinted(PRIMARY_COLOR, "item/equipment/shovel"),
+                            flat("item/equipment/shovel_overlay")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment SWORD = EQUIPMENT.kind("sword",
+            ToolEquipment.builder()
+                    .registryPath("%s_sword")
+                    .displayName("%s Sword", "%s剑")
+                    .statsApplier((props, tm) -> props.sword(tm, 3.0f, -2.4f))
+                    .tag(ItemTags.SWORDS)
+                    .recipeCategory(RecipeCategory.COMBAT)
+                    .render(TintedTemplate.handheldItem(
+                            flat("item/equipment/sword_base"),
+                            tinted(PRIMARY_COLOR, "item/equipment/sword"),
+                            flat("item/equipment/sword_overlay")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment HOE = EQUIPMENT.kind("hoe",
+            ToolEquipment.builder()
+                    .registryPath("%s_hoe")
+                    .displayName("%s Hoe", "%s锄")
+                    .statsApplier((props, tm) -> props.hoe(tm, -2.0f, -1.0f))
+                    .tag(ItemTags.HOES)
+                    .render(TintedTemplate.handheldItem(
+                            flat("item/equipment/handle"),
+                            tinted(PRIMARY_COLOR, "item/equipment/hoe"),
+                            flat("item/equipment/hoe_overlay")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+    // 原版装甲
+
+    public static final Equipment HELMET = EQUIPMENT.kind("helmet",
+            ArmorEquipment.builder()
+                    .registryPath("%s_helmet")
+                    .displayName("%s Helmet", "%s头盔")
+                    .armorType(ArmorType.HELMET)
+                    .tag(ItemTags.HEAD_ARMOR)
+                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/helmet")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment CHESTPLATE = EQUIPMENT.kind("chestplate",
+            ArmorEquipment.builder()
+                    .registryPath("%s_chestplate")
+                    .displayName("%s Chestplate", "%s胸甲")
+                    .armorType(ArmorType.CHESTPLATE)
+                    .tag(ItemTags.CHEST_ARMOR)
+                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/chestplate")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment LEGGINGS = EQUIPMENT.kind("leggings",
+            ArmorEquipment.builder()
+                    .registryPath("%s_leggings")
+                    .displayName("%s Leggings", "%s护腿")
+                    .armorType(ArmorType.LEGGINGS)
+                    .tag(ItemTags.LEG_ARMOR)
+                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/leggings")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    public static final Equipment BOOTS = EQUIPMENT.kind("boots",
+            ArmorEquipment.builder()
+                    .registryPath("%s_boots")
+                    .displayName("%s Boots", "%s靴子")
+                    .armorType(ArmorType.BOOTS)
+                    .tag(ItemTags.FOOT_ARMOR)
+                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/boots")))
+                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .build());
+
+    // 模组工具
     /**
      * Cold-start forge hammer: workbench crafting remainder drains durability; assembly is ingot +
      * stick. Tag {@link #FORGE_HAMMERS} is required by manual forge-hammer post-processor recipes.
@@ -146,112 +257,6 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle_hammer"),
                             tinted(PRIMARY_COLOR, "item/equipment/regulator"),
                             flat("item/equipment/regulator_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment PICKAXE = EQUIPMENT.kind("pickaxe",
-            ToolEquipment.builder()
-                    .registryPath("%s_pickaxe")
-                    .displayName("%s Pickaxe", "%s镐")
-                    .statsApplier((props, tm) -> props.pickaxe(tm, 1.0f, -2.8f))
-                    .tag(ItemTags.PICKAXES)
-                    .render(TintedTemplate.handheldItem(
-                            flat("item/equipment/handle"),
-                            tinted(PRIMARY_COLOR, "item/equipment/pickaxe"),
-                            flat("item/equipment/pickaxe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment AXE = EQUIPMENT.kind("axe",
-            ToolEquipment.builder()
-                    .registryPath("%s_axe")
-                    .displayName("%s Axe", "%s斧")
-                    .statsApplier((props, tm) -> props.axe(tm, 6.0f, -3.1f))
-                    .tag(ItemTags.AXES)
-                    .render(TintedTemplate.handheldItem(
-                            flat("item/equipment/handle"),
-                            tinted(PRIMARY_COLOR, "item/equipment/axe"),
-                            flat("item/equipment/axe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment SHOVEL = EQUIPMENT.kind("shovel",
-            ToolEquipment.builder()
-                    .registryPath("%s_shovel")
-                    .displayName("%s Shovel", "%s铲")
-                    .statsApplier((props, tm) -> props.shovel(tm, 1.5f, -3.0f))
-                    .tag(ItemTags.SHOVELS)
-                    .render(TintedTemplate.handheldItem(
-                            flat("item/equipment/handle"),
-                            tinted(PRIMARY_COLOR, "item/equipment/shovel"),
-                            flat("item/equipment/shovel_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment SWORD = EQUIPMENT.kind("sword",
-            ToolEquipment.builder()
-                    .registryPath("%s_sword")
-                    .displayName("%s Sword", "%s剑")
-                    .statsApplier((props, tm) -> props.sword(tm, 3.0f, -2.4f))
-                    .tag(ItemTags.SWORDS)
-                    .recipeCategory(RecipeCategory.COMBAT)
-                    .render(TintedTemplate.handheldItem(
-                            flat("item/equipment/sword_base"),
-                            tinted(PRIMARY_COLOR, "item/equipment/sword"),
-                            flat("item/equipment/sword_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment HOE = EQUIPMENT.kind("hoe",
-            ToolEquipment.builder()
-                    .registryPath("%s_hoe")
-                    .displayName("%s Hoe", "%s锄")
-                    .statsApplier((props, tm) -> props.hoe(tm, -2.0f, -1.0f))
-                    .tag(ItemTags.HOES)
-                    .render(TintedTemplate.handheldItem(
-                            flat("item/equipment/handle"),
-                            tinted(PRIMARY_COLOR, "item/equipment/hoe"),
-                            flat("item/equipment/hoe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment HELMET = EQUIPMENT.kind("helmet",
-            ArmorEquipment.builder()
-                    .registryPath("%s_helmet")
-                    .displayName("%s Helmet", "%s头盔")
-                    .armorType(ArmorType.HELMET)
-                    .tag(ItemTags.HEAD_ARMOR)
-                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/helmet")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment CHESTPLATE = EQUIPMENT.kind("chestplate",
-            ArmorEquipment.builder()
-                    .registryPath("%s_chestplate")
-                    .displayName("%s Chestplate", "%s胸甲")
-                    .armorType(ArmorType.CHESTPLATE)
-                    .tag(ItemTags.CHEST_ARMOR)
-                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/chestplate")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment LEGGINGS = EQUIPMENT.kind("leggings",
-            ArmorEquipment.builder()
-                    .registryPath("%s_leggings")
-                    .displayName("%s Leggings", "%s护腿")
-                    .armorType(ArmorType.LEGGINGS)
-                    .tag(ItemTags.LEG_ARMOR)
-                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/leggings")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
-                    .build());
-
-    public static final Equipment BOOTS = EQUIPMENT.kind("boots",
-            ArmorEquipment.builder()
-                    .registryPath("%s_boots")
-                    .displayName("%s Boots", "%s靴子")
-                    .armorType(ArmorType.BOOTS)
-                    .tag(ItemTags.FOOT_ARMOR)
-                    .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/boots")))
                     .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
                     .build());
 

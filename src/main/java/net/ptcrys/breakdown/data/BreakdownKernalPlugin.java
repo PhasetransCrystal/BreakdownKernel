@@ -1,7 +1,6 @@
 package net.ptcrys.breakdown.data;
 
 import net.ptcrys.breakdown.BreaLib;
-import net.ptcrys.breakdown.data.material.BdElements;
 import net.ptcrys.registrylib.RegistryCore;
 import net.ptcrys.topo.api.api.builtin.*;
 import net.ptcrys.topo.api.api.plugin.TopoPlugin;
@@ -36,11 +35,5 @@ public class BreakdownKernalPlugin implements TopoPlugin {
     @Override
     public RegistryCore registry() {
         return BreaLib.REGISTRY;
-    }
-
-    @Override
-    public void registerMaterials(MaterialDomainRegistration material) {
-        // 118 种元素单质材料(组成经 ELEMENTS 数据类型声明);复合材料由内容插件在此追加。
-        BdElements.init();
     }
 }
