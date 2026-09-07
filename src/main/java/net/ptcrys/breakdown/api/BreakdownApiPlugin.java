@@ -58,19 +58,12 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerRecipeFoundation(RecipeDomainRegistration recipe) {
-        // Pairs machine resource types with recipe capabilities (ITEM/FLUID/ENERGY/…).
         BuiltinBdApiResourceIntegrations.init();
     }
 
     @Override
     public void registerRecipeTypes(RecipeDomainRegistration recipe) {
-        // BuiltinBdProductionLines.init();
         BuiltinBdApiRecipeTypes.init();
-    }
-
-    @Override
-    public void registerRecipes(RecipeDomainRegistration recipe) {
-        // BuiltinBdProductionLineRecipes.init();
     }
 
     // ── material ─────────────────────────────────────────────────────────────
@@ -136,15 +129,12 @@ public class BreakdownApiPlugin implements TopoPlugin {
     @Override
     public void registerOreVeins(OreDomainRegistration ore) {
         BuiltinBdApiOreEnvironments.init();
-        // BuiltinBdOreVeins.init();
     }
 
     @Override
     public void registerOreDatagen(OreDomainRegistration ore) {
         VanillaOreFeatureBridge.registerDatagen(ore.registry());
     }
-
-    // ── lang (product catalogs; API keys live on OfficialTopoAPIPlugin) ─────────
 
     @Override
     public void registerLang(LangDomainRegistration lang) {

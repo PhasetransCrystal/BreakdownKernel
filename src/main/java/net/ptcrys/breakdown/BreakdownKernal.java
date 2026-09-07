@@ -8,9 +8,12 @@ import net.ptcrys.breakdown.config.ConfigHolder;
 import net.ptcrys.breakdown.data.BreakdownKernalPlugin;
 import net.ptcrys.topo.api.api.plugin.TopoPlugins;
 
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
  * 瓦解核心入口:注册两个插件——
@@ -24,9 +27,13 @@ public class BreakdownKernal {
         ConfigHolder.init();
         TopoPlugins.register(BreakdownApiPlugin.INSTANCE);
         TopoPlugins.register(BreakdownKernalPlugin.INSTANCE);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onFMLCommonSetup(FMLCommonSetupEvent event) {
         // 必须先于 PipeSpecTooltips:它的 setup 任务会 freeze ItemTooltipUis,enqueueWork 按提交序执行。
-        EquipmentRuntimeBindings.register(modEventBus);
-        MaterialRuntimeBindings.register(modEventBus);
-        MachineRuntimeBindings.register(modEventBus);
+        EquipmentRuntimeBindings.register(event);
+        MaterialRuntimeBindings.register(event);
+        MachineRuntimeBindings.register(event);
     }
 }
