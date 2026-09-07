@@ -60,8 +60,8 @@ object MachineRecipeModifierTooltips {
         }
         val rows = mutableListOf(
             Row(
-                BuiltinBdMachineUiLang.TOOLTIP_MACHINE_RECIPE_MODIFIERS.getComponent(),
-                BuiltinBdMachineUiLang.TOOLTIP_MACHINE_MODIFIER_COUNT.getComponent(displays.size),
+                BuiltinBdApiMachineUiLang.TOOLTIP_MACHINE_RECIPE_MODIFIERS.getComponent(),
+                BuiltinBdApiMachineUiLang.TOOLTIP_MACHINE_MODIFIER_COUNT.getComponent(displays.size),
                 false,
             ),
         )

@@ -34,7 +34,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-public final class BuiltinBdResourceIntegrations {
+public final class BuiltinBdApiResourceIntegrations {
 
     private static final MachineDomainRegistration MACHINE = BreakdownApiPlugin.INSTANCE.machine();
     private static final RecipeDomainRegistration RECIPE = BreakdownApiPlugin.INSTANCE.recipe();
@@ -42,23 +42,23 @@ public final class BuiltinBdResourceIntegrations {
     /** 物品:SLOTTED 槽位形态,NeoForge 物品方块能力。 */
     public static final BdResourceIntegration<ItemResource, ItemRecipeCapability> ITEM = item(
             "item",
-            () -> BuiltinBdMachineUiIcons.chest(0xFFC9A26B),
+            () -> BuiltinBdApiMachineUiIcons.chest(0xFFC9A26B),
             "Item",
             "物品");
 
     /** 流体:SLOTTED 槽位形态,NeoForge 流体方块能力。 */
     public static final BdResourceIntegration<FluidResource, FluidRecipeCapability> FLUID = fluid(
             "fluid",
-            () -> BuiltinBdMachineUiIcons.drop(0xFF4FA3E8),
+            () -> BuiltinBdApiMachineUiIcons.drop(0xFF4FA3E8),
             "Fluid",
             "流体");
 
     /** 能量:IMPLICIT 资源条形态;燃烧类发电机的产物,电力消耗机器的口粮。被破坏走电容放电(密度 1)。 */
     public static final BdResourceIntegration<ScalarResource, ScalarRecipeCapability> ENERGY = scalar(
             "energy", "Energy", "能量",
-            0xFFE8C547, BuiltinBdMachineUiIcons::bolt, ScalarDestroyedBehaviors.energyDischarge(1));
+            0xFFE8C547, BuiltinBdApiMachineUiIcons::bolt, ScalarDestroyedBehaviors.energyDischarge(1));
 
-    private BuiltinBdResourceIntegrations() {}
+    private BuiltinBdApiResourceIntegrations() {}
 
     public static void init() {}
 

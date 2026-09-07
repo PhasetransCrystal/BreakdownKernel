@@ -4,7 +4,7 @@ import net.ptcrys.breakdown.api.BreakdownApiPlugin;
 import net.ptcrys.topo.api.api.builtin.LangDomainRegistration;
 import net.ptcrys.topo.api.api.lang.LangKey;
 
-public class BuiltinBdOreLang {
+public class BuiltinBdApiOreLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -34,7 +34,7 @@ public class BuiltinBdOreLang {
     public static final LangKey SIZE_RADIUS = LANG.key("jei", "ore_vein.size.radius", "r=%s", "r=%s");
     public static final LangKey SIZE_CLUSTER = LANG.key("jei", "ore_vein.size.cluster", "~%s", "~%s");
 
-    private BuiltinBdOreLang() {}
+    private BuiltinBdApiOreLang() {}
 
     public static void init() {}
 }

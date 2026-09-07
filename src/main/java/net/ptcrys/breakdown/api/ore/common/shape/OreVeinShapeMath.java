@@ -1,10 +1,10 @@
 package net.ptcrys.breakdown.api.ore.common.shape;
 
-import net.ptcrys.breakdown.api.ore.BuiltinBdOreShapes;
+import net.ptcrys.breakdown.api.ore.BuiltinBdApiOreShapes;
 
 /**
  * Containment math for built-in vein shapes. Registered as method references from
- * {@link BuiltinBdOreShapes}; add-ons may reuse or contribute their own.
+ * {@link BuiltinBdApiOreShapes}; add-ons may reuse or contribute their own.
  */
 public final class OreVeinShapeMath {
 

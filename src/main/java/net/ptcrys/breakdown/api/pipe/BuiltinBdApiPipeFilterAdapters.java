@@ -33,12 +33,12 @@ import java.util.function.Predicate;
  * test is one identity-set lookup plus a short holder tag loop, allocation-free. Unresolvable id
  * entries never match but stay listed (the player sees and removes them).
  */
-public final class BuiltinBdPipeFilterAdapters {
+public final class BuiltinBdApiPipeFilterAdapters {
 
     public static final PipeFilterAdapter<ItemResource> ITEM = new ItemAdapter();
     public static final PipeFilterAdapter<FluidResource> FLUID = new FluidAdapter();
 
-    private BuiltinBdPipeFilterAdapters() {}
+    private BuiltinBdApiPipeFilterAdapters() {}
 
     private static final class ItemAdapter implements PipeFilterAdapter<ItemResource> {
 

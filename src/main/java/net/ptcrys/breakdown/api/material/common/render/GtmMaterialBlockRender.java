@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import static net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes.*;
+import static net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes.*;
 
 /** Reuses GTM material block textures with generated two-layer tinted block models. */
 public final class GtmMaterialBlockRender implements MaterialBlockRender {

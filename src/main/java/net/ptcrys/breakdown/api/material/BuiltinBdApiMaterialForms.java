@@ -6,15 +6,15 @@ import net.ptcrys.breakdown.api.material.common.form.FluidForm;
 import net.ptcrys.breakdown.api.material.common.form.ItemForm;
 import net.ptcrys.breakdown.api.material.common.render.GtmMaterialBlockRender;
 import net.ptcrys.breakdown.api.material.common.render.TintedTemplate;
-import net.ptcrys.breakdown.api.vanilla.BuiltinBdCreativeTabs;
+import net.ptcrys.breakdown.api.vanilla.BuiltinBdApiCreativeTabs;
 import net.ptcrys.topo.api.api.builtin.MaterialDomainRegistration;
 import net.ptcrys.topo.api.material.form.FormDataUse;
 import net.ptcrys.topo.api.material.form.MaterialForm;
 
 import net.minecraft.world.level.block.Blocks;
 
-import static net.ptcrys.breakdown.api.material.BuiltinBdFormDataTypes.*;
-import static net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes.*;
+import static net.ptcrys.breakdown.api.material.BuiltinBdApiFormDataTypes.*;
+import static net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes.*;
 import static net.ptcrys.breakdown.api.material.common.render.TintedTemplate.*;
 
 /**
@@ -22,7 +22,7 @@ import static net.ptcrys.breakdown.api.material.common.render.TintedTemplate.*;
  * 矿石 / 粉 / 锭 / 粒 / 块 / 宝石。工业自定义构件(板/杆/齿轮等)不在此注册,
  * 由内容插件按需自定义。极简渲染为单层着色。
  */
-public final class BuiltinBdMaterialForms {
+public final class BuiltinBdApiMaterialForms {
 
     private static final MaterialDomainRegistration MATERIALS = BreakdownApiPlugin.INSTANCE.material();
 
@@ -34,7 +34,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("%s_ore")
                     .displayName("%s Ore", "%s矿石")
                     .commonTag("ores")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .initialProperties(Blocks.STONE)
                     .render(TintedTemplate.block(
                             opaque(flat("block/material/ore_host_stone")),
@@ -48,7 +48,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("deepslate_%s_ore")
                     .displayName("Deepslate %s Ore", "深板岩%s矿石")
                     .commonTag("ores")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .initialProperties(Blocks.DEEPSLATE)
                     .render(TintedTemplate.block(
                             opaque(flat("block/material/ore_host_deepslate")),
@@ -62,7 +62,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("netherrack_%s_ore")
                     .displayName("Netherrack %s Ore", "地狱岩%s矿石")
                     .commonTag("ores")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .initialProperties(Blocks.NETHERRACK)
                     .render(TintedTemplate.block(
                             opaque(flat("block/material/ore_host_netherrack")),
@@ -90,7 +90,7 @@ public final class BuiltinBdMaterialForms {
                     .displayName("%s Ingot", "%s锭")
                     .commonTag("ingots")
                     .data(AMOUNT.ingots(1))
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .render(TintedTemplate.item(
                             tinted(PRIMARY_COLOR, "item/material/ingot"),
                             tinted(SECONDARY_COLOR, "item/material/ingot_secondary"),
@@ -105,7 +105,7 @@ public final class BuiltinBdMaterialForms {
                     .displayName("%s Nugget", "%s粒")
                     .commonTag("nuggets")
                     .data(AMOUNT.ingotFraction(9))
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .render(TintedTemplate.item(
                             tinted(PRIMARY_COLOR, "item/material/nugget"),
                             tinted(SECONDARY_COLOR, "item/material/nugget_secondary"),
@@ -120,7 +120,7 @@ public final class BuiltinBdMaterialForms {
                     .displayName("Block of %s", "%s块")
                     .commonTag("storage_blocks")
                     .data(AMOUNT.ingots(9))
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .initialProperties(Blocks.IRON_BLOCK)
                     .render(new GtmMaterialBlockRender())
                     .build())
@@ -134,7 +134,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("%s_gem")
                     .displayName("%s Gem", "%s宝石")
                     .commonTag("gems")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .render(TintedTemplate.item(
                             tinted(PRIMARY_COLOR, "item/material/gem"),
                             tinted(SECONDARY_COLOR, "item/material/gem_secondary"),
@@ -151,7 +151,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("%s_solution")
                     .displayName("%s Solution", "%s溶液")
                     .commonTag("solutions")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .texture("block/material/fluid")
                     .tint(PRIMARY_COLOR)
                     .properties(properties -> properties
@@ -174,7 +174,7 @@ public final class BuiltinBdMaterialForms {
                     .registryPath("%s_gas")
                     .displayName("%s Gas", "%s气体")
                     .commonTag("gases")
-                    .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                     .texture("block/material/fluid")
                     .tint(PRIMARY_COLOR)
                     .properties(properties -> properties
@@ -196,7 +196,7 @@ public final class BuiltinBdMaterialForms {
                     .build())
             .build();
 
-    private BuiltinBdMaterialForms() {}
+    private BuiltinBdApiMaterialForms() {}
 
     public static void init() {}
 
@@ -214,7 +214,7 @@ public final class BuiltinBdMaterialForms {
                         .registryPath(registryPath)
                         .displayName(displayNameEn, displayNameCn)
                         .commonTag(id + "s")
-                        .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                        .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                         .render(TintedTemplate.item(
                                 tinted(PRIMARY_COLOR, primaryTexture),
                                 tinted(SECONDARY_COLOR, secondaryTexture)))
@@ -244,7 +244,7 @@ public final class BuiltinBdMaterialForms {
                         .displayName(displayNameEn, displayNameCn)
                         .commonTag(commonTag)
                         .data(amount)
-                        .creativeTab(BuiltinBdCreativeTabs.MATERIALS.getKey())
+                        .creativeTab(BuiltinBdApiCreativeTabs.MATERIALS.getKey())
                         .render(TintedTemplate.item(layers))
                         .build())
                 .build();

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.equipment.common;
 
-import net.ptcrys.breakdown.api.material.BuiltinBdFormDataTypes;
+import net.ptcrys.breakdown.api.material.BuiltinBdApiFormDataTypes;
 import net.ptcrys.topo.api.material.form.MaterialForm;
 
 import java.util.Collection;
@@ -52,7 +52,7 @@ public final class EquipmentPattern {
                 }
                 used.add(symbol);
                 worth = Math.addExact(worth,
-                        form.strategy().requireData(BuiltinBdFormDataTypes.AMOUNT));
+                        form.strategy().requireData(BuiltinBdApiFormDataTypes.AMOUNT));
             }
         }
         for (Character symbol : parts.keySet()) {

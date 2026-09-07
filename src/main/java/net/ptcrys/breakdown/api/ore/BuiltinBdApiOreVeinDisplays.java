@@ -10,14 +10,14 @@ import net.ptcrys.topo.api.ore.display.OreVeinDisplay;
  * JEI display plugs keyed by placement-mode id. Registered after modes so handles resolve; bootstrap
  * requires every mode has a display.
  */
-public final class BuiltinBdOreVeinDisplays {
+public final class BuiltinBdApiOreVeinDisplays {
 
     private static final OreDomainRegistration ORE = BreakdownApiPlugin.INSTANCE.ore();
 
-    public static final OreVeinDisplay FEATURE = ORE.display(BuiltinBdOreModes.FEATURE.id(), FeatureVeinDisplay.INSTANCE);
-    public static final OreVeinDisplay GRID = ORE.display(BuiltinBdOreModes.GRID.id(), GridVeinDisplay.INSTANCE);
+    public static final OreVeinDisplay FEATURE = ORE.display(BuiltinBdApiOreModes.FEATURE.id(), FeatureVeinDisplay.INSTANCE);
+    public static final OreVeinDisplay GRID = ORE.display(BuiltinBdApiOreModes.GRID.id(), GridVeinDisplay.INSTANCE);
 
-    private BuiltinBdOreVeinDisplays() {}
+    private BuiltinBdApiOreVeinDisplays() {}
 
     public static void init() {}
 }

@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.api.recipe.craft;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.breakdown.api.recipe.common.ItemRecipeCapability;
 import net.ptcrys.breakdown.api.recipe.common.ScalarRecipeCapability;
 import net.ptcrys.topo.api.api.builtin.RecipeDomainRegistration;
@@ -127,8 +127,8 @@ public final class CookingTopoRecipeType extends TopoRecipeType<TopoRecipe> {
             if (input == null) {
                 return null;
             }
-            ItemRecipeCapability items = BuiltinBdResourceIntegrations.ITEM.recipeCapability();
-            ScalarRecipeCapability energy = BuiltinBdResourceIntegrations.ENERGY.recipeCapability();
+            ItemRecipeCapability items = BuiltinBdApiResourceIntegrations.ITEM.recipeCapability();
+            ScalarRecipeCapability energy = BuiltinBdApiResourceIntegrations.ENERGY.recipeCapability();
             return machineType.createRecipe(
                     new TopoRecipe.InputEntry<?>[] { new TopoRecipe.InputEntry<>(items, List.of(input)) },
                     new TopoRecipe.OutputEntry<?>[] {

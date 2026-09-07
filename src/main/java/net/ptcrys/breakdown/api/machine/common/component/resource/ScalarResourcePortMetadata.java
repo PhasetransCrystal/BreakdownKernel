@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations.BdResourceIntegration;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations.BdResourceIntegration;
 import net.ptcrys.breakdown.api.recipe.common.ScalarRecipeCapability;
 import net.ptcrys.topo.api.machine.component.AttachmentType;
 import net.ptcrys.topo.api.machine.resource.MachineResourceType;

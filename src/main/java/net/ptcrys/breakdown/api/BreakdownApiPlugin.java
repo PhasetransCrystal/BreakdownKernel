@@ -1,17 +1,17 @@
 package net.ptcrys.breakdown.api;
 
 import net.ptcrys.breakdown.BreaLib;
-import net.ptcrys.breakdown.api.equipment.BuiltinBdEquipment;
-import net.ptcrys.breakdown.api.equipment.BuiltinBdEquipmentLang;
+import net.ptcrys.breakdown.api.equipment.BuiltinBdApiEquipment;
+import net.ptcrys.breakdown.api.equipment.BuiltinBdApiEquipmentLang;
 import net.ptcrys.breakdown.api.machine.*;
 import net.ptcrys.breakdown.api.machine.common.component.resource.*;
-import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdPartRoles;
-import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdPropertyDisplays;
+import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdApiPartRoles;
+import net.ptcrys.breakdown.api.machine.multiblock.BuiltinBdApiPropertyDisplays;
 import net.ptcrys.breakdown.api.material.*;
 import net.ptcrys.breakdown.api.ore.*;
 import net.ptcrys.breakdown.api.ore.bindings.VanillaOreFeatureBridge;
-import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeDistributionStrategies;
-import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeLang;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeDistributionStrategies;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeLang;
 import net.ptcrys.breakdown.api.recipe.*;
 import net.ptcrys.breakdown.api.vanilla.*;
 import net.ptcrys.registrylib.RegistryCore;
@@ -59,13 +59,13 @@ public class BreakdownApiPlugin implements TopoPlugin {
     @Override
     public void registerRecipeFoundation(RecipeDomainRegistration recipe) {
         // Pairs machine resource types with recipe capabilities (ITEM/FLUID/ENERGY/…).
-        BuiltinBdResourceIntegrations.init();
+        BuiltinBdApiResourceIntegrations.init();
     }
 
     @Override
     public void registerRecipeTypes(RecipeDomainRegistration recipe) {
         // BuiltinBdProductionLines.init();
-        BuiltinBdRecipeTypes.init();
+        BuiltinBdApiRecipeTypes.init();
     }
 
     @Override
@@ -77,42 +77,42 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerMaterialFoundation(MaterialDomainRegistration material) {
-        BuiltinBdMaterialDataTypes.init();
-        BuiltinBdFormDataTypes.init();
-        BuiltinBdCreativeTabs.init();
-        BuiltinBdMaterialForms.init();
-        BuiltinBdMaterialFormLang.init();
+        BuiltinBdApiMaterialDataTypes.init();
+        BuiltinBdApiFormDataTypes.init();
+        BuiltinBdApiCreativeTabs.init();
+        BuiltinBdApiMaterialForms.init();
+        BuiltinBdApiMaterialFormLang.init();
     }
 
     @Override
     public void registerMaterialCreativeTabs(MaterialDomainRegistration material) {
-        BuiltinBdCreativeTabs.init();
+        BuiltinBdApiCreativeTabs.init();
     }
 
     @Override
     public void registerMaterialFollowUps(MaterialDomainRegistration material) {
         // Pipes remain product tables on the official plugin until a dedicated pipe domain exists.
-        BuiltinBdPipeDistributionStrategies.init();
+        BuiltinBdApiPipeDistributionStrategies.init();
     }
 
     // ── equipment / tools ────────────────────────────────────────────────────
 
     @Override
     public void registerEquipmentKinds(EquipmentDomainRegistration equipment) {
-        BuiltinBdEquipment.init();
-        BuiltinBdEquipmentLang.init();
+        BuiltinBdApiEquipment.init();
+        BuiltinBdApiEquipmentLang.init();
     }
 
     // ── machine ──────────────────────────────────────────────────────────────
 
     @Override
     public void registerMachineFoundation(MachineDomainRegistration machine) {
-        BuiltinBdCreativeTabs.init();
+        BuiltinBdApiCreativeTabs.init();
         // Resource integrations already run in registerRecipeFoundation; re-touch is no-op.
-        BuiltinBdResourceIntegrations.init();
-        BuiltinBdMachineRenderTypes.init();
-        BuiltinBdPartRoles.init();
-        BuiltinBdPropertyDisplays.init();
+        BuiltinBdApiResourceIntegrations.init();
+        BuiltinBdApiMachineRenderTypes.init();
+        BuiltinBdApiPartRoles.init();
+        BuiltinBdApiPropertyDisplays.init();
         ItemResourcePortMetadata.init();
         FluidResourcePortMetadata.init();
         ScalarResourcePortMetadata.init();
@@ -122,20 +122,20 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerOreFoundation(OreDomainRegistration ore) {
-        BuiltinBdOreLang.init();
-        BuiltinBdOreShapes.init();
-        BuiltinBdOreModes.init();
-        BuiltinBdOrePolicies.init();
+        BuiltinBdApiOreLang.init();
+        BuiltinBdApiOreShapes.init();
+        BuiltinBdApiOreModes.init();
+        BuiltinBdApiOrePolicies.init();
     }
 
     @Override
     public void registerOreDisplays(OreDomainRegistration ore) {
-        BuiltinBdOreVeinDisplays.init();
+        BuiltinBdApiOreVeinDisplays.init();
     }
 
     @Override
     public void registerOreVeins(OreDomainRegistration ore) {
-        BuiltinBdOreEnvironments.init();
+        BuiltinBdApiOreEnvironments.init();
         // BuiltinBdOreVeins.init();
     }
 
@@ -148,11 +148,11 @@ public class BreakdownApiPlugin implements TopoPlugin {
 
     @Override
     public void registerLang(LangDomainRegistration lang) {
-        BuiltinBdPipeLang.init();
-        BuiltinBdMachineUiLang.init();
-        BuiltinBdMachineFeedbackLang.init();
-        BuiltinBdEquipmentLang.init();
-        BuiltinBdMaterialFormLang.init();
-        BuiltinBdOreLang.init();
+        BuiltinBdApiPipeLang.init();
+        BuiltinBdApiMachineUiLang.init();
+        BuiltinBdApiMachineFeedbackLang.init();
+        BuiltinBdApiEquipmentLang.init();
+        BuiltinBdApiMaterialFormLang.init();
+        BuiltinBdApiOreLang.init();
     }
 }

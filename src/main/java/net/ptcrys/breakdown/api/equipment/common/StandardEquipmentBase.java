@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.api.equipment.common;
 
 import net.ptcrys.breakdown.api.equipment.EquipmentTooltipLine;
-import net.ptcrys.breakdown.api.recipe.BuiltinBdRecipeTypes;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiRecipeTypes;
 import net.ptcrys.registrylib.RegistryCore;
 import net.ptcrys.registrylib.builders.ItemBuilder;
 import net.ptcrys.registrylib.util.entry.ItemEntry;
@@ -158,7 +158,7 @@ public abstract class StandardEquipmentBase implements EquipmentStrategy {
 
     private void emitAssemblyRecipe(Material material, ItemEntry<Item> entry) {
         // Deferred suppliers only — item registry not bound during RegisterEvent HIGHEST.
-        var shaped = BuiltinBdRecipeTypes.CRAFTING_SHAPED
+        var shaped = BuiltinBdApiRecipeTypes.CRAFTING_SHAPED
                 .recipe("shape/equipment/" + entry.identifier().getPath(), entry)
                 .category(recipeCategory);
         for (String row : pattern.rows()) {

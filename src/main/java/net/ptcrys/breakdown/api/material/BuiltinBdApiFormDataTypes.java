@@ -5,7 +5,7 @@ import net.ptcrys.breakdown.api.material.common.form.FormAmountDataType;
 import net.ptcrys.topo.api.api.builtin.MaterialDomainRegistration;
 
 /** 瓦解核心内置表单载荷类型(骨架):形态声明可携带的类型化参数全集。 */
-public final class BuiltinBdFormDataTypes {
+public final class BuiltinBdApiFormDataTypes {
 
     private static final MaterialDomainRegistration MATERIALS = BreakdownApiPlugin.INSTANCE.material();
 
@@ -13,7 +13,7 @@ public final class BuiltinBdFormDataTypes {
     public static final FormAmountDataType AMOUNT = MATERIALS.formDataType(
             "amount", new FormAmountDataType(MATERIALS.id("amount")));
 
-    private BuiltinBdFormDataTypes() {}
+    private BuiltinBdApiFormDataTypes() {}
 
     public static void init() {}
 }

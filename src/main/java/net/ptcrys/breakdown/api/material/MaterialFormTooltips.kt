@@ -39,11 +39,11 @@ object MaterialFormTooltips {
         val lcd = MachineUiContainerTemplate.createTooltipLcdData(LcdData.Orientation.VERTICAL)
         lcd.setId("topo_material_form_tooltip")
         val massPerUnit = material.strategy()
-            .data(BuiltinBdMaterialDataTypes.MASS)
+            .data(BuiltinBdApiMaterialDataTypes.MASS)
             .map { it.value() }
             .orElse(null)
         val amountUnits = form.strategy()
-            .data(BuiltinBdFormDataTypes.AMOUNT)
+            .data(BuiltinBdApiFormDataTypes.AMOUNT)
             .orElse(null)
         for ((label, value) in panelRows(material.displayName(), form.displayName(), amountUnits, massPerUnit)) {
             lcd.addStaticEntry(label, value, LcdData.LED_TEXT)
@@ -59,14 +59,14 @@ object MaterialFormTooltips {
     @JvmStatic
     fun panelRows(materialName: Component, formName: Component, amountUnits: Int?, massPerUnit: Int?): List<Pair<Component, Component>> {
         val rows: MutableList<Pair<Component, Component>> = mutableListOf(
-            BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_MATERIAL.getComponent() to materialName,
-            BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_FORM.getComponent() to formName,
+            BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_MATERIAL.getComponent() to materialName,
+            BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_FORM.getComponent() to formName,
         )
         if (amountUnits != null) {
-            rows += BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT.getComponent() to amountText(amountUnits)
+            rows += BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT.getComponent() to amountText(amountUnits)
         }
         if (amountUnits != null && massPerUnit != null) {
-            rows += BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_MASS.getComponent() to
+            rows += BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_MASS.getComponent() to
                 Component.literal(Math.multiplyExact(amountUnits, massPerUnit).toString())
         }
         return rows
@@ -75,13 +75,13 @@ object MaterialFormTooltips {
     /** 整锭单数 ingot、复数 ingots,非整锭按原始份数 units(72 份 = 1 锭)。 */
     private fun amountText(units: Int): Component = when {
         units % FormAmountDataType.UNITS_PER_INGOT != 0 ->
-            BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_UNITS.getComponent(units)
+            BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_UNITS.getComponent(units)
 
         units == FormAmountDataType.UNITS_PER_INGOT ->
-            BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_INGOT.getComponent(1)
+            BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_INGOT.getComponent(1)
 
         else ->
-            BuiltinBdMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_INGOTS.getComponent(
+            BuiltinBdApiMaterialFormLang.TOOLTIP_MATERIAL_AMOUNT_INGOTS.getComponent(
                 units / FormAmountDataType.UNITS_PER_INGOT,
             )
     }

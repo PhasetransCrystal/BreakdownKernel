@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations.BdResourceIntegration;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations.BdResourceIntegration;
 import net.ptcrys.breakdown.api.recipe.common.ScalarRecipeCapability;
 import net.ptcrys.topo.api.machine.component.ComponentContext;
 import net.ptcrys.topo.api.machine.component.ComponentKey;

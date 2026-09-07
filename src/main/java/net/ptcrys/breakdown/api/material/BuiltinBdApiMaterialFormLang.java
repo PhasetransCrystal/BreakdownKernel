@@ -5,7 +5,7 @@ import net.ptcrys.topo.api.api.builtin.LangDomainRegistration;
 import net.ptcrys.topo.api.api.lang.LangKey;
 
 /** 瓦解核心内置材料 tooltip 文案(骨架):材料名 / 形态 / 数量 / 质量。 */
-public final class BuiltinBdMaterialFormLang {
+public final class BuiltinBdApiMaterialFormLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -17,7 +17,7 @@ public final class BuiltinBdMaterialFormLang {
     public static final LangKey TOOLTIP_MATERIAL_AMOUNT_INGOTS = LANG.key("tooltip", "material.amount_ingots", "%s ingots", "%s锭");
     public static final LangKey TOOLTIP_MATERIAL_AMOUNT_UNITS = LANG.key("tooltip", "material.amount_units", "%s units", "%s份");
 
-    private BuiltinBdMaterialFormLang() {}
+    private BuiltinBdApiMaterialFormLang() {}
 
     public static void init() {}
 }

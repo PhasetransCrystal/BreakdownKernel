@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.recipe.craft;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.breakdown.api.recipe.common.ItemRecipeCapability;
 import net.ptcrys.topo.api.recipe.ExportHints;
 import net.ptcrys.topo.api.recipe.TopoRecipe;
@@ -51,7 +51,7 @@ final class TopoRecipeMint {
         }
         List<ProductionLine> lines = List.copyOf(productionLines);
         type.addRecipe(oiRecipeName, registries -> {
-            ItemRecipeCapability items = BuiltinBdResourceIntegrations.ITEM.recipeCapability();
+            ItemRecipeCapability items = BuiltinBdApiResourceIntegrations.ITEM.recipeCapability();
             ItemLike resultItem = result.get();
             TopoItemOutput output = TopoItemOutput.of(resultItem, resultCount);
             return type.createRecipe(

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.topo.api.machine.component.ComponentContext;
 import net.ptcrys.topo.api.machine.component.ComponentKey;
 import net.ptcrys.topo.api.machine.multiblock.ability.PartRoleMount;
@@ -45,7 +45,7 @@ public final class FluidResourcePort extends ResourcePort<FluidStack, FluidResou
                               FluidResourcePortMetadata metadata) {
         super(
                 context,
-                BuiltinBdResourceIntegrations.FLUID.resourceType(),
+                BuiltinBdApiResourceIntegrations.FLUID.resourceType(),
                 handler,
                 metadata);
         handler.setOnChanged(this::onStorageChanged);

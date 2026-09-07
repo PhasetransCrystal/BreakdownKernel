@@ -2,7 +2,7 @@ package net.ptcrys.breakdown.api.equipment.common;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
 import net.ptcrys.breakdown.api.equipment.EquipmentTooltipLine;
-import net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes;
+import net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes;
 import net.ptcrys.breakdown.api.material.common.ArmorStatsData;
 import net.ptcrys.topo.api.lang.DisplayNames;
 import net.ptcrys.topo.api.lang.TemplateDisplayName;
@@ -46,13 +46,13 @@ public final class ArmorEquipment extends StandardEquipmentBase {
 
     @Override
     public boolean appliesTo(Material material) {
-        return material.strategy().data(BuiltinBdMaterialDataTypes.ARMOR_STATS).isPresent();
+        return material.strategy().data(BuiltinBdApiMaterialDataTypes.ARMOR_STATS).isPresent();
     }
 
     @Override
     protected Item.Properties applyStats(Item.Properties properties, Material material,
                                          TagKey<Item> repairItems) {
-        ArmorStatsData stats = material.strategy().data(BuiltinBdMaterialDataTypes.ARMOR_STATS)
+        ArmorStatsData stats = material.strategy().data(BuiltinBdApiMaterialDataTypes.ARMOR_STATS)
                 .orElseThrow(() -> new IllegalStateException(
                         "material " + material.id() + " lost ARMOR_STATS between appliesTo and register"));
         ResourceKey<EquipmentAsset> assetId = ResourceKey.create(EquipmentAssets.ROOT_ID, material.id());

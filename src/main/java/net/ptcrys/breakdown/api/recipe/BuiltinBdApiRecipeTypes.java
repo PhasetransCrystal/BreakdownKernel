@@ -22,7 +22,7 @@ import java.util.Objects;
  * 原版熔炉(SMELTING/BLASTING/SMOKING/CAMPFIRE)与原版合成(CRAFTING_SHAPED/SHAPELESS),
  * 均带对原版配方表的导出桥接(exportRecipesTo)。机器配方类型由内容插件按需注册。
  */
-public final class BuiltinBdRecipeTypes {
+public final class BuiltinBdApiRecipeTypes {
 
     private static final RecipeDomainRegistration RECIPE = BreakdownApiPlugin.INSTANCE.recipe();
 
@@ -57,7 +57,7 @@ public final class BuiltinBdRecipeTypes {
     public static final ShapelessCraftingRecipeType CRAFTING_SHAPELESS = registerShapeless(
             "crafting_shapeless", "Shapeless Crafting", "无序合成");
 
-    private BuiltinBdRecipeTypes() {}
+    private BuiltinBdApiRecipeTypes() {}
 
     public static void init() {
         Objects.requireNonNull(SMELTING);
