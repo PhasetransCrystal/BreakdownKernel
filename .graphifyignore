@@ -40,4 +40,5 @@ website/
 
 # Graphify self-output
 
+docs*/
 graphify-out/
