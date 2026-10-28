@@ -64,7 +64,6 @@ public class BuiltinBdMaterials {
             .build();
 
     public static final Material DIAMOND = material("diamond", "Diamond", "钻石", 0x6DECEB, 0x2B8C92, 12)
-            .forms(BuiltinBdApiMaterialForms.ORE, BuiltinBdApiMaterialForms.DEEPSLATE_ORE, BuiltinBdApiMaterialForms.GEM)
             .form(BuiltinBdApiMaterialForms.ORE, op -> op.overrideBlock(ExternalTargets.mcBlock("diamond_ore")))
             .form(BuiltinBdApiMaterialForms.DEEPSLATE_ORE,
                     op -> op.overrideBlock(ExternalTargets.mcBlock("deepslate_diamond_ore")))
@@ -72,17 +71,14 @@ public class BuiltinBdMaterials {
             .build();
 
     public static final Material REDSTONE = material("redstone", "Redstone", "红石", 0xD11B1B, 0x6A0707, 1)
-            .forms(BuiltinBdApiMaterialForms.ORE, BuiltinBdApiMaterialForms.DEEPSLATE_ORE)
             .form(BuiltinBdApiMaterialForms.ORE, op -> op.overrideBlock(ExternalTargets.mcBlock("redstone_ore")))
             .form(BuiltinBdApiMaterialForms.DEEPSLATE_ORE,
                     op -> op.overrideBlock(ExternalTargets.mcBlock("deepslate_redstone_ore")))
             .build();
 
     public static final Material COAL = material("coal", "Coal", "煤", 0x2B2B2B, 0x101010, 12)
-            .forms(BuiltinBdApiMaterialForms.ORE, BuiltinBdApiMaterialForms.DEEPSLATE_ORE)
             .form(BuiltinBdApiMaterialForms.ORE, op -> op.overrideBlock(ExternalTargets.mcBlock("coal_ore")))
-            .form(BuiltinBdApiMaterialForms.DEEPSLATE_ORE,
-                    op -> op.overrideBlock(ExternalTargets.mcBlock("deepslate_coal_ore")))
+            .form(BuiltinBdApiMaterialForms.DEEPSLATE_ORE, op -> op.overrideBlock(ExternalTargets.mcBlock("deepslate_coal_ore")))
             .build();
 
     public static final Material TIN = fullNetherMetal("tin", "Tin", "锡", 0xC9D3D8, 0x8EA0A8, 119);
@@ -91,44 +87,29 @@ public class BuiltinBdMaterials {
     public static final Material ZINC = fullMetal("zinc", "Zinc", "锌", 0xC7D6D2, 0x8A9D98, 65);
     public static final Material URANIUM = fullNetherMetal("uranium", "Uranium", "铀", 0x61C853, 0x2D6B2E, 238);
 
-    public static final Material SULFURIC_ACID = simple("sulfuric_acid", "Sulfuric Acid", "硫酸", 0xD8E6A8, 0x9AA85F, 98,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material SULFUR = simple("sulfur", "Sulfur", "硫磺", 0xE6D64C, 0xA68F22, 32,
-            BuiltinBdApiMaterialForms.DUST);
-    public static final Material SODIUM_HYDROXIDE = simple("sodium_hydroxide", "Sodium Hydroxide", "氢氧化钠", 0xE8F0F0, 0xAFC8C8, 40,
-            BuiltinBdApiMaterialForms.DUST, BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material CHLORINE = simple("chlorine", "Chlorine", "氯气", 0xC7E36B, 0x7D9B2F, 71, BuiltinBdApiMaterialForms.GAS);
-    public static final Material HYDROGEN = simple("hydrogen", "Hydrogen", "氢气", 0xDDEEFF, 0x9CB8D8, 2, BuiltinBdApiMaterialForms.GAS);
-    public static final Material SULFUR_DIOXIDE = simple("sulfur_dioxide", "Sulfur Dioxide", "二氧化硫", 0xE5D77A, 0x9F913A, 64,
-            BuiltinBdApiMaterialForms.GAS);
-    public static final Material SULFUR_TRIOXIDE = simple("sulfur_trioxide", "Sulfur Trioxide", "三氧化硫", 0xEFE38B, 0xB5A84D, 80,
-            BuiltinBdApiMaterialForms.GAS);
-    public static final Material SALT = simple("salt", "Salt", "食盐", 0xF2F2EA, 0xC7C7BA, 58, BuiltinBdApiMaterialForms.DUST);
-    public static final Material BRINE = simple("brine", "Brine", "饱和盐水", 0xB8D6E7, 0x6F98AA, 58, BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material ELECTROLYTE = simple("electrolyte", "Electrolyte", "电解液", 0x8BD5FF, 0x3B84B8, 1, BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material AIR = simple("air", "Air", "空气", 0xD4ECFF, 0xA7C8E5, 29, BuiltinBdApiMaterialForms.GAS);
-    public static final Material WASTE_ACID_SOLUTION = simple("waste_acid", "Waste Acid", "废酸", 0x6F7F62, 0x36412D, 120,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material SOLUBLE_SALT = simple("soluble_salt", "Soluble Salt", "可溶性盐", 0xECE6D3, 0xB8AE92, 60,
-            BuiltinBdApiMaterialForms.DUST);
-    public static final Material COPPER_SULFATE = simple("copper_sulfate", "Copper Sulfate", "硫酸铜", 0x3996D2, 0x15527E, 160,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material NICKEL_SULFATE = simple("nickel_sulfate", "Nickel Sulfate", "硫酸镍", 0x62C276, 0x2C6F3C, 155,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material COPPER_NICKEL_SULFATE = simple("copper_nickel_sulfate", "Copper-Nickel Sulfate", "铜镍硫酸盐", 0x4FAE9D, 0x2B6B64, 315,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material COPPER_NICKEL_HYDROXIDE = simple("copper_nickel_hydroxide", "Copper-Nickel Hydroxide", "铜镍氢氧化物", 0x6BCF91, 0x2F7D54, 157,
-            BuiltinBdApiMaterialForms.DUST);
-    public static final Material COPPER_NICKEL_OXIDE = simple("copper_nickel_oxide", "Copper-Nickel Oxide", "铜镍氧化物", 0x38464A, 0x78A77D, 139,
-            BuiltinBdApiMaterialForms.DUST, BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material LUMINITE = simple("luminite", "Luminite", "辉光铜镍晶", 0x57F2C7, 0x7A5CFF, 256,
-            BuiltinBdApiMaterialForms.SOLUTION, BuiltinBdApiMaterialForms.GEM);
-    public static final Material SODIUM_SULFATE = simple("sodium_sulfate", "Sodium Sulfate", "硫酸钠", 0xDCE8F5, 0x9DB7CC, 142,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material SPENT_CRYSTAL_LIQUOR = simple("spent_crystal_liquor", "Spent Crystal Liquor", "废晶余液", 0x5B6F83, 0x263342, 120,
-            BuiltinBdApiMaterialForms.SOLUTION);
-    public static final Material WASTE_GAS = simple("waste_gas", "Waste Gas", "废气", 0x77776E, 0x3D3D38, 30, BuiltinBdApiMaterialForms.GAS);
-    public static final Material STEAM = simple("steam", "Steam", "水蒸气", 0xE8F4FF, 0xB9CCD8, 18, BuiltinBdApiMaterialForms.GAS);
+    public static final Material SULFURIC_ACID = simple("sulfuric_acid", "Sulfuric Acid", "硫酸", 0xD8E6A8, 0x9AA85F, 98);
+    public static final Material SULFUR = simple("sulfur", "Sulfur", "硫磺", 0xE6D64C, 0xA68F22, 32);
+    public static final Material SODIUM_HYDROXIDE = simple("sodium_hydroxide", "Sodium Hydroxide", "氢氧化钠", 0xE8F0F0, 0xAFC8C8, 40);
+    public static final Material CHLORINE = simple("chlorine", "Chlorine", "氯气", 0xC7E36B, 0x7D9B2F, 71);
+    public static final Material HYDROGEN = simple("hydrogen", "Hydrogen", "氢气", 0xDDEEFF, 0x9CB8D8, 2);
+    public static final Material SULFUR_DIOXIDE = simple("sulfur_dioxide", "Sulfur Dioxide", "二氧化硫", 0xE5D77A, 0x9F913A, 64);
+    public static final Material SULFUR_TRIOXIDE = simple("sulfur_trioxide", "Sulfur Trioxide", "三氧化硫", 0xEFE38B, 0xB5A84D, 80);
+    public static final Material SALT = simple("salt", "Salt", "食盐", 0xF2F2EA, 0xC7C7BA, 58);
+    public static final Material BRINE = simple("brine", "Brine", "饱和盐水", 0xB8D6E7, 0x6F98AA, 58);
+    public static final Material ELECTROLYTE = simple("electrolyte", "Electrolyte", "电解液", 0x8BD5FF, 0x3B84B8, 1);
+    public static final Material AIR = simple("air", "Air", "空气", 0xD4ECFF, 0xA7C8E5, 29);
+    public static final Material WASTE_ACID_SOLUTION = simple("waste_acid", "Waste Acid", "废酸", 0x6F7F62, 0x36412D, 120);
+    public static final Material SOLUBLE_SALT = simple("soluble_salt", "Soluble Salt", "可溶性盐", 0xECE6D3, 0xB8AE92, 60);
+    public static final Material COPPER_SULFATE = simple("copper_sulfate", "Copper Sulfate", "硫酸铜", 0x3996D2, 0x15527E, 160);
+    public static final Material NICKEL_SULFATE = simple("nickel_sulfate", "Nickel Sulfate", "硫酸镍", 0x62C276, 0x2C6F3C, 155);
+    public static final Material COPPER_NICKEL_SULFATE = simple("copper_nickel_sulfate", "Copper-Nickel Sulfate", "铜镍硫酸盐", 0x4FAE9D, 0x2B6B64, 315);
+    public static final Material COPPER_NICKEL_HYDROXIDE = simple("copper_nickel_hydroxide", "Copper-Nickel Hydroxide", "铜镍氢氧化物", 0x6BCF91, 0x2F7D54, 157);
+    public static final Material COPPER_NICKEL_OXIDE = simple("copper_nickel_oxide", "Copper-Nickel Oxide", "铜镍氧化物", 0x38464A, 0x78A77D, 139);
+    public static final Material LUMINITE = simple("luminite", "Luminite", "辉光铜镍晶", 0x57F2C7, 0x7A5CFF, 256);
+    public static final Material SODIUM_SULFATE = simple("sodium_sulfate", "Sodium Sulfate", "硫酸钠", 0xDCE8F5, 0x9DB7CC, 142);
+    public static final Material SPENT_CRYSTAL_LIQUOR = simple("spent_crystal_liquor", "Spent Crystal Liquor", "废晶余液", 0x5B6F83, 0x263342, 120);
+    public static final Material WASTE_GAS = simple("waste_gas", "Waste Gas", "废气", 0x77776E, 0x3D3D38, 30);
+    public static final Material STEAM = simple("steam", "Steam", "水蒸气", 0xE8F4FF, 0xB9CCD8, 18);
 
     public static final Material BRONZE = null;
     public static final Material STEEL = null;
@@ -150,16 +131,13 @@ public class BuiltinBdMaterials {
                 .build();
     }
 
-    private static Material simple(
-                                   String id,
+    private static Material simple(String id,
                                    String en,
                                    String cn,
                                    int primary,
                                    int secondary,
-                                   int mass,
-                                   MaterialForm... forms) {
+                                   int mass) {
         return material(id, en, cn, primary, secondary, mass)
-                .forms(forms)
                 .build();
     }
 

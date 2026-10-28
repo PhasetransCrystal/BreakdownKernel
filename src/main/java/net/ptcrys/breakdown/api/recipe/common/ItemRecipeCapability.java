@@ -300,7 +300,7 @@ public final class ItemRecipeCapability extends SlottedRecipeCapability<TopoItem
         slot.setItem(stacks.getFirst());
         Supplier<Stream<ItemStack>> allItems = stacks::stream;
         ItemSlot.JEISupport.recipeIngredient(slot, IngredientIO.INPUT, allItems);
-        ItemSlot.JEISupport.recipeSlot(slot, allItems);
+        ItemSlot.JEISupport.recipeSlot(slot, IngredientIO.INPUT, allItems);
         return slot;
     }
 
@@ -314,7 +314,7 @@ public final class ItemRecipeCapability extends SlottedRecipeCapability<TopoItem
         slot.setItem(stack);
         Supplier<Stream<ItemStack>> allItems = () -> Stream.of(stack);
         ItemSlot.JEISupport.recipeIngredient(slot, IngredientIO.OUTPUT, allItems);
-        ItemSlot.JEISupport.recipeSlot(slot, allItems);
+        ItemSlot.JEISupport.recipeSlot(slot, IngredientIO.OUTPUT, allItems);
         return slot;
     }
 

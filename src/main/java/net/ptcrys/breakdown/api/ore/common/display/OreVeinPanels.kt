@@ -295,7 +295,7 @@ object OreVeinPanels {
             slot.setItem(entry.stack)
             val outputs = java.util.function.Supplier { java.util.stream.Stream.of(entry.stack) }
             ItemSlot.JEISupport.recipeIngredient(slot, IngredientIO.OUTPUT, outputs)
-            ItemSlot.JEISupport.recipeSlot(slot, outputs)
+            ItemSlot.JEISupport.recipeSlot(slot, IngredientIO.OUTPUT, outputs)
         }
         return slot
     }

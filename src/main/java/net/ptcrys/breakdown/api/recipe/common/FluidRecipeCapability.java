@@ -389,7 +389,7 @@ public final class FluidRecipeCapability
         slot.setFluid(fluid);
         Supplier<Stream<FluidStack>> allFluids = () -> Stream.of(fluid);
         FluidSlot.JEISupport.recipeIngredient(slot, io, allFluids);
-        FluidSlot.JEISupport.recipeSlot(slot, allFluids);
+        FluidSlot.JEISupport.recipeSlot(slot, io, allFluids);
         return slot;
     }
 

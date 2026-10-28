@@ -40,6 +40,7 @@ public final class BuiltinBdApiMaterialForms {
                             opaque(flat("block/material/ore_host_stone")),
                             translucent(tinted(PRIMARY_COLOR, "block/material/ore_overlay"))))
                     .build())
+            .appliesToAll()
             .build();
 
     public static final MaterialForm DEEPSLATE_ORE = MATERIALS.form("deepslate_ore")
@@ -54,6 +55,7 @@ public final class BuiltinBdApiMaterialForms {
                             opaque(flat("block/material/ore_host_deepslate")),
                             translucent(tinted(PRIMARY_COLOR, "block/material/ore_overlay"))))
                     .build())
+            .appliesToAll()
             .build();
 
     public static final MaterialForm NETHERRACK_ORE = MATERIALS.form("netherrack_ore")
@@ -68,6 +70,7 @@ public final class BuiltinBdApiMaterialForms {
                             opaque(flat("block/material/ore_host_netherrack")),
                             translucent(tinted(PRIMARY_COLOR, "block/material/ore_overlay"))))
                     .build())
+            .appliesToAll()
             .build();
 
     // ── 粉 ──────────────────────────────────────────────────────────────────
@@ -96,6 +99,7 @@ public final class BuiltinBdApiMaterialForms {
                             tinted(SECONDARY_COLOR, "item/material/ingot_secondary"),
                             flat("item/material/ingot_overlay")))
                     .build())
+            .appliesToAll()
             .build();
 
     public static final MaterialForm NUGGET = MATERIALS.form("nugget")
@@ -111,6 +115,7 @@ public final class BuiltinBdApiMaterialForms {
                             tinted(SECONDARY_COLOR, "item/material/nugget_secondary"),
                             flat("item/material/nugget_overlay")))
                     .build())
+            .appliesToAll()
             .build();
 
     public static final MaterialForm BLOCK = MATERIALS.form("block")
@@ -124,6 +129,7 @@ public final class BuiltinBdApiMaterialForms {
                     .initialProperties(Blocks.IRON_BLOCK)
                     .render(new GtmMaterialBlockRender())
                     .build())
+            .appliesToAll()
             .build();
 
     // ── 宝石 ─────────────────────────────────────────────────────────────────
@@ -140,6 +146,7 @@ public final class BuiltinBdApiMaterialForms {
                             tinted(SECONDARY_COLOR, "item/material/gem_secondary"),
                             flat("item/material/gem_overlay")))
                     .build())
+            .appliesToAll()
             .build();
 
     // ── 流体(空壳)────────────────────────────────────────────────────────────
@@ -166,6 +173,7 @@ public final class BuiltinBdApiMaterialForms {
                             .tickRate(8)
                             .explosionResistance(100.0F))
                     .build())
+            .appliesToAll()
             .build();
 
     public static final MaterialForm GAS = MATERIALS.form("gas")
@@ -194,6 +202,7 @@ public final class BuiltinBdApiMaterialForms {
                             .tickRate(2)
                             .explosionResistance(1.0F))
                     .build())
+            .appliesToAll()
             .build();
 
     private BuiltinBdApiMaterialForms() {}
@@ -209,6 +218,7 @@ public final class BuiltinBdApiMaterialForms {
                                          String primaryTexture,
                                          String secondaryTexture) {
         return MATERIALS.form(id)
+                .appliesToAll()
                 .lang(displayNameEn.replace("%s ", ""), langCn)
                 .strategy(ItemForm.builder()
                         .registryPath(registryPath)
@@ -238,6 +248,7 @@ public final class BuiltinBdApiMaterialForms {
         TintedTemplate.Layer secondary = tinted(SECONDARY_COLOR, secondaryTexture);
         TintedTemplate.Layer[] layers = overlayTexture == null ? new TintedTemplate.Layer[] { primary, secondary } : new TintedTemplate.Layer[] { primary, secondary, flat(overlayTexture) };
         return MATERIALS.form(id)
+                .appliesToAll()
                 .lang(langEn, langCn)
                 .strategy(ItemForm.builder()
                         .registryPath(registryPath)

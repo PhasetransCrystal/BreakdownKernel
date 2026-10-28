@@ -53,7 +53,7 @@ public final class GtmMaterialBlockRender implements MaterialBlockRender {
                 base,
                 BlockModelLayer.tinted(base, 0),
                 BlockModelLayer.tinted(overlay, 1))
-                .blockTintSource(blockTints(material))
+                .blockTintSource(() -> () -> blockTints(material))
                 .tintSource(itemTints(material));
     }
 

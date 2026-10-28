@@ -14,11 +14,9 @@ import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeDistributionStrategies;
 import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeLang;
 import net.ptcrys.breakdown.api.recipe.*;
 import net.ptcrys.breakdown.api.vanilla.*;
-import net.ptcrys.registrylib.RegistryCore;
 import net.ptcrys.topo.api.api.builtin.*;
 import net.ptcrys.topo.api.api.plugin.TopoPlugin;
 
-import lombok.Getter;
 import lombok.experimental.Accessors;
 
 /**
@@ -26,32 +24,12 @@ import lombok.experimental.Accessors;
  * 创造栏与基础文案。具体材料/机器等产品内容由另一个 plugin 通过同一 {@link TopoPlugin} 路径注册。
  */
 @Accessors(fluent = true)
-public class BreakdownApiPlugin implements TopoPlugin {
+public class BreakdownApiPlugin extends TopoPlugin {
 
     public static final BreakdownApiPlugin INSTANCE = new BreakdownApiPlugin();
-    @Getter
-    private final MaterialDomainRegistration material = MaterialDomainRegistration.of(this);
-    @Getter
-    private final EquipmentDomainRegistration equipment = EquipmentDomainRegistration.of(this);
-    @Getter
-    private final RecipeDomainRegistration recipe = RecipeDomainRegistration.of(this);
-    @Getter
-    private final MachineDomainRegistration machine = MachineDomainRegistration.of(this);
-    @Getter
-    private final OreDomainRegistration ore = OreDomainRegistration.of(this);
-    @Getter
-    private final LangDomainRegistration lang = LangDomainRegistration.of(this);
 
-    private BreakdownApiPlugin() {}
-
-    @Override
-    public String modId() {
-        return BreaLib.Core_ID;
-    }
-
-    @Override
-    public RegistryCore registry() {
-        return BreaLib.REGISTRY;
+    private BreakdownApiPlugin() {
+        super(BreaLib.REGISTRY);
     }
 
     // ── recipe ───────────────────────────────────────────────────────────────
