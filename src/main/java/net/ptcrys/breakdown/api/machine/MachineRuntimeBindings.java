@@ -1,6 +1,5 @@
 package net.ptcrys.breakdown.api.machine;
 
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
@@ -16,8 +15,7 @@ public final class MachineRuntimeBindings {
 
     private MachineRuntimeBindings() {}
 
-    public static void register(IEventBus modEventBus) {
-        modEventBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(
-                MachineRecipeModifierTooltips::registerAll));
+    public static void register(FMLCommonSetupEvent event) {
+        event.enqueueWork(MachineRecipeModifierTooltips::registerAll);
     }
 }

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component
 
-import net.ptcrys.breakdown.api.machine.BuiltinBdMachineUiLang
+import net.ptcrys.breakdown.api.machine.BuiltinBdApiMachineUiLang
 import net.ptcrys.topo.api.machine.component.ComponentContext
 import net.ptcrys.topo.api.machine.component.ComponentKey
 import net.ptcrys.topo.api.machine.component.ComponentMount
@@ -33,7 +33,7 @@ class StoragePageUi private constructor(context: ComponentContext<StoragePageUi>
     override fun collectMachineUi(contribution: MachineUiContribution) {
         contribution.mainPage(
             PAGE_KEY,
-            BuiltinBdMachineUiLang.UI_STORAGE_PAGE.getComponent(),
+            BuiltinBdApiMachineUiLang.UI_STORAGE_PAGE.getComponent(),
             createStoragePage(),
         )
     }

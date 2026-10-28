@@ -70,21 +70,21 @@ object EquipmentTooltips {
         val rows = mutableListOf<Row>()
         if (damageable) {
             rows += Row(
-                BuiltinBdEquipmentLang.TOOLTIP_EQUIPMENT_DURABILITY.getComponent(),
+                BuiltinBdApiEquipmentLang.TOOLTIP_EQUIPMENT_DURABILITY.getComponent(),
                 Component.literal("$remainingDurability / $maxDurability"),
                 false,
             )
         }
         if (surveyRange != null) {
             rows += Row(
-                BuiltinBdEquipmentLang.TOOLTIP_EQUIPMENT_RANGE.getComponent(),
-                BuiltinBdEquipmentLang.TOOLTIP_EQUIPMENT_RANGE_BLOCKS.getComponent(surveyRange),
+                BuiltinBdApiEquipmentLang.TOOLTIP_EQUIPMENT_RANGE.getComponent(),
+                BuiltinBdApiEquipmentLang.TOOLTIP_EQUIPMENT_RANGE_BLOCKS.getComponent(surveyRange),
                 false,
             )
         }
         if (tooltipLines.isNotEmpty()) {
             rows += Row(
-                BuiltinBdEquipmentLang.TOOLTIP_EQUIPMENT_FUNCTION.getComponent(),
+                BuiltinBdApiEquipmentLang.TOOLTIP_EQUIPMENT_FUNCTION.getComponent(),
                 Component.literal(tooltipLines.size.toString()),
                 false,
             )

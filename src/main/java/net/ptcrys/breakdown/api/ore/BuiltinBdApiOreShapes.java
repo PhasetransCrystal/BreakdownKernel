@@ -9,7 +9,7 @@ import net.ptcrys.topo.api.ore.shape.OreVeinShape;
  * Built-in grid vein shapes. Containment math lives in {@link OreVeinShapeMath}; this table only
  * registers handles. Register a shape here only when a product or test vein will reference it.
  */
-public final class BuiltinBdOreShapes {
+public final class BuiltinBdApiOreShapes {
 
     private static final OreDomainRegistration ORE = BreakdownApiPlugin.INSTANCE.ore();
 
@@ -19,7 +19,7 @@ public final class BuiltinBdOreShapes {
     public static final OreVeinShape TRIANGLE = ORE.shape("triangle", OreVeinShapeMath::triangle);
     public static final OreVeinShape THREE_STAR_SYSTEM = ORE.shape("three_star_system", OreVeinShapeMath::threeStarSystem);
 
-    private BuiltinBdOreShapes() {}
+    private BuiltinBdApiOreShapes() {}
 
     public static void init() {}
 }

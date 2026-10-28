@@ -5,7 +5,7 @@ import net.ptcrys.topo.api.machine.ui.MachineUiIcons
 import com.lowdragmc.lowdraglib2.gui.texture.IGuiTexture
 
 /** 瓦解核心内置机器 UI 图标(骨架):资源类型图标,供机器 UI 复用。 */
-object BuiltinBdMachineUiIcons {
+object BuiltinBdApiMachineUiIcons {
     @JvmStatic
     fun chest(color: Int): IGuiTexture = MachineUiIcons.pixelGlyph(
         color,

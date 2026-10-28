@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
-import net.ptcrys.breakdown.api.machine.BuiltinBdMachineFeedbackLang;
+import net.ptcrys.breakdown.api.machine.BuiltinBdApiMachineFeedbackLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -104,16 +104,16 @@ public final class ScalarDestroyedBehaviors {
         return switch (energyTier(effective)) {
             // 爆燃=红(爆炸)、电弧=黄(电)、微量耗散=灰(无害)。
             case 2 -> MachineDestroyedReport.harmful(
-                    BuiltinBdMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_BLAST,
+                    BuiltinBdApiMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_BLAST,
                     ChatFormatting.RED,
                     amount(stored));
             case 1 -> MachineDestroyedReport.harmful(
-                    BuiltinBdMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_ARC,
+                    BuiltinBdApiMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_ARC,
                     ChatFormatting.YELLOW,
                     amount(stored),
                     rounded(arcDamage(effective)));
             default -> effective > 0L ? MachineDestroyedReport.benign(
-                    BuiltinBdMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_DISSIPATE,
+                    BuiltinBdApiMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_ENERGY_DISSIPATE,
                     ChatFormatting.GRAY,
                     amount(stored)) : MachineDestroyedReport.SILENT;
         };
@@ -125,7 +125,7 @@ public final class ScalarDestroyedBehaviors {
      */
     static MachineDestroyedReport heatReport(long stored) {
         return heatActive(stored) ? MachineDestroyedReport.harmful(
-                BuiltinBdMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_HEAT_FLASH,
+                BuiltinBdApiMachineFeedbackLang.MESSAGE_MACHINE_DESTROYED_HEAT_FLASH,
                 ChatFormatting.GOLD,
                 amount(stored),
                 rounded(heatIgniteSeconds(stored))) : MachineDestroyedReport.SILENT;

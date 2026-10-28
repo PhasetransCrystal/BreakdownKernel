@@ -7,7 +7,7 @@ import net.ptcrys.topo.api.api.lang.TopoApiLang;
 import net.ptcrys.topo.api.machine.resource.AutomationIo;
 import net.ptcrys.topo.api.machine.resource.RecipeRole;
 
-public final class BuiltinBdMachineUiLang {
+public final class BuiltinBdApiMachineUiLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -216,7 +216,7 @@ public final class BuiltinBdMachineUiLang {
     public static final LangKey UI_MULTIBLOCK_DIAGNOSE_NEED = LANG.key("ui", "multiblock.diagnose.need", "Need %s @ %s", "需要 %s @ %s");
     public static final LangKey UI_MULTIBLOCK_DIAGNOSE_NEED_FOUND = LANG.key("ui", "multiblock.diagnose.need_found", "Need %s — found %s @ %s", "需要 %s — 找到 %s @ %s");
 
-    // Property-display aspect texts (BuiltinBdPropertyDisplays declares the same keys with
+    // Property-display aspect texts (BuiltinBdApiPropertyDisplays declares the same keys with
     // inline English fallbacks; these entries bake them into the generated en_us lang).
     public static final LangKey UI_MULTIBLOCK_STATE_FACING = LANG.key("ui", "multiblock.state.facing", "Facing", "朝向");
     public static final LangKey UI_MULTIBLOCK_STATE_FACING_NORTH = LANG.key("ui", "multiblock.state.facing.north", "North", "北");
@@ -239,7 +239,7 @@ public final class BuiltinBdMachineUiLang {
     public static final LangKey UI_MULTIBLOCK_STATE_AXIS_Y = LANG.key("ui", "multiblock.state.axis.y", "Y", "Y");
     public static final LangKey UI_MULTIBLOCK_STATE_AXIS_Z = LANG.key("ui", "multiblock.state.axis.z", "Z", "Z");
 
-    private BuiltinBdMachineUiLang() {}
+    private BuiltinBdApiMachineUiLang() {}
 
     /** Triggers class initialization so the keys are registered before datagen collects lang. */
     public static void init() {}

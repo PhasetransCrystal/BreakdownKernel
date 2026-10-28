@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.pipe.common;
 
-import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeLang;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeLang;
 import net.ptcrys.topo.api.api.lang.LangKey;
 
 import net.minecraft.network.chat.Component;
@@ -26,7 +26,7 @@ public enum DistanceOrder implements StringRepresentable {
 
     /** Display handle for GUI toggle buttons / Jade labels. */
     public LangKey nameLang() {
-        return BuiltinBdPipeLang.distanceOrder(this);
+        return BuiltinBdApiPipeLang.distanceOrder(this);
     }
 
     public Component displayName() {

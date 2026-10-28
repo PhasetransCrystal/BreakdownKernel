@@ -190,7 +190,7 @@ public final class TintedTemplate {
         public void apply(BlockBuilder<Block, RegistryCore> builder, Material material) {
             TextureRef particle = templateTextureRef(layers.get(0).layer);
             builder.layeredCube(particle, blockModelLayers(layers))
-                    .blockTintSource(blockTintSources(layers, material))
+                    .blockTintSource(() -> () -> blockTintSources(layers, material))
                     .tintSource(blockItemTintSources(layers, material));
         }
     }

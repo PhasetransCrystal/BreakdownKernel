@@ -2,7 +2,7 @@ package net.ptcrys.breakdown.api.equipment.common;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
 import net.ptcrys.breakdown.api.equipment.EquipmentTooltipLine;
-import net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes;
+import net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes;
 import net.ptcrys.breakdown.api.material.common.ToolStatsData;
 import net.ptcrys.topo.api.lang.DisplayNames;
 import net.ptcrys.topo.api.lang.TemplateDisplayName;
@@ -54,7 +54,7 @@ public final class ToolEquipment extends StandardEquipmentBase {
 
     @Override
     public boolean appliesTo(Material material) {
-        return material.strategy().data(BuiltinBdMaterialDataTypes.TOOL_STATS).isPresent();
+        return material.strategy().data(BuiltinBdApiMaterialDataTypes.TOOL_STATS).isPresent();
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class ToolEquipment extends StandardEquipmentBase {
     @Override
     protected Item.Properties applyStats(Item.Properties properties, Material material,
                                          TagKey<Item> repairItems) {
-        ToolStatsData stats = material.strategy().data(BuiltinBdMaterialDataTypes.TOOL_STATS)
+        ToolStatsData stats = material.strategy().data(BuiltinBdApiMaterialDataTypes.TOOL_STATS)
                 .orElseThrow(() -> new IllegalStateException(
                         "material " + material.id() + " lost TOOL_STATS between appliesTo and register"));
         ToolMaterial toolMaterial = toolMaterial(stats, durabilityMultiplier, miningSpeedMultiplier, repairItems);

@@ -34,7 +34,7 @@ import java.util.List;
  * {@link PropertyRule#alternateEncodings(BlockState)} for redundantly-encoded geometry; the engine
  * accepts the oriented expected state or any published alternate.
  */
-public final class BuiltinBdPropertyRules {
+public final class BuiltinBdApiPropertyRules {
 
     /**
      * Facing rule governing both the 6-way {@code FACING} and the 4-way {@code HORIZONTAL_FACING}.
@@ -76,7 +76,7 @@ public final class BuiltinBdPropertyRules {
             BlockStateProperties.UP,
             BlockStateProperties.DOWN);
 
-    private BuiltinBdPropertyRules() {}
+    private BuiltinBdApiPropertyRules() {}
 
     /** See {@link #STAIR_SHAPE}; the concrete stairs knowledge lives here, not in the api engine. */
     private static final class StairShapeRule implements PropertyRule {

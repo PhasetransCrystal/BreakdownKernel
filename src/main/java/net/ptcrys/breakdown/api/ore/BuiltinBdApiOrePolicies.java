@@ -8,7 +8,7 @@ import net.ptcrys.topo.api.ore.policy.OreConflictPolicy;
 import net.minecraft.network.chat.Component;
 
 /** Built-in air-exposure and overlap-conflict policies, including JEI display contributions. */
-public final class BuiltinBdOrePolicies {
+public final class BuiltinBdApiOrePolicies {
 
     private static final OreDomainRegistration ORE = BreakdownApiPlugin.INSTANCE.ore();
 
@@ -22,7 +22,7 @@ public final class BuiltinBdOrePolicies {
 
                 @Override
                 public Component describe(double discardChance) {
-                    return BuiltinBdOreLang.EXPOSED_VISIBLE.getComponent();
+                    return BuiltinBdApiOreLang.EXPOSED_VISIBLE.getComponent();
                 }
             });
 
@@ -36,7 +36,7 @@ public final class BuiltinBdOrePolicies {
 
                 @Override
                 public Component describe(double discardChance) {
-                    return BuiltinBdOreLang.EXPOSED_HIDDEN.getComponent();
+                    return BuiltinBdApiOreLang.EXPOSED_HIDDEN.getComponent();
                 }
             });
 
@@ -51,7 +51,7 @@ public final class BuiltinBdOrePolicies {
                 @Override
                 public Component describe(double discardChance) {
                     int percent = (int) Math.round((1.0 - discardChance) * 100.0);
-                    return BuiltinBdOreLang.EXPOSED_PARTIAL.getComponent(percent + "%");
+                    return BuiltinBdApiOreLang.EXPOSED_PARTIAL.getComponent(percent + "%");
                 }
             });
 
@@ -61,7 +61,7 @@ public final class BuiltinBdOrePolicies {
     public static final OreConflictPolicy REPLACE_LOWER_PRIORITY = ORE.conflict("replace_lower_priority",
             (candidatePriority, existingPriority) -> candidatePriority >= existingPriority);
 
-    private BuiltinBdOrePolicies() {}
+    private BuiltinBdApiOrePolicies() {}
 
     public static void init() {}
 }

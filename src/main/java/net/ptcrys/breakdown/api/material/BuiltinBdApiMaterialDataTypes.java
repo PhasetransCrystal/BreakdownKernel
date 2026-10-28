@@ -5,7 +5,7 @@ import net.ptcrys.breakdown.api.material.common.*;
 import net.ptcrys.topo.api.api.builtin.MaterialDomainRegistration;
 
 /** 瓦解核心内置材料数据类型(骨架):颜色/质量为渲染文案基础,物理量为工艺基础,元素组成为复合材料基础。 */
-public final class BuiltinBdMaterialDataTypes {
+public final class BuiltinBdApiMaterialDataTypes {
 
     private static final MaterialDomainRegistration MATERIALS = BreakdownApiPlugin.INSTANCE.material();
 
@@ -47,7 +47,7 @@ public final class BuiltinBdMaterialDataTypes {
     public static final ArmorStatsDataType ARMOR_STATS = MATERIALS.dataType(
             "armor_stats", new ArmorStatsDataType(MATERIALS.id("armor_stats")));
 
-    private BuiltinBdMaterialDataTypes() {}
+    private BuiltinBdApiMaterialDataTypes() {}
 
     public static void init() {}
 }

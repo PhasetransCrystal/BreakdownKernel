@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
  * Strategy display names live with their strategy registrations. API-runtime keys are owned by
  * {@link TopoApiLang} and re-exported here for data-layer convenience.
  */
-public final class BuiltinBdPipeLang {
+public final class BuiltinBdApiPipeLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -118,7 +118,7 @@ public final class BuiltinBdPipeLang {
     // Jade asserts (dev) that every plugin provider UID has a config entry translation.
     public static final LangKey CONFIG_JADE_PLUGIN_ODYSSEYINDUSTRIAL_PIPE = LANG.absolute("config.jade.plugin_breakdown.pipe", "Pipe Network", "管道网络");
 
-    private BuiltinBdPipeLang() {}
+    private BuiltinBdApiPipeLang() {}
 
     /** Only activates class initialization. Must remain empty. */
     public static void init() {}

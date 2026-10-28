@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.api.ore.common.display
 
-import net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes
-import net.ptcrys.breakdown.api.ore.BuiltinBdOreLang
+import net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes
+import net.ptcrys.breakdown.api.ore.BuiltinBdApiOreLang
 import net.ptcrys.topo.api.machine.ui.LcdData
 import net.ptcrys.topo.api.machine.ui.MachineUiComponentStyle
 import net.ptcrys.topo.api.machine.ui.MachineUiComponentTemplate
@@ -160,20 +160,20 @@ object OreVeinPanels {
             it.paddingHorizontal(4f)
             it.paddingVertical(2f)
         }
-        add(infoRow(BuiltinBdOreLang.LABEL_DIM.getComponent(), dimensions(vein), LcdData.LED_TEXT))
+        add(infoRow(BuiltinBdApiOreLang.LABEL_DIM.getComponent(), dimensions(vein), LcdData.LED_TEXT))
         add(
             infoRow(
-                BuiltinBdOreLang.LABEL_HEIGHT.getComponent(),
+                BuiltinBdApiOreLang.LABEL_HEIGHT.getComponent(),
                 Component.literal("${vein.minY()}..${vein.maxY()}"),
                 LcdData.LED_RUNNING,
             ),
         )
-        add(infoRow(BuiltinBdOreLang.LABEL_HOST.getComponent(), hostRocks(vein), LcdData.LED_TEXT))
-        add(infoRow(BuiltinBdOreLang.LABEL_SIZE.getComponent(), sizeLabel(placement), LcdData.LED_TEXT))
-        add(infoRow(BuiltinBdOreLang.LABEL_SPACING.getComponent(), spacingLabel(placement), LcdData.LED_RUNNING))
+        add(infoRow(BuiltinBdApiOreLang.LABEL_HOST.getComponent(), hostRocks(vein), LcdData.LED_TEXT))
+        add(infoRow(BuiltinBdApiOreLang.LABEL_SIZE.getComponent(), sizeLabel(placement), LcdData.LED_TEXT))
+        add(infoRow(BuiltinBdApiOreLang.LABEL_SPACING.getComponent(), spacingLabel(placement), LcdData.LED_RUNNING))
         add(
             infoRow(
-                BuiltinBdOreLang.LABEL_EXPOSED.getComponent(),
+                BuiltinBdApiOreLang.LABEL_EXPOSED.getComponent(),
                 vein.airExposurePolicy().describe(vein.airExposureDiscardChance()),
                 exposureLed(vein),
             ),
@@ -295,7 +295,7 @@ object OreVeinPanels {
             slot.setItem(entry.stack)
             val outputs = java.util.function.Supplier { java.util.stream.Stream.of(entry.stack) }
             ItemSlot.JEISupport.recipeIngredient(slot, IngredientIO.OUTPUT, outputs)
-            ItemSlot.JEISupport.recipeSlot(slot, outputs)
+            ItemSlot.JEISupport.recipeSlot(slot, IngredientIO.OUTPUT, outputs)
         }
         return slot
     }
@@ -316,20 +316,20 @@ object OreVeinPanels {
         }.sortedByDescending { it.ratio }
     }
 
-    private fun materialColor(material: Material): Int = material.strategy().data(BuiltinBdMaterialDataTypes.PRIMARY_COLOR).map { it.rgb() }.orElse(0xFFFFFF)
+    private fun materialColor(material: Material): Int = material.strategy().data(BuiltinBdApiMaterialDataTypes.PRIMARY_COLOR).map { it.rgb() }.orElse(0xFFFFFF)
 
     private fun dimensions(vein: OreVein): Component = join(vein.environment().dimensions().map { it.displayName().getComponent() })
 
     private fun hostRocks(vein: OreVein): Component = join(vein.environment().hostRules().map { it.displayName().getComponent() })
 
     private fun sizeLabel(placement: OrePlacement): Component = when (placement) {
-        is OrePlacement.Grid -> BuiltinBdOreLang.SIZE_RADIUS.getComponent(placement.radiusBlocks())
-        is OrePlacement.Feature -> BuiltinBdOreLang.SIZE_CLUSTER.getComponent(placement.size())
+        is OrePlacement.Grid -> BuiltinBdApiOreLang.SIZE_RADIUS.getComponent(placement.radiusBlocks())
+        is OrePlacement.Feature -> BuiltinBdApiOreLang.SIZE_CLUSTER.getComponent(placement.size())
     }
 
     private fun spacingLabel(placement: OrePlacement): Component = when (placement) {
-        is OrePlacement.Grid -> BuiltinBdOreLang.SPACING_BLOCKS.getComponent(placement.gridSizeChunks() * 16)
-        is OrePlacement.Feature -> BuiltinBdOreLang.SPACING_ATTEMPTS.getComponent(placement.attemptsPerChunk())
+        is OrePlacement.Grid -> BuiltinBdApiOreLang.SPACING_BLOCKS.getComponent(placement.gridSizeChunks() * 16)
+        is OrePlacement.Feature -> BuiltinBdApiOreLang.SPACING_ATTEMPTS.getComponent(placement.attemptsPerChunk())
     }
 
     private fun join(parts: List<Component>): Component {

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.breakdown.api.recipe.common.ScalarRecipeCapability;
 import net.ptcrys.topo.api.machine.component.ComponentContext;
 import net.ptcrys.topo.api.machine.component.ComponentKey;
@@ -69,7 +69,7 @@ public final class CreativeScalarResourcePort
 
     public static PartRoleMount<CreativeScalarResourcePort> mount(
                                                                   ComponentKey<CreativeScalarResourcePort> key,
-                                                                  BuiltinBdResourceIntegrations.BdResourceIntegration<ScalarResource, ScalarRecipeCapability> integration,
+                                                                  BuiltinBdApiResourceIntegrations.BdResourceIntegration<ScalarResource, ScalarRecipeCapability> integration,
                                                                   PortAccess policy) {
         // Metadata capacity is unused (the handler reports Long.MAX); pass a positive sentinel for validity.
         ScalarResourcePortMetadata metadata = new ScalarResourcePortMetadata(integration, Integer.MAX_VALUE, policy);

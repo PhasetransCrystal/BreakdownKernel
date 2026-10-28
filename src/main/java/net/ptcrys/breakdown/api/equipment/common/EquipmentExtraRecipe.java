@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.equipment.common;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdRecipeTypes;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiRecipeTypes;
 import net.ptcrys.registrylib.util.entry.ItemEntry;
 import net.ptcrys.topo.api.material.Material;
 
@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 
 /**
  * Optional assembly recipe for an equipment kind when {@link EquipmentPattern} is not enough (e.g.
- * stick + ingot forge hammers). Emit via {@link BuiltinBdRecipeTypes} builders;
+ * stick + ingot forge hammers). Emit via {@link BuiltinBdApiRecipeTypes} builders;
  * invoked once per registered (kind, material) item.
  */
 @FunctionalInterface

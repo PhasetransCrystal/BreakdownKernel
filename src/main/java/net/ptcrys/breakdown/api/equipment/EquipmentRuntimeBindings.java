@@ -4,7 +4,6 @@ import net.ptcrys.topo.api.equipment.EquipmentRegistry;
 import net.ptcrys.topo.api.machine.MachineItemBehavior;
 import net.ptcrys.topo.api.machine.MachineItemBehaviors;
 
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 /**
@@ -20,8 +19,8 @@ public final class EquipmentRuntimeBindings {
 
     private EquipmentRuntimeBindings() {}
 
-    public static void register(IEventBus modEventBus) {
-        modEventBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
+    public static void register(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
             for (EquipmentRegistry.EquipmentItemRecord record : EquipmentRegistry.itemRecords()) {
                 MachineItemBehavior behavior = record.equipment().strategy().machineBehavior();
                 if (behavior != null) {
@@ -30,6 +29,6 @@ public final class EquipmentRuntimeBindings {
             }
             MachineItemBehaviors.freeze();
             EquipmentTooltips.registerAll();
-        }));
+        });
     }
 }

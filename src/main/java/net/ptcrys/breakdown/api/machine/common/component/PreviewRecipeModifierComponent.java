@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component;
 
-import net.ptcrys.breakdown.api.machine.BuiltinBdMachineUiLang;
+import net.ptcrys.breakdown.api.machine.BuiltinBdApiMachineUiLang;
 import net.ptcrys.topo.api.machine.component.ComponentContext;
 import net.ptcrys.topo.api.machine.component.ComponentKey;
 import net.ptcrys.topo.api.machine.component.ComponentMount;
@@ -46,9 +46,9 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
 
     /** 2-row LCD: parallelism + mode. */
     public static ComponentMount<PreviewRecipeModifierComponent> parallel() {
-        Component title = BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_PARALLEL_TITLE.getComponent();
+        Component title = BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_PARALLEL_TITLE.getComponent();
         Component description = RecipeModifierDescriptionLine.single(
-                BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_PARALLEL.getComponent(),
+                BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_PARALLEL.getComponent(),
                 2.0d,
                 RecipeModifierDescriptionLine.primaryRgb());
         return PARALLEL.mount(
@@ -59,7 +59,7 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
 
     /** 3-row LCD: longer block to stress vertical gap. */
     public static ComponentMount<PreviewRecipeModifierComponent> overclock() {
-        Component title = BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_OVERCLOCK_TITLE.getComponent();
+        Component title = BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_OVERCLOCK_TITLE.getComponent();
         Component description = RecipeModifierDescriptionLine.consumer(0.5d, 4.0d, true);
         return OVERCLOCK.mount(
                 context -> new PreviewRecipeModifierComponent(
@@ -69,9 +69,9 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
 
     /** 1-row LCD: short block. */
     public static ComponentMount<PreviewRecipeModifierComponent> catalyst() {
-        Component title = BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_CATALYST_TITLE.getComponent();
+        Component title = BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_CATALYST_TITLE.getComponent();
         Component description = RecipeModifierDescriptionLine.singleValue(
-                BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_BONUS.getComponent(),
+                BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_BONUS.getComponent(),
                 Component.literal("+10%"),
                 RecipeModifierDescriptionLine.tertiaryRgb());
         return CATALYST.mount(
@@ -109,12 +109,12 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
         return MachineUiContainerTemplate.INSTANCE
                 .createLcdData(LcdData.Orientation.VERTICAL)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_PARALLEL.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_PARALLEL.getComponent(),
                         Component.literal("×2"),
                         LcdData.LED_RUNNING)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_MODE.getComponent(),
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_PARALLEL_MODE.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_MODE.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_PARALLEL_MODE.getComponent(),
                         LcdData.LED_TEXT);
     }
 
@@ -122,15 +122,15 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
         return MachineUiContainerTemplate.INSTANCE
                 .createLcdData(LcdData.Orientation.VERTICAL)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_OC.getComponent(),
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_OVERCLOCK_MODE.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_OC.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_OVERCLOCK_MODE.getComponent(),
                         LcdData.LED_WAITING)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
                         Component.literal("×0.5"),
                         LcdData.LED_RUNNING)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
                         Component.literal("×4"),
                         LcdData.LED_RUNNING);
     }
@@ -139,7 +139,7 @@ public final class PreviewRecipeModifierComponent extends MachineComponent imple
         return MachineUiContainerTemplate.INSTANCE
                 .createLcdData(LcdData.Orientation.VERTICAL)
                 .addStaticEntry(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_BONUS.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_PREVIEW_ATTR_BONUS.getComponent(),
                         Component.literal("+10%"),
                         LcdData.LED_OUTPUT);
     }

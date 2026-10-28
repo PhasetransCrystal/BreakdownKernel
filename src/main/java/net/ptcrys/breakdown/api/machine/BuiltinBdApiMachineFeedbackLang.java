@@ -8,7 +8,7 @@ import net.ptcrys.topo.api.api.lang.LangKey;
  * 标量机器被破坏时的聊天提示(骨架)。占位符:{@code %1$s} 机器名、{@code %2$s} 资源名,
  * 之后为量值。
  */
-public final class BuiltinBdMachineFeedbackLang {
+public final class BuiltinBdApiMachineFeedbackLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -36,7 +36,7 @@ public final class BuiltinBdMachineFeedbackLang {
             "A %1$s's pent-up %2$s (%3$s) gushed out as its shell cracked, scorching and igniting the surroundings (%4$s s ablaze)!",
             "一台%1$s积聚的%2$s（%3$s）随外壳裂开喷涌而出，灼烧并点燃了周围环境（燃烧 %4$s 秒）！");
 
-    private BuiltinBdMachineFeedbackLang() {}
+    private BuiltinBdApiMachineFeedbackLang() {}
 
     public static void init() {}
 }

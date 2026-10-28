@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.recipe.productionline;
 
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.breakdown.api.recipe.common.FluidRecipeCapability;
 import net.ptcrys.breakdown.api.recipe.common.ItemRecipeCapability;
 import net.ptcrys.breakdown.api.recipe.common.ScalarRecipeCapability;
@@ -17,15 +17,15 @@ final class ProductionLineRecipeSupport {
     private ProductionLineRecipeSupport() {}
 
     static ItemRecipeCapability items() {
-        return BuiltinBdResourceIntegrations.ITEM.recipeCapability();
+        return BuiltinBdApiResourceIntegrations.ITEM.recipeCapability();
     }
 
     static FluidRecipeCapability fluids() {
-        return BuiltinBdResourceIntegrations.FLUID.recipeCapability();
+        return BuiltinBdApiResourceIntegrations.FLUID.recipeCapability();
     }
 
     static ScalarRecipeCapability energy() {
-        return BuiltinBdResourceIntegrations.ENERGY.recipeCapability();
+        return BuiltinBdApiResourceIntegrations.ENERGY.recipeCapability();
     }
 
     static Supplier<Fluid> fluid(Material material, MaterialForm form) {

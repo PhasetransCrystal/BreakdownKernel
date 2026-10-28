@@ -9,7 +9,7 @@ import net.ptcrys.topo.api.api.lang.TopoApiLang;
  * Equipment domain tooltip labels and regulator feedback. Pipe surveyor feedback keys are owned by
  * {@link TopoApiLang} (API plugin) and re-exported here.
  */
-public final class BuiltinBdEquipmentLang {
+public final class BuiltinBdApiEquipmentLang {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -25,7 +25,7 @@ public final class BuiltinBdEquipmentLang {
     public static final LangKey EQUIPMENT_PIPE_SURVEYOR_CLEARED = TopoApiLang.EQUIPMENT_PIPE_SURVEYOR_CLEARED;
     public static final LangKey EQUIPMENT_PIPE_SURVEYOR_NEED_ANCHOR = TopoApiLang.EQUIPMENT_PIPE_SURVEYOR_NEED_ANCHOR;
 
-    private BuiltinBdEquipmentLang() {}
+    private BuiltinBdApiEquipmentLang() {}
 
     public static void init() {}
 }

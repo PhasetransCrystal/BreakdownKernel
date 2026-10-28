@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.pipe.common;
 
-import net.ptcrys.breakdown.api.pipe.BuiltinBdPipeLang;
+import net.ptcrys.breakdown.api.pipe.BuiltinBdApiPipeLang;
 import net.ptcrys.topo.api.machine.ui.MachineUiComponentStyle;
 import net.ptcrys.topo.api.pipe.AggregationWindow;
 import net.ptcrys.topo.api.pipe.PipeDefinition;
@@ -97,6 +97,6 @@ public final class ByDistanceStrategy extends LangBoundStrategy {
                     label -> labels[ordinal] = label);
         }
         collector.addRow(collector.labeledRow("topo_pipe_port_order_row",
-                BuiltinBdPipeLang.UI_PIPE_PORT_DISTANCE_ORDER.getComponent(), buttons));
+                BuiltinBdApiPipeLang.UI_PIPE_PORT_DISTANCE_ORDER.getComponent(), buttons));
     }
 }

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component;
 
-import net.ptcrys.breakdown.api.machine.BuiltinBdMachineUiLang;
+import net.ptcrys.breakdown.api.machine.BuiltinBdApiMachineUiLang;
 import net.ptcrys.breakdown.api.machine.common.component.resource.ScalarResource;
 import net.ptcrys.breakdown.api.machine.common.component.resource.ScalarResourcePort;
 import net.ptcrys.topo.api.api.tick.TickHandle;
@@ -99,7 +99,7 @@ public final class CreativeEnergyGenerator extends MachineTicker {
     @Override
     public void collectMachineUi(MachineUiContribution contribution) {
         UIElement editor = MachineUiComponentTemplate.INSTANCE.createAmountEditor(
-                BuiltinBdMachineUiLang.UI_CREATIVE_GENERATOR_RATE_POPUP_TITLE.getComponent(),
+                BuiltinBdApiMachineUiLang.UI_CREATIVE_GENERATOR_RATE_POPUP_TITLE.getComponent(),
                 () -> rate.value(),
                 value -> {
                     setRate(value);
@@ -109,7 +109,7 @@ public final class CreativeEnergyGenerator extends MachineTicker {
                 MAX_RATE);
         contribution.bottomStrip(
                 "topo_creative_rate_" + id().getPath(),
-                BuiltinBdMachineUiLang.UI_CREATIVE_GENERATOR_RATE.getComponent(),
+                BuiltinBdApiMachineUiLang.UI_CREATIVE_GENERATOR_RATE.getComponent(),
                 null,
                 editor);
     }

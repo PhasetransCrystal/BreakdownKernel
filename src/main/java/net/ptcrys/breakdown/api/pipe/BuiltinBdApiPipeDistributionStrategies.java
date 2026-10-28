@@ -20,7 +20,7 @@ import net.ptcrys.topo.api.pipe.PipeDistributionStrategy;
  * {@code maxExtractRate × interval} by the runtime) and the aggregation {@code interval}
  * (clamped into the offer's {@code AggregationWindow}).
  */
-public final class BuiltinBdPipeDistributionStrategies {
+public final class BuiltinBdApiPipeDistributionStrategies {
 
     private static final LangDomainRegistration LANG = BreakdownApiPlugin.INSTANCE.lang();
 
@@ -39,7 +39,7 @@ public final class BuiltinBdPipeDistributionStrategies {
             "ROBN", "ROBN",
             "Targets take turns", "目标轮流");
 
-    private BuiltinBdPipeDistributionStrategies() {}
+    private BuiltinBdApiPipeDistributionStrategies() {}
 
     /** Only activates class initialization. Must remain empty. */
     public static void init() {}

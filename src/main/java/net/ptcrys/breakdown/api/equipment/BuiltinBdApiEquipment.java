@@ -4,10 +4,10 @@ import net.ptcrys.breakdown.api.BreakdownApiPlugin;
 import net.ptcrys.breakdown.api.equipment.common.ArmorEquipment;
 import net.ptcrys.breakdown.api.equipment.common.ToolEquipment;
 import net.ptcrys.breakdown.api.equipment.common.behavior.RegulatorBehavior;
-import net.ptcrys.breakdown.api.material.BuiltinBdMaterialForms;
+import net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialForms;
 import net.ptcrys.breakdown.api.material.common.render.TintedTemplate;
-import net.ptcrys.breakdown.api.recipe.BuiltinBdRecipeTypes;
-import net.ptcrys.breakdown.api.vanilla.BuiltinBdCreativeTabs;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiRecipeTypes;
+import net.ptcrys.breakdown.api.vanilla.BuiltinBdApiCreativeTabs;
 import net.ptcrys.topo.api.api.builtin.EquipmentDomainRegistration;
 import net.ptcrys.topo.api.equipment.Equipment;
 import net.ptcrys.topo.api.machine.MachineBlock;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.ArmorType;
 
-import static net.ptcrys.breakdown.api.material.BuiltinBdMaterialDataTypes.*;
+import static net.ptcrys.breakdown.api.material.BuiltinBdApiMaterialDataTypes.*;
 import static net.ptcrys.breakdown.api.material.common.render.TintedTemplate.*;
 
 /**
@@ -29,7 +29,7 @@ import static net.ptcrys.breakdown.api.material.common.render.TintedTemplate.*;
  * wire cutter), armor, and surveyor. One item per (kind, material-with-stats) is stamped by the
  * equipment engine drive. Primitive crafting tools share {@code TOOL_STATS} with world tools.
  */
-public final class BuiltinBdEquipment {
+public final class BuiltinBdApiEquipment {
 
     public static final TagKey<Item> FORGE_HAMMERS = TagHelper.item("tools/forge_hammer");
     public static final TagKey<Item> FILES = TagHelper.item("tools/file");
@@ -49,7 +49,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/pickaxe"),
                             flat("item/equipment/pickaxe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment AXE = EQUIPMENT.kind("axe",
@@ -62,7 +62,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/axe"),
                             flat("item/equipment/axe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment SHOVEL = EQUIPMENT.kind("shovel",
@@ -75,7 +75,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/shovel"),
                             flat("item/equipment/shovel_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment SWORD = EQUIPMENT.kind("sword",
@@ -89,7 +89,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/sword_base"),
                             tinted(PRIMARY_COLOR, "item/equipment/sword"),
                             flat("item/equipment/sword_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment HOE = EQUIPMENT.kind("hoe",
@@ -102,7 +102,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/hoe"),
                             flat("item/equipment/hoe_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
     // 原版装甲
 
@@ -113,7 +113,7 @@ public final class BuiltinBdEquipment {
                     .armorType(ArmorType.HELMET)
                     .tag(ItemTags.HEAD_ARMOR)
                     .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/helmet")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment CHESTPLATE = EQUIPMENT.kind("chestplate",
@@ -123,7 +123,7 @@ public final class BuiltinBdEquipment {
                     .armorType(ArmorType.CHESTPLATE)
                     .tag(ItemTags.CHEST_ARMOR)
                     .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/chestplate")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment LEGGINGS = EQUIPMENT.kind("leggings",
@@ -133,7 +133,7 @@ public final class BuiltinBdEquipment {
                     .armorType(ArmorType.LEGGINGS)
                     .tag(ItemTags.LEG_ARMOR)
                     .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/leggings")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     public static final Equipment BOOTS = EQUIPMENT.kind("boots",
@@ -143,7 +143,7 @@ public final class BuiltinBdEquipment {
                     .armorType(ArmorType.BOOTS)
                     .tag(ItemTags.FOOT_ARMOR)
                     .render(TintedTemplate.item(tinted(PRIMARY_COLOR, "item/equipment/boots")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     // 模组工具
@@ -160,13 +160,13 @@ public final class BuiltinBdEquipment {
                     .craftingRemainderTool()
                     .tag(FORGE_HAMMERS)
                     .extraRecipe((material, entry) -> {
-                        if (!material.strategy().forms().contains(BuiltinBdMaterialForms.INGOT)) {
+                        if (!material.strategy().forms().contains(BuiltinBdApiMaterialForms.INGOT)) {
                             return;
                         }
                         // Deferred: RegisterEvent HIGHEST has not bound ItemEntry yet.
                         var ingot = MaterialHelper.materialItemSupplier(
-                                material, BuiltinBdMaterialForms.INGOT);
-                        BuiltinBdRecipeTypes.CRAFTING_SHAPED
+                                material, BuiltinBdApiMaterialForms.INGOT);
+                        BuiltinBdApiRecipeTypes.CRAFTING_SHAPED
                                 .recipe("shape/equipment/" + entry.identifier().getPath(), entry)
                                 .category(RecipeCategory.TOOLS)
                                 .pattern("II", "SS")
@@ -179,7 +179,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/forge_hammer_handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/forge_hammer"),
                             flat("item/equipment/forge_hammer_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     /** File: crafting-remainder tool; no dedicated assembly recipe (product parity with prior table). */
@@ -194,7 +194,7 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/file_handle"),
                             tinted(PRIMARY_COLOR, "item/equipment/file"),
                             flat("item/equipment/file_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     /** Wire cutter: crafting-remainder tool; no dedicated assembly recipe. */
@@ -210,7 +210,7 @@ public final class BuiltinBdEquipment {
                             tinted(PRIMARY_COLOR, "item/equipment/wire_cutter_base"),
                             tinted(PRIMARY_COLOR, "item/equipment/wire_cutter"),
                             flat("item/equipment/wire_cutter_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     /** 左键专精挖机器(快于镐)、管道侧的扳手交互按 c:tools/wrench tag 识别本品。 */
@@ -239,7 +239,7 @@ public final class BuiltinBdEquipment {
                     .render(TintedTemplate.handheldItem(
                             tinted(PRIMARY_COLOR, "item/equipment/wrench"),
                             flat("item/equipment/wrench_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
     /** 右键机器切换配方运行/暂停(行为接线在机器域,Phase 5)。 */
@@ -257,10 +257,10 @@ public final class BuiltinBdEquipment {
                             flat("item/equipment/handle_hammer"),
                             tinted(PRIMARY_COLOR, "item/equipment/regulator"),
                             flat("item/equipment/regulator_overlay")))
-                    .creativeTab(BuiltinBdCreativeTabs.EQUIPMENT.getKey())
+                    .creativeTab(BuiltinBdApiCreativeTabs.EQUIPMENT.getKey())
                     .build());
 
-    private BuiltinBdEquipment() {}
+    private BuiltinBdApiEquipment() {}
 
     public static void init() {}
 }

@@ -5,7 +5,7 @@ import net.ptcrys.breakdown.api.machine.common.render.*;
 import net.ptcrys.topo.api.api.builtin.MachineDomainRegistration;
 
 /** Builtin machine block render types via {@link BreakdownApiPlugin#machine()}. */
-public final class BuiltinBdMachineRenderTypes {
+public final class BuiltinBdApiMachineRenderTypes {
 
     private static final MachineDomainRegistration MACHINE = BreakdownApiPlugin.INSTANCE.machine();
 
@@ -34,7 +34,7 @@ public final class BuiltinBdMachineRenderTypes {
             new CtmHatchRenderType(MACHINE.id("ctm_hatch")),
             new CtmHatchRenderType.Strategy());
 
-    private BuiltinBdMachineRenderTypes() {}
+    private BuiltinBdApiMachineRenderTypes() {}
 
     public static void init() {}
 }

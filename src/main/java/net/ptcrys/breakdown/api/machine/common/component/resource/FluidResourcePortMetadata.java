@@ -1,7 +1,7 @@
 package net.ptcrys.breakdown.api.machine.common.component.resource;
 
 import net.ptcrys.breakdown.api.BreakdownApiPlugin;
-import net.ptcrys.breakdown.api.recipe.BuiltinBdResourceIntegrations;
+import net.ptcrys.breakdown.api.recipe.BuiltinBdApiResourceIntegrations;
 import net.ptcrys.topo.api.machine.component.AttachmentType;
 import net.ptcrys.topo.api.machine.resource.MachineResourceType;
 import net.ptcrys.topo.api.machine.resource.PortAccess;
@@ -40,7 +40,7 @@ public record FluidResourcePortMetadata(
 
     @Override
     public MachineResourceType<FluidResource> resourceType() {
-        return BuiltinBdResourceIntegrations.FLUID.resourceType();
+        return BuiltinBdApiResourceIntegrations.FLUID.resourceType();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.machine.common.component;
 
-import net.ptcrys.breakdown.api.machine.BuiltinBdMachineUiLang;
+import net.ptcrys.breakdown.api.machine.BuiltinBdApiMachineUiLang;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -23,7 +23,7 @@ public final class RecipeModifierDescriptionLine {
     /** Consumer free params: duration (if applied) + power. */
     public static Component consumer(double durationFactor, double powerFactor, boolean scaleDuration) {
         Component power = param(
-                BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
+                BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
                 powerFactor,
                 scaleDuration ? SECONDARY_RGB : PRIMARY_RGB);
         if (!scaleDuration) {
@@ -31,7 +31,7 @@ public final class RecipeModifierDescriptionLine {
         }
         return join(
                 param(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
                         durationFactor,
                         PRIMARY_RGB),
                 power);
@@ -41,7 +41,7 @@ public final class RecipeModifierDescriptionLine {
     public static Component producer(Component rateLabel, double durationFactor, double yieldFactor) {
         return join(
                 param(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
                         durationFactor,
                         PRIMARY_RGB),
                 param(rateLabel, yieldFactor, SECONDARY_RGB));
@@ -51,15 +51,15 @@ public final class RecipeModifierDescriptionLine {
     public static Component converter(double durationFactor, double powerFactor, double yieldFactor) {
         return join(
                 param(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_DURATION.getComponent(),
                         durationFactor,
                         PRIMARY_RGB),
                 param(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_POWER.getComponent(),
                         powerFactor,
                         SECONDARY_RGB),
                 param(
-                        BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_ATTR_YIELD.getComponent(),
+                        BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_ATTR_YIELD.getComponent(),
                         yieldFactor,
                         TERTIARY_RGB));
     }
@@ -113,11 +113,11 @@ public final class RecipeModifierDescriptionLine {
     }
 
     private static Component factor(double value) {
-        return BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_FACTOR.getComponent(formatFactor(value));
+        return BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_FACTOR.getComponent(formatFactor(value));
     }
 
     private static Component factor(long value) {
-        return BuiltinBdMachineUiLang.UI_RECIPE_MODIFIER_FACTOR.getComponent(Long.toString(value));
+        return BuiltinBdApiMachineUiLang.UI_RECIPE_MODIFIER_FACTOR.getComponent(Long.toString(value));
     }
 
     private static String formatFactor(double value) {

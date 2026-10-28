@@ -1,6 +1,6 @@
 package net.ptcrys.breakdown.api.equipment.common.behavior;
 
-import net.ptcrys.breakdown.api.equipment.BuiltinBdEquipmentLang;
+import net.ptcrys.breakdown.api.equipment.BuiltinBdApiEquipmentLang;
 import net.ptcrys.topo.api.machine.MachineBlockEntity;
 import net.ptcrys.topo.api.machine.MachineItemBehavior;
 import net.ptcrys.topo.api.machine.component.MachineWorkControl;
@@ -51,7 +51,7 @@ public final class RegulatorBehavior implements MachineItemBehavior {
         machine.getLevel().playSound(null, machine.getBlockPos(),
                 SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.6f,
                 result == WorkMode.HALTED ? 0.6f : 0.9f);
-        player.sendOverlayMessage((result == WorkMode.HALTED ? BuiltinBdEquipmentLang.EQUIPMENT_REGULATOR_HALTED : BuiltinBdEquipmentLang.EQUIPMENT_REGULATOR_RESUMED).getComponent());
+        player.sendOverlayMessage((result == WorkMode.HALTED ? BuiltinBdApiEquipmentLang.EQUIPMENT_REGULATOR_HALTED : BuiltinBdApiEquipmentLang.EQUIPMENT_REGULATOR_RESUMED).getComponent());
         return InteractionResult.CONSUME;
     }
 }
